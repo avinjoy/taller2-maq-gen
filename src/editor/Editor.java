@@ -63,7 +63,9 @@ public class Editor {
     private JTextArea jTextArea;      //instancia de JTextArea (área de edición)
     private JPopupMenu jPopupMenu;    //instancia de JPopupMenu (menú emergente)
     private JPanel statusBar;         //instancia de JPanel (barra de estado)
- 
+    private JScrollPane scrollPane; 
+    private TextLineNumber columnLineCounter;
+    
     private JCheckBoxMenuItem itemLineWrap;         //instancias de algunos items de menú que necesitan ser accesibles
     private JCheckBoxMenuItem itemShowToolBar;
     private JCheckBoxMenuItem itemFixedToolBar;
@@ -144,7 +146,10 @@ public class Editor {
         jFrame.setJMenuBar(jMenuBar);                              //designa la barra de menú del JFrame
         Container c = jFrame.getContentPane();                     //obtiene el contendor principal
         c.add(jToolBar, BorderLayout.NORTH);                       //añade la barra de herramientas, orientación NORTE del contendor
-        c.add(new JScrollPane(jTextArea), BorderLayout.CENTER);    //añade el area de edición en el CENTRO
+
+        scrollPane = new JScrollPane(jTextArea);
+        c.add(scrollPane, BorderLayout.CENTER);    //añade el area de edición en el CENTRO
+        buildColumnLineCounter();
         c.add(statusBar, BorderLayout.SOUTH);                      //añade la barra de estado, orientación SUR
  
         //configura el JFrame con un tamaño inicial proporcionado con respecto a la pantalla
@@ -530,7 +535,29 @@ public class Editor {
             }
         }
     }
- 
+
+    /**
+     * Construye la barra de estado.
+     */
+    private void buildColumnLineCounter() {
+        columnLineCounter = new TextLineNumber(jTextArea);    //construye un JPanel
+        //se configura con un BoxLayout
+        columnLineCounter.setLayout(new BoxLayout(columnLineCounter, BoxLayout.PAGE_AXIS));
+        //le añade un borde compuesto
+        columnLineCounter.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLoweredBevelBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+ 		
+ 		
+        scrollPane.setRowHeaderView(columnLineCounter);
+
+        /** se añaden las etiquetas construidas al JPanel, el resultado es un panel
+        similar a una barra de estado */
+        columnLineCounter.add(Box.createRigidArea(new Dimension(10, 0)));
+        columnLineCounter.add(Box.createRigidArea(new Dimension(10, 0)));
+        columnLineCounter.add(Box.createHorizontalGlue());
+    }
+
     /**
      * Hace visible el menú emergente.
      *
