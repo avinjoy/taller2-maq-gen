@@ -878,6 +878,10 @@ public class Editor {
 			if (c == '\n'){
 				// Acá se buscarían en la base de datos de conocimientos para la ayuda en línea	            							
 			}
+			// Detecta el evento Ctrol+Space
+			if ((e.getModifiers() & ActionEvent.CTRL_MASK) ==ActionEvent.CTRL_MASK && e.getKeyChar() == ' ')  {
+				int option = JOptionPane.showConfirmDialog(jFrame, "Content Assist");
+				}
 		}
     }
 }
