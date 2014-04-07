@@ -62,7 +62,7 @@ public class ActionPerformer {
             }
         }
  
-        tpEditor.getJFrame().setTitle("TextPad Demo - Sin Título");    //nuevo título de la ventana
+        tpEditor.getJFrame().setTitle("Generic Sim - Sin Título");    //nuevo título de la ventana
  
         //limpia el contenido del area de edición
         tpEditor.getJTextArea().setText("");
@@ -124,7 +124,7 @@ public class ActionPerformer {
                 tpEditor.updateControls();          //se actualiza el estado de las opciones "Deshacer" y "Rehacer"
  
                 //nuevo título de la ventana con el nombre del archivo cargado
-                tpEditor.getJFrame().setTitle("TextPad Demo - " + f.getName());
+                tpEditor.getJFrame().setTitle("Generic Sim - " + f.getName());
  
                 //muestra la ubicación del archivo actual
                 tpEditor.getJLabelFilePath().setText(shortPathName(f.getAbsolutePath()));
@@ -194,7 +194,7 @@ public class ActionPerformer {
                 bw.close();    //cierra el flujo
  
                 //nuevo título de la ventana con el nombre del archivo guardado
-                tpEditor.getJFrame().setTitle("TextPad Demo - " + f.getName());
+                tpEditor.getJFrame().setTitle("Generic Sim - " + f.getName());
  
                 //muestra la ubicación del archivo guardado
                 tpEditor.getJLabelFilePath().setText(shortPathName(f.getAbsolutePath()));
@@ -300,7 +300,7 @@ public class ActionPerformer {
         String text = JOptionPane.showInputDialog(
                 tpEditor.getJFrame(),
                 "Texto:",
-                "TextPad Demo - Buscar",
+                "Generic Sim - Buscar",
                 JOptionPane.QUESTION_MESSAGE);
  
         if (text != null) {    //si se introdujo texto (puede ser una cadena vacía)
@@ -348,7 +348,7 @@ public class ActionPerformer {
         String line = JOptionPane.showInputDialog(
                 tpEditor.getJFrame(),
                 "Número:",
-                "TextPad Demo - Ir a la línea...",
+                "Generic Sim - Ir a la línea...",
                 JOptionPane.QUESTION_MESSAGE);
  
         if (line != null && line.length() > 0) {    //si se introdujo un dato
@@ -376,7 +376,7 @@ public class ActionPerformer {
     public void actionSelectFont() {
         //presenta el dialogo de selección de fuentes
         Font font = JFontChooser.showDialog(tpEditor.getJFrame(),
-                                            "TextPad Demo - Fuente de letra:",
+                                            "Generic Sim - Fuente de letra:",
                                             tpEditor.getJTextArea().getFont());
         if (font != null) {    //si un fuente fue seleccionado
             //se establece como fuente del area de edición
@@ -392,7 +392,7 @@ public class ActionPerformer {
     public void actionSelectFontColor() {
         //presenta el dialogo de selección de colores
         Color color = JColorChooser.showDialog(tpEditor.getJFrame(),
-                                               "TextPad Demo - Color de letra:",
+                                               "Generic Sim - Color de letra:",
                                                tpEditor.getJTextArea().getForeground());
         if (color != null) {    //si un color fue seleccionado
             //se establece como color del fuente y cursor
@@ -409,7 +409,7 @@ public class ActionPerformer {
     public void actionSelectBackgroundColor() {
         //presenta el dialogo de selección de colores
         Color color = JColorChooser.showDialog(tpEditor.getJFrame(),
-                                               "TextPad Demo - Color de fondo:",
+                                               "Generic Sim - Color de fondo:",
                                                tpEditor.getJTextArea().getForeground());
         if (color != null) {    //si un color fue seleccionado
             //se establece como color de fondo
@@ -425,7 +425,7 @@ public class ActionPerformer {
      */
     private static JFileChooser getJFileChooser() {
         JFileChooser fc = new JFileChooser();                     //construye un JFileChooser
-        fc.setDialogTitle("TextPad Demo - Elige un archivo:");    //se le establece un título
+        fc.setDialogTitle("Generic Sim - Elige un archivo:");    //se le establece un título
         fc.setMultiSelectionEnabled(false);                       //desactiva la multi-selección
         fc.setFileFilter(textFileFilter);                         //aplica un filtro de extensiones
         return fc;    //retorna el JFileChooser

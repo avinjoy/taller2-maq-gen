@@ -193,15 +193,19 @@ public class Editor {
         jMenuBar = new JMenuBar();    //construye un JMenuBar
  
         //construye el menú "Archivo", a continuación se construyen los items para este menú
-        JMenu menuFile = new JMenu("Archivo");
- 
+        JMenu menuFile = new JMenu("Archivo"); 
         //construye el item "Nuevo"
-        JMenuItem itemNew = new JMenuItem("Nuevo");
-        //le asigna una conbinación de teclas
-        itemNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK));
-        //le asigna un nombre de comando
-        itemNew.setActionCommand("cmd_new");
- 
+        JMenu itemNew = new JMenu("Nuevo");
+        
+        JMenuItem itemNewMaq = new JMenuItem("Código Máquina");
+        itemNewMaq.setActionCommand("cmd_new_maq");
+        //le asigna una combinación de teclas
+        itemNewMaq.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_MASK));
+
+        JMenuItem itemNewAsm = new JMenuItem("Código Assembler");
+        itemNewAsm.setActionCommand("cmd_new_asm");
+        itemNewAsm.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_MASK));
+        
         JMenuItem itemOpen = new JMenuItem("Abrir");
         itemOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK));
         itemOpen.setActionCommand("cmd_open");
@@ -221,7 +225,9 @@ public class Editor {
         JMenuItem itemExit = new JMenuItem("Salir");
         itemExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_MASK));
         itemExit.setActionCommand("cmd_exit");
- 
+
+        itemNew.add(itemNewMaq);
+        itemNew.add(itemNewAsm);
         menuFile.add(itemNew);    //se añaden los items al menú "Archivo"
         menuFile.add(itemOpen);
         menuFile.add(itemSave);
@@ -346,12 +352,21 @@ public class Editor {
         for (Component c1 : jMenuBar.getComponents()) {
             //si el componente es un menú
             if (c1.getClass().equals(javax.swing.JMenu.class)) {
-                //itera sobre los componentes del menú
+                //itera sobre los componentes del menú            	
                 for (Component c2 : ((JMenu) c1).getMenuComponents()) {
-                    //si el componente no es un separador
-                    if (!c2.getClass().equals(javax.swing.JPopupMenu.Separator.class)) {
-                        ((JMenuItem) c2).addActionListener(eventHandler);
+                	if (c2.getClass().equals(javax.swing.JMenu.class)) {
+                		for (Component c3 : ((JMenu) c2).getMenuComponents()) {	                	
+                			//si el componente no es un separador
+                			if (!c3.getClass().equals(javax.swing.JPopupMenu.Separator.class)) {
+                				((JMenuItem) c3).addActionListener(eventHandler);
+                			}
+                		}
                     }
+                	else{
+                		if (!c2.getClass().equals(javax.swing.JPopupMenu.Separator.class)) {
+                			((JMenuItem) c2).addActionListener(eventHandler);
+                		}
+                	}
                 }
             }
         }
@@ -420,6 +435,11 @@ public class Editor {
         buttonPaste.setIcon(new ImageIcon(getClass().getResource("/editor/res/tp_paste.png")));
         buttonPaste.setActionCommand("cmd_paste");
  
+        JButton buttonCompile = new JButton();
+        buttonCompile.setToolTipText("Compilar");
+        buttonCompile.setIcon(new ImageIcon(getClass().getResource("/editor/res/compile.png")));
+        buttonCompile.setActionCommand("cmd_compile");
+        
         jToolBar.add(buttonNew);    //se añaden los botones construidos a la barra de herramientas
         jToolBar.add(buttonOpen);
         jToolBar.add(buttonSave);
@@ -433,6 +453,8 @@ public class Editor {
         jToolBar.add(buttonCut);
         jToolBar.add(buttonCopy);
         jToolBar.add(buttonPaste);
+        jToolBar.addSeparator();
+        jToolBar.add(buttonCompile);
  
         /** itera sobre todos los componentes de la barra de herramientas, se les asigna el
         mismo margen y el mismo manejador de eventos unicamente a los botones */
@@ -702,8 +724,11 @@ public class Editor {
         public void actionPerformed(ActionEvent ae) {
             String ac = ae.getActionCommand();    //se obtiene el nombre del comando ejecutado
  
-            if (ac.equals("cmd_new") == true) {    //opción seleccionada: "Nuevo"
+            if (ac.equals("cmd_new_asm") == true) {    //opción seleccionada: "Nuevo"
                 actionPerformer.actionNew();
+                jTextArea.setColumns(4);
+            } else if (ac.equals("cmd_new_maq") == true) {    //opción seleccionada: "Nuevo"
+                actionPerformer.actionNew();                   
             } else if (ac.equals("cmd_open") == true) {    //opción seleccionada: "Abrir"
                 actionPerformer.actionOpen();
             } else if (ac.equals("cmd_save") == true) {    //opción seleccionada: "Guardar"
@@ -757,10 +782,16 @@ public class Editor {
             } else if (ac.equals("cmd_about") == true) {    //opción seleccionada: "Acerca de"
                 //presenta un dialogo modal con alguna informacion
                 JOptionPane.showMessageDialog(jFrame,
-                                              "TextPad Demo por Dark[byte]",
+                                              "Generic Sim",
                                               "Acerca de",
-                                              JOptionPane.INFORMATION_MESSAGE);
-            }
+                                              JOptionPane.INFORMATION_MESSAGE);                
+            } else if (ac.equals("cmd_compile") == true) {    //opción seleccionada: "Compilar"
+            	//presenta un dialogo modal con alguna informacion
+            	JOptionPane.showMessageDialog(jFrame,
+                                          "Compilar",
+                                          "TODO",
+                                          JOptionPane.INFORMATION_MESSAGE);                
+        }
         }
  
         /**
@@ -792,7 +823,7 @@ public class Editor {
  
             /** muestra la información recolectada en la etiqueta sbCaretPos de la
             barra de estado, también se incluye el número total de lineas */
-            sbCaretPos.setText("Líneas: " + jTextArea.getLineCount() + " - Y: " + y + " - X: " + x);            
+            sbCaretPos.setText("Ln: " + jTextArea.getLineCount() + " - Col: " + x);            
         }
  
         /**
