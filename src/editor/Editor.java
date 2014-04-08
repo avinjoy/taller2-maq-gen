@@ -1,7 +1,7 @@
 /**
  * TPEditor.java
  *
- * Ejemplo de un editor básico para documentos de texto plano utilizando la biblioteca gráfica Swing.
+ * Ejemplo de un editor bï¿½sico para documentos de texto plano utilizando la biblioteca grï¿½fica Swing.
  * Funciona desde Java SE 5.0 en adelante.
  */
 
@@ -64,16 +64,16 @@ import javax.swing.undo.UndoManager;
 public class Editor {
 
 	private JFrame jFrame; // instancia de JFrame (ventana principal)
-	private JMenuBar jMenuBar; // instancia de JMenuBar (barra de menú)
+	private JMenuBar jMenuBar; // instancia de JMenuBar (barra de menï¿½)
 	private JToolBar jToolBar; // instancia de JToolBar (barra de herramientas)
-	private JTextArea jTextArea; // instancia de JTextArea (área de edición)
-	private JPopupMenu jPopupMenu; // instancia de JPopupMenu (menú emergente)
+	private JTextArea jTextArea; // instancia de JTextArea (ï¿½rea de ediciï¿½n)
+	private JPopupMenu jPopupMenu; // instancia de JPopupMenu (menï¿½ emergente)
 	private JPanel statusBar; // instancia de JPanel (barra de estado)
 	private JScrollPane scrollPane;
 	private TextLineNumber columnLineCounter;
 
 	private JCheckBoxMenuItem itemLineWrap; // instancias de algunos items de
-											// menú que necesitan ser accesibles
+											// menï¿½ que necesitan ser accesibles
 	private JCheckBoxMenuItem itemShowToolBar;
 	private JCheckBoxMenuItem itemFixedToolBar;
 	private JCheckBoxMenuItem itemShowStatusBar;
@@ -86,12 +86,12 @@ public class Editor {
 								// ser accesibles
 	private JButton buttonRedo;
 
-	private JLabel sbFilePath; // etiqueta que muestra la ubicación del archivo
+	private JLabel sbFilePath; // etiqueta que muestra la ubicaciï¿½n del archivo
 								// actual
-	private JLabel sbFileSize; // etiqueta que muestra el tamaño del archivo
+	private JLabel sbFileSize; // etiqueta que muestra el tamaï¿½o del archivo
 								// actual
-	private JLabel sbCaretPos; // etiqueta que muestra la posición del cursor en
-								// el área de edición
+	private JLabel sbCaretPos; // etiqueta que muestra la posiciï¿½n del cursor en
+								// el ï¿½rea de ediciï¿½n
 
 	private boolean hasChanged = false; // el estado del documento actual, no
 										// modificado por defecto
@@ -103,7 +103,7 @@ public class Editor {
 													// ActionPerformer (la clase
 													// que ejecuta acciones)
 	private final UndoManager undoManager; // instancia de UndoManager
-											// (administrador de edición)
+											// (administrador de ediciï¿½n)
 	private ArrayList<String> words;
 	private AutoSuggestor autoSuggestor;
 	private BufferedReader reader;
@@ -114,7 +114,7 @@ public class Editor {
 	 * Instanciamos esta clase para construir la GUI y hacerla visible.
 	 * 
 	 * @param args
-	 *            argumentos de la línea de comandos.
+	 *            argumentos de la lï¿½nea de comandos.
 	 */
 	public static void main(String[] args) {
 		// construye la GUI en el EDT (Event Dispatch Thread)
@@ -141,8 +141,8 @@ public class Editor {
 			System.err.println(ex);
 		}
 
-		// construye un JFrame con título
-		jFrame = new JFrame("Gerenic Sim - Sin Título");
+		// construye un JFrame con tï¿½tulo
+		jFrame = new JFrame("Gerenic Sim - Sin Tï¿½tulo");
 		jFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		// asigna un manejador de eventos para el cierre del JFrame
@@ -150,7 +150,7 @@ public class Editor {
 
 			@Override
 			public void windowClosing(WindowEvent we) {
-				actionPerformer.actionExit(); // invoca el método actionExit()
+				actionPerformer.actionExit(); // invoca el mï¿½todo actionExit()
 			}
 		});
 
@@ -160,32 +160,32 @@ public class Editor {
 														// de ActionPerformer
 		undoManager = new UndoManager(); // construye una instancia de
 											// UndoManager
-		undoManager.setLimit(50); // le asigna un límite al buffer de ediciones
+		undoManager.setLimit(50); // le asigna un lï¿½mite al buffer de ediciones
 
-		buildTextArea(); // construye el área de edición, es importante que esta
+		buildTextArea(); // construye el ï¿½rea de ediciï¿½n, es importante que esta
 							// sea la primera parte en construirse
-		buildMenuBar(); // construye la barra de menú
+		buildMenuBar(); // construye la barra de menï¿½
 		buildToolBar(); // construye la barra de herramientas
 		buildStatusBar(); // construye la barra de estado
-		buildPopupMenu(); // construye el menú emergente
+		buildPopupMenu(); // construye el menï¿½ emergente
 		loadLanguageWords();
 
 		autoSuggestor = newAutoSuggestor();
 
-		jFrame.setJMenuBar(jMenuBar); // designa la barra de menú del JFrame
+		jFrame.setJMenuBar(jMenuBar); // designa la barra de menï¿½ del JFrame
 		Container c = jFrame.getContentPane(); // obtiene el contendor principal
-		c.add(jToolBar, BorderLayout.NORTH); // añade la barra de herramientas,
-												// orientación NORTE del
+		c.add(jToolBar, BorderLayout.NORTH); // aï¿½ade la barra de herramientas,
+												// orientaciï¿½n NORTE del
 												// contendor
 
 		scrollPane = new JScrollPane(jTextArea);
-		c.add(scrollPane, BorderLayout.CENTER); // añade el area de edición en
+		c.add(scrollPane, BorderLayout.CENTER); // aï¿½ade el area de ediciï¿½n en
 												// el CENTRO
 		buildColumnLineCounter();
-		c.add(statusBar, BorderLayout.SOUTH); // añade la barra de estado,
-												// orientación SUR
+		c.add(statusBar, BorderLayout.SOUTH); // aï¿½ade la barra de estado,
+												// orientaciï¿½n SUR
 
-		// configura el JFrame con un tamaño inicial proporcionado con respecto
+		// configura el JFrame con un tamaï¿½o inicial proporcionado con respecto
 		// a la pantalla
 		Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
 		jFrame.setSize(pantalla.width / 2, pantalla.height / 2);
@@ -195,20 +195,20 @@ public class Editor {
 	}
 
 	/**
-	 * Construye el área de edición.
+	 * Construye el ï¿½rea de ediciï¿½n.
 	 */
 	private void buildTextArea() {
 		jTextArea = new JTextArea(); // construye un JTextArea
 
-		// se configura por defecto para que se ajusten las líneas al tamaño del
-		// área de texto ...
+		// se configura por defecto para que se ajusten las lï¿½neas al tamaï¿½o del
+		// ï¿½rea de texto ...
 		jTextArea.setLineWrap(true);
 		// ... y que se respete la integridad de las palaras en el ajuste
 		jTextArea.setWrapStyleWord(true);
 
 		// asigna el manejador de eventos para el cursor
 		jTextArea.addCaretListener(eventHandler);
-		// asigna el manejador de eventos para el ratón
+		// asigna el manejador de eventos para el ratï¿½n
 		jTextArea.addMouseListener(eventHandler);
 		// asigna el manejador de eventos para registrar los cambios sobre el
 		// documento
@@ -230,24 +230,24 @@ public class Editor {
 	}
 
 	/**
-	 * Construye la barra de menú.
+	 * Construye la barra de menï¿½.
 	 */
 	private void buildMenuBar() {
 		jMenuBar = new JMenuBar(); // construye un JMenuBar
 
-		// construye el menú "Archivo", a continuación se construyen los items
-		// para este menú
+		// construye el menï¿½ "Archivo", a continuaciï¿½n se construyen los items
+		// para este menï¿½
 		JMenu menuFile = new JMenu("Archivo");
 		// construye el item "Nuevo"
 		JMenu itemNew = new JMenu("Nuevo");
 
-		JMenuItem itemNewMaq = new JMenuItem("Código Máquina");
+		JMenuItem itemNewMaq = new JMenuItem("Cï¿½digo Mï¿½quina");
 		itemNewMaq.setActionCommand("cmd_new_maq");
-		// le asigna una combinación de teclas
+		// le asigna una combinaciï¿½n de teclas
 		itemNewMaq.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
 				KeyEvent.CTRL_MASK));
 
-		JMenuItem itemNewAsm = new JMenuItem("Código Assembler");
+		JMenuItem itemNewAsm = new JMenuItem("Cï¿½digo Assembler");
 		itemNewAsm.setActionCommand("cmd_new_asm");
 		itemNewAsm.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
 				KeyEvent.CTRL_MASK));
@@ -278,7 +278,7 @@ public class Editor {
 
 		itemNew.add(itemNewMaq);
 		itemNew.add(itemNewAsm);
-		menuFile.add(itemNew); // se añaden los items al menú "Archivo"
+		menuFile.add(itemNew); // se aï¿½aden los items al menï¿½ "Archivo"
 		menuFile.add(itemOpen);
 		menuFile.add(itemSave);
 		menuFile.add(itemSaveAs);
@@ -288,8 +288,8 @@ public class Editor {
 		menuFile.add(itemExit);
 		// ----------------------------------------------
 
-		// construye el menú "Editar", a continuación se construyen los items
-		// para este menú
+		// construye el menï¿½ "Editar", a continuaciï¿½n se construyen los items
+		// para este menï¿½
 		JMenu menuEdit = new JMenu("Editar");
 
 		mbItemUndo = new JMenuItem("Deshacer");
@@ -329,7 +329,7 @@ public class Editor {
 				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
 		itemSearchNext.setActionCommand("cmd_searchnext");
 
-		JMenuItem itemGotoLine = new JMenuItem("Ir a la línea...");
+		JMenuItem itemGotoLine = new JMenuItem("Ir a la lï¿½nea...");
 		itemGotoLine.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T,
 				ActionEvent.CTRL_MASK));
 		itemGotoLine.setActionCommand("cmd_gotoline");
@@ -339,9 +339,9 @@ public class Editor {
 				ActionEvent.CTRL_MASK));
 		itemSelectAll.setActionCommand("cmd_selectall");
 
-		menuEdit.add(mbItemUndo); // se añaden los items al menú "Editar"
+		menuEdit.add(mbItemUndo); // se aï¿½aden los items al menï¿½ "Editar"
 		menuEdit.add(mbItemRedo);
-		menuEdit.addSeparator(); // añade separadores entre algunos items
+		menuEdit.addSeparator(); // aï¿½ade separadores entre algunos items
 		menuEdit.add(itemCut);
 		menuEdit.add(itemCopy);
 		menuEdit.add(itemPaste);
@@ -353,11 +353,11 @@ public class Editor {
 		menuEdit.add(itemSelectAll);
 		// ----------------------------------------------
 
-		// construye el menú "Opciones", a continuación se construyen los items
-		// para este menú
+		// construye el menï¿½ "Opciones", a continuaciï¿½n se construyen los items
+		// para este menï¿½
 		JMenu menuTools = new JMenu("Opciones");
 
-		itemLineWrap = new JCheckBoxMenuItem("Ajuste de línea");
+		itemLineWrap = new JCheckBoxMenuItem("Ajuste de lï¿½nea");
 		itemLineWrap.setSelected(true);
 		itemLineWrap.setActionCommand("cmd_linewrap");
 
@@ -382,7 +382,7 @@ public class Editor {
 		JMenuItem itemBackgroundColor = new JMenuItem("Color de fondo");
 		itemBackgroundColor.setActionCommand("cmd_backgroundcolor");
 
-		menuTools.add(itemLineWrap); // se añaden los items al menú "Opciones"
+		menuTools.add(itemLineWrap); // se aï¿½aden los items al menï¿½ "Opciones"
 		menuTools.add(itemShowToolBar);
 		menuTools.add(itemFixedToolBar);
 		menuTools.add(itemShowStatusBar);
@@ -391,20 +391,20 @@ public class Editor {
 		menuTools.add(itemFontColor);
 		menuTools.add(itemBackgroundColor);
 
-		// construye el menú "Ayuda", a continuación se construye el único item
-		// para este menú
+		// construye el menï¿½ "Ayuda", a continuaciï¿½n se construye el ï¿½nico item
+		// para este menï¿½
 		JMenu menuHelp = new JMenu("Ayuda");
 
 		JMenuItem itemAbout = new JMenuItem("Acerca de");
 		itemAbout.setActionCommand("cmd_about");
 
-		menuHelp.add(itemAbout); // se añade el único item al menú "Ayuda"
+		menuHelp.add(itemAbout); // se aï¿½ade el ï¿½nico item al menï¿½ "Ayuda"
 		// ----------------------------------------------
 
-		jMenuBar.add(menuFile); // se añaden los menúes construidos a la barra
-								// de menú
-		jMenuBar.add(Box.createHorizontalStrut(5)); // añade espacios entre cada
-													// menú
+		jMenuBar.add(menuFile); // se aï¿½aden los menï¿½es construidos a la barra
+								// de menï¿½
+		jMenuBar.add(Box.createHorizontalStrut(5)); // aï¿½ade espacios entre cada
+													// menï¿½
 		jMenuBar.add(menuEdit);
 		jMenuBar.add(Box.createHorizontalStrut(5));
 		jMenuBar.add(menuTools);
@@ -412,13 +412,13 @@ public class Editor {
 		jMenuBar.add(menuHelp);
 
 		/**
-		 * itera sobre todos los componentes de la barra de menú, se les asigna
+		 * itera sobre todos los componentes de la barra de menï¿½, se les asigna
 		 * el mismo manejador de eventos a todos excepto a los separadores
 		 */
 		for (Component c1 : jMenuBar.getComponents()) {
-			// si el componente es un menú
+			// si el componente es un menï¿½
 			if (c1.getClass().equals(javax.swing.JMenu.class)) {
-				// itera sobre los componentes del menú
+				// itera sobre los componentes del menï¿½
 				for (Component c2 : ((JMenu) c1).getMenuComponents()) {
 					if (c2.getClass().equals(javax.swing.JMenu.class)) {
 						for (Component c3 : ((JMenu) c2).getMenuComponents()) {
@@ -448,7 +448,7 @@ public class Editor {
 		jToolBar.setFloatable(false); // se configura por defecto como barra
 										// fija
 
-		// construye el botón "Nuevo"
+		// construye el botï¿½n "Nuevo"
 		JButton buttonNew = new JButton();
 		// le asigna una etiqueta flotante
 		buttonNew.setToolTipText("Nuevo");
@@ -520,12 +520,12 @@ public class Editor {
 				"/editor/res/compile.png")));
 		buttonCompile.setActionCommand("cmd_compile");
 
-		jToolBar.add(buttonNew); // se añaden los botones construidos a la barra
+		jToolBar.add(buttonNew); // se aï¿½aden los botones construidos a la barra
 									// de herramientas
 		jToolBar.add(buttonOpen);
 		jToolBar.add(buttonSave);
 		jToolBar.add(buttonSaveAs);
-		jToolBar.addSeparator(); // añade separadores entre algunos botones
+		jToolBar.addSeparator(); // aï¿½ade separadores entre algunos botones
 		jToolBar.add(buttonPrint);
 		jToolBar.addSeparator();
 		jToolBar.add(buttonUndo);
@@ -543,7 +543,7 @@ public class Editor {
 		 * los botones
 		 */
 		for (Component c : jToolBar.getComponents()) {
-			// si el componente es un botón
+			// si el componente es un botï¿½n
 			if (c.getClass().equals(javax.swing.JButton.class)) {
 				JButton jb = (JButton) c;
 				jb.setMargin(new Insets(0, 0, 0, 0));
@@ -559,21 +559,21 @@ public class Editor {
 		statusBar = new JPanel(); // construye un JPanel
 		// se configura con un BoxLayout
 		statusBar.setLayout(new BoxLayout(statusBar, BoxLayout.LINE_AXIS));
-		// le añade un borde compuesto
+		// le aï¿½ade un borde compuesto
 		statusBar.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLoweredBevelBorder(),
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
-		// construye la etiqueta para mostrar la ubicación del archivo actual
+		// construye la etiqueta para mostrar la ubicaciï¿½n del archivo actual
 		sbFilePath = new JLabel("...");
-		// construye la etiqueta para mostrar el tamaño del archivo actual
+		// construye la etiqueta para mostrar el tamaï¿½o del archivo actual
 		sbFileSize = new JLabel("");
-		// construye la etiqueta para mostrar la posición del cursor en el
+		// construye la etiqueta para mostrar la posiciï¿½n del cursor en el
 		// documento actual
 		sbCaretPos = new JLabel("...");
 
 		/**
-		 * se añaden las etiquetas construidas al JPanel, el resultado es un
+		 * se aï¿½aden las etiquetas construidas al JPanel, el resultado es un
 		 * panel similar a una barra de estado
 		 */
 		statusBar.add(sbFilePath);
@@ -585,7 +585,7 @@ public class Editor {
 	}
 
 	/**
-	 * Construye el menú emergente.
+	 * Construye el menï¿½ emergente.
 	 */
 	private void buildPopupMenu() {
 		jPopupMenu = new JPopupMenu(); // construye un JPopupMenu
@@ -622,9 +622,9 @@ public class Editor {
 		JMenuItem itemSelectAll = new JMenuItem("Seleccionar todo");
 		itemSelectAll.setActionCommand("cmd_selectall");
 
-		jPopupMenu.add(mpItemUndo); // se añaden los items al menú emergente
+		jPopupMenu.add(mpItemUndo); // se aï¿½aden los items al menï¿½ emergente
 		jPopupMenu.add(mpItemRedo);
-		jPopupMenu.addSeparator(); // añade separadores entre algunos items
+		jPopupMenu.addSeparator(); // aï¿½ade separadores entre algunos items
 		jPopupMenu.add(itemCut);
 		jPopupMenu.add(itemCopy);
 		jPopupMenu.add(itemPaste);
@@ -636,7 +636,7 @@ public class Editor {
 		jPopupMenu.add(itemSelectAll);
 
 		/**
-		 * itera sobre todos los componentes del menú emergente, se les asigna
+		 * itera sobre todos los componentes del menï¿½ emergente, se les asigna
 		 * el mismo manejador de eventos a todos excepto a los separadores
 		 */
 		for (Component c : jPopupMenu.getComponents()) {
@@ -656,7 +656,7 @@ public class Editor {
 		// se configura con un BoxLayout
 		columnLineCounter.setLayout(new BoxLayout(columnLineCounter,
 				BoxLayout.PAGE_AXIS));
-		// le añade un borde compuesto
+		// le aï¿½ade un borde compuesto
 		columnLineCounter.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLoweredBevelBorder(),
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
@@ -664,7 +664,7 @@ public class Editor {
 		scrollPane.setRowHeaderView(columnLineCounter);
 
 		/**
-		 * se añaden las etiquetas construidas al JPanel, el resultado es un
+		 * se aï¿½aden las etiquetas construidas al JPanel, el resultado es un
 		 * panel similar a una barra de estado
 		 */
 		columnLineCounter.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -673,16 +673,16 @@ public class Editor {
 	}
 
 	/**
-	 * Hace visible el menú emergente.
+	 * Hace visible el menï¿½ emergente.
 	 * 
 	 * @param me
-	 *            evento del ratón
+	 *            evento del ratï¿½n
 	 */
 	private void showPopupMenu(MouseEvent me) {
 		if (me.isPopupTrigger() == true) { // si el evento es el desencadenador
-											// de menú emergente
-			// hace visible el menú emergente en las coordenadas actuales del
-			// ratón
+											// de menï¿½ emergente
+			// hace visible el menï¿½ emergente en las coordenadas actuales del
+			// ratï¿½n
 			jPopupMenu.show(me.getComponent(), me.getX(), me.getY());
 		}
 	}
@@ -696,7 +696,7 @@ public class Editor {
 		// averigua si se pueden rehacer los cambios en el documento actual
 		boolean canRedo = undoManager.canRedo();
 
-		// activa o desactiva las opciones en la barra de menú
+		// activa o desactiva las opciones en la barra de menï¿½
 		mbItemUndo.setEnabled(canUndo);
 		mbItemRedo.setEnabled(canRedo);
 
@@ -704,7 +704,7 @@ public class Editor {
 		buttonUndo.setEnabled(canUndo);
 		buttonRedo.setEnabled(canRedo);
 
-		// activa o desactiva las opciones en el menú emergente
+		// activa o desactiva las opciones en el menï¿½ emergente
 		mpItemUndo.setEnabled(canUndo);
 		mpItemRedo.setEnabled(canRedo);
 	}
@@ -721,9 +721,9 @@ public class Editor {
 
 	/**
 	 * Retorna la instancia de UndoManager, la cual administra las ediciones
-	 * sobre el documento en el área de texto.
+	 * sobre el documento en el ï¿½rea de texto.
 	 * 
-	 * @return el administrador de edición.
+	 * @return el administrador de ediciï¿½n.
 	 */
 	UndoManager getUndoManager() {
 		return undoManager;
@@ -749,9 +749,9 @@ public class Editor {
 	}
 
 	/**
-	 * Retorna la instancia de JTextArea, el área de edición.
+	 * Retorna la instancia de JTextArea, el ï¿½rea de ediciï¿½n.
 	 * 
-	 * @return retorna el área de edición.
+	 * @return retorna el ï¿½rea de ediciï¿½n.
 	 */
 	JTextArea getJTextArea() {
 		return jTextArea;
@@ -787,7 +787,7 @@ public class Editor {
 
 	/**
 	 * Retorna la instancia de la etiqueta sbFilePath, donde se muestra la
-	 * ubicación del archivo actual.
+	 * ubicaciï¿½n del archivo actual.
 	 * 
 	 * @return la instancia de la etiqueta sbFilePath
 	 */
@@ -797,7 +797,7 @@ public class Editor {
 
 	/**
 	 * Retorna la instancia de la etiqueta sbFileSize, donde se muestra el
-	 * tamaño del archivo actual
+	 * tamaï¿½o del archivo actual
 	 * 
 	 * @return la instancia de la etiqueta sbFileSize
 	 */
@@ -814,113 +814,113 @@ public class Editor {
 			CaretListener, UndoableEditListener, KeyListener {
 
 		/**
-		 * Atiende y maneja los eventos de acción.
+		 * Atiende y maneja los eventos de acciï¿½n.
 		 * 
 		 * @param ae
-		 *            evento de acción
+		 *            evento de acciï¿½n
 		 */
 		@Override
 		public void actionPerformed(ActionEvent ae) {
 			String ac = ae.getActionCommand(); // se obtiene el nombre del
 												// comando ejecutado
 
-			if (ac.equals("cmd_new_asm") == true) { // opción seleccionada:
+			if (ac.equals("cmd_new_asm") == true) { // opciï¿½n seleccionada:
 													// "Nuevo"
 				actionPerformer.actionNew();
 				jTextArea.setColumns(4);
-			} else if (ac.equals("cmd_new_maq") == true) { // opción
+			} else if (ac.equals("cmd_new_maq") == true) { // opciï¿½n
 															// seleccionada:
 															// "Nuevo"
 				actionPerformer.actionNew();
-			} else if (ac.equals("cmd_open") == true) { // opción seleccionada:
+			} else if (ac.equals("cmd_open") == true) { // opciï¿½n seleccionada:
 														// "Abrir"
 				actionPerformer.actionOpen();
-			} else if (ac.equals("cmd_save") == true) { // opción seleccionada:
+			} else if (ac.equals("cmd_save") == true) { // opciï¿½n seleccionada:
 														// "Guardar"
 				actionPerformer.actionSave();
-			} else if (ac.equals("cmd_saveas") == true) { // opción
+			} else if (ac.equals("cmd_saveas") == true) { // opciï¿½n
 															// seleccionada:
 															// "Guardar como"
 				actionPerformer.actionSaveAs();
-			} else if (ac.equals("cmd_print") == true) { // opción seleccionada:
+			} else if (ac.equals("cmd_print") == true) { // opciï¿½n seleccionada:
 															// "Imprimir"
 				actionPerformer.actionPrint();
-			} else if (ac.equals("cmd_exit") == true) { // opción seleccionada:
+			} else if (ac.equals("cmd_exit") == true) { // opciï¿½n seleccionada:
 														// "Salir"
 				actionPerformer.actionExit();
-			} else if (ac.equals("cmd_undo") == true) { // opción seleccionada:
+			} else if (ac.equals("cmd_undo") == true) { // opciï¿½n seleccionada:
 														// "Deshacer"
 				actionPerformer.actionUndo();
-			} else if (ac.equals("cmd_redo") == true) { // opción seleccionada:
+			} else if (ac.equals("cmd_redo") == true) { // opciï¿½n seleccionada:
 														// "Rehacer"
 				actionPerformer.actionRedo();
-			} else if (ac.equals("cmd_cut") == true) { // opción seleccionada:
+			} else if (ac.equals("cmd_cut") == true) { // opciï¿½n seleccionada:
 														// "Cortar"
 				// corta el texto seleccionado en el documento
 				jTextArea.cut();
-			} else if (ac.equals("cmd_copy") == true) { // opción seleccionada:
+			} else if (ac.equals("cmd_copy") == true) { // opciï¿½n seleccionada:
 														// "Copiar"
 				// copia el texto seleccionado en el documento
 				jTextArea.copy();
-			} else if (ac.equals("cmd_paste") == true) { // opción seleccionada:
+			} else if (ac.equals("cmd_paste") == true) { // opciï¿½n seleccionada:
 															// "Pegar"
 				// pega en el documento el texto del portapapeles
 				jTextArea.paste();
-			} else if (ac.equals("cmd_gotoline") == true) { // opción
+			} else if (ac.equals("cmd_gotoline") == true) { // opciï¿½n
 															// seleccionada:
-															// "Ir a la línea..."
+															// "Ir a la lï¿½nea..."
 				actionPerformer.actionGoToLine();
-			} else if (ac.equals("cmd_search") == true) { // opción
+			} else if (ac.equals("cmd_search") == true) { // opciï¿½n
 															// seleccionada:
 															// "Buscar"
 				actionPerformer.actionSearch();
-			} else if (ac.equals("cmd_searchnext") == true) { // opción
+			} else if (ac.equals("cmd_searchnext") == true) { // opciï¿½n
 																// seleccionada:
 																// "Buscar siguiente"
 				actionPerformer.actionSearchNext();
-			} else if (ac.equals("cmd_selectall") == true) { // opción
+			} else if (ac.equals("cmd_selectall") == true) { // opciï¿½n
 																// seleccionada:
 																// "Seleccionar todo"
 				jTextArea.selectAll();
-			} else if (ac.equals("cmd_linewrap") == true) { // opción
+			} else if (ac.equals("cmd_linewrap") == true) { // opciï¿½n
 															// seleccionada:
-															// "Ajuste de línea"
+															// "Ajuste de lï¿½nea"
 				// si esta propiedad esta activada se desactiva, o lo inverso
 				jTextArea.setLineWrap(!jTextArea.getLineWrap());
 				jTextArea.setWrapStyleWord(!jTextArea.getWrapStyleWord());
-			} else if (ac.equals("cmd_showtoolbar") == true) { // opción
+			} else if (ac.equals("cmd_showtoolbar") == true) { // opciï¿½n
 																// seleccionada:
 																// "Ver barra de herramientas"
 				// si la barra de herramientas esta visible se oculta, o lo
 				// inverso
 				jToolBar.setVisible(!jToolBar.isVisible());
-			} else if (ac.equals("cmd_fixedtoolbar") == true) { // opción
+			} else if (ac.equals("cmd_fixedtoolbar") == true) { // opciï¿½n
 																// seleccionada:
 																// "Fijar barra de herramientas"
 				// si esta propiedad esta activada se desactiva, o lo inverso
 				jToolBar.setFloatable(!jToolBar.isFloatable());
-			} else if (ac.equals("cmd_showstatusbar") == true) { // opción
+			} else if (ac.equals("cmd_showstatusbar") == true) { // opciï¿½n
 																	// seleccionada:
 																	// "Ver barra de estado"
 				// si la barra de estado esta visible se oculta, o lo inverso
 				statusBar.setVisible(!statusBar.isVisible());
-			} else if (ac.equals("cmd_font") == true) { // opción seleccionada:
+			} else if (ac.equals("cmd_font") == true) { // opciï¿½n seleccionada:
 														// "Fuente de letra"
 				actionPerformer.actionSelectFont();
-			} else if (ac.equals("cmd_fontcolor") == true) { // opción
+			} else if (ac.equals("cmd_fontcolor") == true) { // opciï¿½n
 																// seleccionada:
 																// "Color de letra"
 				actionPerformer.actionSelectFontColor();
-			} else if (ac.equals("cmd_backgroundcolor") == true) { // opción
+			} else if (ac.equals("cmd_backgroundcolor") == true) { // opciï¿½n
 																	// seleccionada:
 																	// "Color de fondo"
 				actionPerformer.actionSelectBackgroundColor();
-			} else if (ac.equals("cmd_about") == true) { // opción seleccionada:
+			} else if (ac.equals("cmd_about") == true) { // opciï¿½n seleccionada:
 															// "Acerca de"
 				// presenta un dialogo modal con alguna informacion
 				JOptionPane.showMessageDialog(jFrame, "Generic Sim",
 						"Acerca de", JOptionPane.INFORMATION_MESSAGE);
-			} else if (ac.equals("cmd_compile") == true) { // opción
+			} else if (ac.equals("cmd_compile") == true) { // opciï¿½n
 															// seleccionada:
 															// "Compilar"
 				// presenta un dialogo modal con alguna informacion
@@ -937,53 +937,53 @@ public class Editor {
 		 */
 		@Override
 		public void caretUpdate(CaretEvent e) {
-			final int caretPos; // valor de la posición del cursor sin
+			final int caretPos; // valor de la posiciï¿½n del cursor sin
 								// inicializar
-			int y = 1; // valor de la línea inicialmente en 1
+			int y = 1; // valor de la lï¿½nea inicialmente en 1
 			int x = 1; // valor de la columna inicialmente en 1
 
 			try {
-				// obtiene la posición del cursor con respecto al inicio del
-				// JTextArea (área de edición)
+				// obtiene la posiciï¿½n del cursor con respecto al inicio del
+				// JTextArea (ï¿½rea de ediciï¿½n)
 				caretPos = jTextArea.getCaretPosition();
-				// sabiendo lo anterior se obtiene el valor de la línea actual
+				// sabiendo lo anterior se obtiene el valor de la lï¿½nea actual
 				// (se cuenta desde 0)
 				y = jTextArea.getLineOfOffset(caretPos);
 
 				/**
-				 * a la posición del cursor se le resta la posición del inicio
-				 * de la línea para determinar el valor de la columna actual
+				 * a la posiciï¿½n del cursor se le resta la posiciï¿½n del inicio
+				 * de la lï¿½nea para determinar el valor de la columna actual
 				 */
 				x = caretPos - jTextArea.getLineStartOffset(y);
 
-				// al valor de la línea actual se le suma 1 porque estas
-				// comienzan contándose desde 0
+				// al valor de la lï¿½nea actual se le suma 1 porque estas
+				// comienzan contï¿½ndose desde 0
 				y += 1;
 			} catch (BadLocationException ex) { // en caso de que ocurra una
-												// excepción
+												// excepciï¿½n
 				System.err.println(ex);
 			}
 
 			/**
-			 * muestra la información recolectada en la etiqueta sbCaretPos de
-			 * la barra de estado, también se incluye el número total de lineas
+			 * muestra la informaciï¿½n recolectada en la etiqueta sbCaretPos de
+			 * la barra de estado, tambiï¿½n se incluye el nï¿½mero total de lineas
 			 */
 			sbCaretPos.setText("Ln: " + jTextArea.getLineCount() + " - Col: "
 					+ x);
 		}
 
 		/**
-		 * Atiende y maneja los eventos sobre el documento en el área de
-		 * edición.
+		 * Atiende y maneja los eventos sobre el documento en el ï¿½rea de
+		 * ediciï¿½n.
 		 * 
 		 * @param uee
-		 *            evento de edición
+		 *            evento de ediciï¿½n
 		 */
 		@Override
 		public void undoableEditHappened(UndoableEditEvent uee) {
 			/**
-			 * el cambio realizado en el área de edición se guarda en el buffer
-			 * del administrador de edición
+			 * el cambio realizado en el ï¿½rea de ediciï¿½n se guarda en el buffer
+			 * del administrador de ediciï¿½n
 			 */
 			undoManager.addEdit(uee.getEdit());
 			updateControls(); // actualiza el estado de las opciones "Deshacer"
@@ -993,11 +993,11 @@ public class Editor {
 		}
 
 		/**
-		 * Atiende y maneja los eventos sobre el ratón cuando este es
+		 * Atiende y maneja los eventos sobre el ratï¿½n cuando este es
 		 * presionado.
 		 * 
 		 * @param me
-		 *            evento del ratón
+		 *            evento del ratï¿½n
 		 */
 		@Override
 		public void mousePressed(MouseEvent me) {
@@ -1005,10 +1005,10 @@ public class Editor {
 		}
 
 		/**
-		 * Atiende y maneja los eventos sobre el ratón cuando este es liberado.
+		 * Atiende y maneja los eventos sobre el ratï¿½n cuando este es liberado.
 		 * 
 		 * @param me
-		 *            evento del ratón
+		 *            evento del ratï¿½n
 		 */
 		@Override
 		public void mouseReleased(MouseEvent me) {
@@ -1030,8 +1030,8 @@ public class Editor {
 			// TODO Auto-generated method stub
 			char c = e.getKeyChar();
 			if (c == '\n') {
-				// Acá se buscarían en la base de datos de conocimientos para la
-				// ayuda en línea
+				// Acï¿½ se buscarï¿½an en la base de datos de conocimientos para la
+				// ayuda en lï¿½nea
 			}
 			// Detecta el evento Ctrol+Space
 			if ((e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK

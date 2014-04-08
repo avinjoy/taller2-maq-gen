@@ -187,7 +187,8 @@ public class AutoSuggestor {
     }
 
     public String getCurrentlyTypedWord() {//get newest word after last white spaceif any or the first word if no white spaces
-        String text = textComp.getText();
+    	
+    	String text = textComp.getText();
         String wordBeingTyped = "";
         text = text.replaceAll("(\\r|\\n)", " ");
         if (text.contains(" ")) {
@@ -200,6 +201,46 @@ public class AutoSuggestor {
             wordBeingTyped = text;
         }
         return wordBeingTyped.trim();
+        
+    	/*
+    	String wordBeingTyped = "";
+        try {
+        	
+        	int length = textComp.getDocument().getLength();
+        	int caretPosition = textComp.getCaretPosition();
+        	int initialOffset = 0;
+        	int finalOffset = length;
+        	
+        	boolean encontrado = false;
+        	int i = caretPosition;
+			while (i >= 1 && encontrado == false) {
+				i -= 1;
+        		char aux = textComp.getDocument().getText(i, 1).charAt(0);
+        		if (aux == ' ' || aux == '\n'  ){
+        			initialOffset = i + 1;
+        			encontrado = true;
+        		}
+        	}
+			
+        	encontrado = false;
+        	i = caretPosition;
+			while (i <= length - 1 && encontrado == false) {
+        		char aux = textComp.getDocument().getText(i, 1).charAt(0);
+        		if (aux == ' ' || aux == '\n'  ){
+        			finalOffset = i;
+        			encontrado = true;
+        		}
+        		i += 1;
+        	}			
+    
+			int textLength = finalOffset - initialOffset;
+			wordBeingTyped = textComp.getDocument().getText(initialOffset, textLength);
+    	} catch (Exception e) {
+    		wordBeingTyped = "";
+    	}
+    	
+    	return wordBeingTyped.trim();
+    	*/
     }
 
     private void calculatePopUpWindowSize(JLabel label) {
