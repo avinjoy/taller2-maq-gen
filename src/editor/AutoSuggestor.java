@@ -12,15 +12,15 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JWindow;
 import javax.swing.KeyStroke;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
@@ -74,10 +74,20 @@ public class AutoSuggestor {
         suggestionsPanel.setLayout(new GridLayout(0, 1));
         suggestionsPanel.setBackground(popUpBackground);
 
+        Border compound, raisedbevel,loweredbevel;
+
+        raisedbevel = BorderFactory.createRaisedBevelBorder();
+        loweredbevel = BorderFactory.createLoweredBevelBorder();
+
+        compound = BorderFactory.createCompoundBorder(
+                raisedbevel, loweredbevel);
+        
+        suggestionsPanel.setBorder(compound);
         addKeyBindingToRequestFocusInPopUpWindow();
     }
 
-    private void addKeyBindingToRequestFocusInPopUpWindow() {
+    @SuppressWarnings("serial")
+	private void addKeyBindingToRequestFocusInPopUpWindow() {
         textComp.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true), "Down released");
         textComp.getActionMap().put("Down released", new AbstractAction() {
             @Override
@@ -276,7 +286,7 @@ public class AutoSuggestor {
             }
 
             windowX = (int) (rect.getX() + 15);
-            windowY = (int) (rect.getY() + (rect.getHeight() * 3));
+            windowY = (int) (rect.getY() + (rect.getHeight() * 6));
         }
 
         //show the pop up
@@ -339,6 +349,7 @@ public class AutoSuggestor {
     }
 }
 
+@SuppressWarnings("serial")
 class SuggestionLabel extends JLabel {
 
     private boolean focused = false;

@@ -26,7 +26,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -1027,7 +1026,6 @@ public class Editor {
 
 		@Override
 		public void keyTyped(KeyEvent e) {
-			// TODO Auto-generated method stub
 			char c = e.getKeyChar();
 			if (c == '\n') {
 				// Ac� se buscar�an en la base de datos de conocimientos para la
