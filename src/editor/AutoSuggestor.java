@@ -1,7 +1,7 @@
 package editor;
 
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.Window;
@@ -50,6 +50,7 @@ public class AutoSuggestor {
 //            checkForAndShowSuggestions();
 //        }
 //    };
+    
     private final Color suggestionsTextColor;
     private final Color suggestionFocusedColor;
     
@@ -69,7 +70,7 @@ public class AutoSuggestor {
 
         autoSuggestionPopUpWindow = new JWindow(mainWindow);
         autoSuggestionPopUpWindow.setOpacity(opacity);
-
+                
         suggestionsPanel = new JPanel();
         suggestionsPanel.setLayout(new GridLayout(0, 1));
         suggestionsPanel.setBackground(popUpBackground);
@@ -81,7 +82,7 @@ public class AutoSuggestor {
 
         compound = BorderFactory.createCompoundBorder(
                 raisedbevel, loweredbevel);
-        
+
         suggestionsPanel.setBorder(compound);
         addKeyBindingToRequestFocusInPopUpWindow();
     }
@@ -177,7 +178,8 @@ public class AutoSuggestor {
         tH = 0;
 
         boolean added = wordTyped(typedWord);
-
+        //boolean added = false;
+        
         if (!added) {
             if (autoSuggestionPopUpWindow.isVisible()) {
                 autoSuggestionPopUpWindow.setVisible(false);
@@ -263,8 +265,8 @@ public class AutoSuggestor {
 
     private void showPopUpWindow() {
         autoSuggestionPopUpWindow.getContentPane().add(suggestionsPanel);
-        autoSuggestionPopUpWindow.setMinimumSize(new Dimension(textComp.getWidth(), 30));
-        autoSuggestionPopUpWindow.setSize(tW, tH);
+        //autoSuggestionPopUpWindow.setMinimumSize(new Dimension(textComp.getWidth(), 30));
+        //autoSuggestionPopUpWindow.setSize(tW, tH);
         autoSuggestionPopUpWindow.setVisible(true);
 
         int windowX = 0;
@@ -284,14 +286,15 @@ public class AutoSuggestor {
             } catch (BadLocationException ex) {
                 ex.printStackTrace();
             }
-
-            windowX = (int) (rect.getX() + 15);
+                        
+            windowX = (int) (rect.getX() + 25);
             windowY = (int) (rect.getY() + (rect.getHeight() * 6));
         }
 
         //show the pop up
         autoSuggestionPopUpWindow.setLocation(windowX, windowY);
-        autoSuggestionPopUpWindow.setMinimumSize(new Dimension(textComp.getWidth(), 30));
+        //autoSuggestionPopUpWindow.setMinimumSize(new Dimension(textComp.getWidth(), 30));
+        autoSuggestionPopUpWindow.setBounds(windowX, windowY, tW+100, tH);
         autoSuggestionPopUpWindow.revalidate();
         autoSuggestionPopUpWindow.repaint();
 
@@ -325,10 +328,10 @@ public class AutoSuggestor {
 
     boolean wordTyped(String typedWord) {
 
-        if (typedWord.isEmpty()) {
+    	// Comento para que muestre la lista completa si toco solo Ctrl+Space
+        /*if (typedWord.isEmpty()) {
             return false;
-        }
-        //System.out.println("Typed word: " + typedWord);
+        }*/
 
         boolean suggestionAdded = false;
 
@@ -366,6 +369,7 @@ class SuggestionLabel extends JLabel {
         this.textComponent = autoSuggestor.getTextField();
         this.suggestionBorderColor = borderColor;
         this.autoSuggestionsPopUpWindow = autoSuggestor.getAutoSuggestionPopUpWindow();
+        this.setFont(new Font("Serif", Font.PLAIN, 16));
 
         initComponent();
     }
