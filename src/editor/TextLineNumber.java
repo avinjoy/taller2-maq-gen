@@ -69,6 +69,15 @@ public class TextLineNumber extends JPanel
     private int lastDigits;
     private int lastHeight;
     private int lastLine;
+    
+    public enum Mode{
+    	DECIMAL, HEXADECIMAL    	
+    };
+    
+    private Mode nMode;
+	public void setMode(Mode nMode) {
+		this.nMode = nMode;
+	}
 
 	private HashMap<String, FontMetrics> fonts;
 
@@ -93,7 +102,7 @@ public class TextLineNumber extends JPanel
 	public TextLineNumber(JTextComponent component, int minimumDisplayDigits)
 	{
 		this.component = component;
-
+		this.nMode = Mode.DECIMAL;
 		setFont( component.getFont() );
 
 		setBorderGap( 5 );
@@ -280,8 +289,14 @@ public class TextLineNumber extends JPanel
 
     			//  Get the line number as a string and then determine the
     			//  "X" and "Y" offsets for drawing the string.
-
-    			String lineNumber = getTextLineNumber(rowStartOffset);
+    			String lineNumber = "";
+    			if (this.nMode == Mode.DECIMAL)
+    				lineNumber = getTextLineNumber(rowStartOffset);
+    			else{
+    				lineNumber = Integer.toHexString(getIntLineNumber(rowStartOffset)).toUpperCase();
+    				if (lineNumber.length() == 1)
+    					lineNumber = "0"+lineNumber.toUpperCase();
+    			}
     			int stringWidth = fontMetrics.stringWidth( lineNumber );
     			int x = getOffsetX(availableWidth, stringWidth) + insets.left;
 				int y = getOffsetY(rowStartOffset, fontMetrics);
@@ -324,6 +339,18 @@ public class TextLineNumber extends JPanel
 			return String.valueOf(index + 1);
 		else
 			return "";
+	}
+	
+	protected int getIntLineNumber(int rowStartOffset)
+	{
+		Element root = component.getDocument().getDefaultRootElement();
+		int index = root.getElementIndex( rowStartOffset );
+		Element line = root.getElement( index );
+
+		if (line.getStartOffset() == rowStartOffset)
+			return index;
+		else
+			return 0;
 	}
 
 	/*
@@ -398,7 +425,7 @@ public class TextLineNumber extends JPanel
 		int caretPosition = component.getCaretPosition();
 		Element root = component.getDocument().getDefaultRootElement();
 		int currentLine = root.getElementIndex( caretPosition );
-
+		
 		//  Need to repaint so the correct line number can be highlighted
 
 		if (lastLine != currentLine)

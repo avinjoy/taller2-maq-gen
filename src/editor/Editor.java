@@ -54,6 +54,8 @@ import javax.swing.event.UndoableEditListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.undo.UndoManager;
 
+import editor.TextLineNumber.Mode;
+
 /**
  * Clase principal donde se construye la GUI del editor.
  * 
@@ -240,13 +242,13 @@ public class Editor {
 		// construye el item "Nuevo"
 		JMenu itemNew = new JMenu("Nuevo");
 
-		JMenuItem itemNewMaq = new JMenuItem("Cï¿½digo Mï¿½quina");
+		JMenuItem itemNewMaq = new JMenuItem("Código Máquina");
 		itemNewMaq.setActionCommand("cmd_new_maq");
 		// le asigna una combinaciï¿½n de teclas
 		itemNewMaq.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
 				KeyEvent.CTRL_MASK));
 
-		JMenuItem itemNewAsm = new JMenuItem("Cï¿½digo Assembler");
+		JMenuItem itemNewAsm = new JMenuItem("Código Assembler");
 		itemNewAsm.setActionCommand("cmd_new_asm");
 		itemNewAsm.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
 				KeyEvent.CTRL_MASK));
@@ -825,11 +827,13 @@ public class Editor {
 
 			if (ac.equals("cmd_new_asm") == true) { // opciï¿½n seleccionada:
 													// "Nuevo"
-				actionPerformer.actionNew();
+				columnLineCounter.setMode(Mode.DECIMAL);
 				jTextArea.setColumns(4);
+				actionPerformer.actionNew();
 			} else if (ac.equals("cmd_new_maq") == true) { // opciï¿½n
 															// seleccionada:
 															// "Nuevo"
+				columnLineCounter.setMode(Mode.HEXADECIMAL);
 				actionPerformer.actionNew();
 			} else if (ac.equals("cmd_open") == true) { // opciï¿½n seleccionada:
 														// "Abrir"
