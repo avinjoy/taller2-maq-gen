@@ -25,7 +25,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
 public class AutoSuggestor {
-	
+
 	private final JTextComponent textComp;
     private final Window container;
     private JPanel suggestionsPanel;

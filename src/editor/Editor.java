@@ -1,5 +1,5 @@
 /**
- * TPEditor.java
+ * Editor.java
  *
  * Ejemplo de un editor bï¿½sico para documentos de texto plano utilizando la biblioteca grï¿½fica Swing.
  * Funciona desde Java SE 5.0 en adelante.
@@ -13,7 +13,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -141,7 +140,7 @@ public class Editor {
 		}
 
 		// construye un JFrame con tï¿½tulo
-		jFrame = new JFrame("Gerenic Sim - Sin Tï¿½tulo");
+		jFrame = new JFrame("Gerenic Sim - Sin Título");
 		jFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		// asigna un manejador de eventos para el cierre del JFrame
@@ -186,8 +185,9 @@ public class Editor {
 
 		// configura el JFrame con un tamaï¿½o inicial proporcionado con respecto
 		// a la pantalla
-		Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
-		jFrame.setSize(pantalla.width / 2, pantalla.height / 2);
+		/*Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+		jFrame.setSize(pantalla.width / 2, pantalla.height / 2);*/
+		jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		// centra el JFrame en pantalla
 		jFrame.setLocationRelativeTo(null);
