@@ -14,4 +14,10 @@ public class ParseMachineCode implements Parse {
 
 	}
 
+	@Override
+	public void transalate() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -1,10 +1,3 @@
-/**
- * Editor.java
- *
- * Ejemplo de un editor bï¿½sico para documentos de texto plano utilizando la biblioteca grï¿½fica Swing.
- * Funciona desde Java SE 5.0 en adelante.
- */
-
 package editor;
 
 import java.awt.BorderLayout;
@@ -12,9 +5,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -42,7 +38,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
@@ -54,29 +52,35 @@ import javax.swing.event.UndoableEditListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.undo.UndoManager;
 
-import editor.TextLineNumber.Mode;
-
 /**
  * Clase principal donde se construye la GUI del editor.
  * 
  * @author Dark[byte]
  */
 public class Editor {
-
+	private int languajeType = 0; // 0 codigo maquina, 1 assembler
 	private JFrame jFrame; // instancia de JFrame (ventana principal)
 	private JMenuBar jMenuBar; // instancia de JMenuBar (barra de menï¿½)
 	private JToolBar jToolBar; // instancia de JToolBar (barra de herramientas)
-	private JTextArea jTextArea; // instancia de JTextArea (ï¿½rea de ediciï¿½n)
 	private JPopupMenu jPopupMenu; // instancia de JPopupMenu (menï¿½ emergente)
 	private JPanel statusBar; // instancia de JPanel (barra de estado)
-	private JScrollPane scrollPane;
+	
+	private JSplitPane splitPane;
+	private JTextArea jTextArea; // instancia de JTextArea (ï¿½rea de ediciï¿½n)
+	private JTextArea jTextAreaTranslate; // instancia de JTextArea para la traduccion(ï¿½rea de ediciï¿½n)
+	private JLabel labeltitle;
+	private JLabel labeltitleTraslate;
 	private TextLineNumber columnLineCounter;
+	private TextLineNumber columnLineCounterTranslate;
+	private JScrollPane scrollPane;
+	private JScrollPane scrollPaneTranslate;
 
 	private JCheckBoxMenuItem itemLineWrap; // instancias de algunos items de
 											// menï¿½ que necesitan ser accesibles
 	private JCheckBoxMenuItem itemShowToolBar;
 	private JCheckBoxMenuItem itemFixedToolBar;
 	private JCheckBoxMenuItem itemShowStatusBar;
+	
 	private JMenuItem mbItemUndo;
 	private JMenuItem mbItemRedo;
 	private JMenuItem mpItemUndo;
@@ -85,6 +89,8 @@ public class Editor {
 	private JButton buttonUndo; // instancias de algunos botones que necesitan
 								// ser accesibles
 	private JButton buttonRedo;
+	
+	private JToggleButton buttonTraducir;
 
 	private JLabel sbFilePath; // etiqueta que muestra la ubicaciï¿½n del archivo
 								// actual
@@ -107,6 +113,7 @@ public class Editor {
 	private ArrayList<String> words;
 	private AutoSuggestor autoSuggestor;
 	private BufferedReader reader;
+	private int lastdividerPosition;
 
 	/**
 	 * Punto de entrada del programa.
@@ -140,9 +147,11 @@ public class Editor {
 		} catch (Exception ex) {
 			System.err.println(ex);
 		}
-
+		
+		Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+		
 		// construye un JFrame con tï¿½tulo
-		jFrame = new JFrame("Gerenic Sim - Sin Título");
+		jFrame = new JFrame("Gerenic Sim - Sin Tï¿½tulo");
 		jFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		// asigna un manejador de eventos para el cierre del JFrame
@@ -162,8 +171,15 @@ public class Editor {
 											// UndoManager
 		undoManager.setLimit(50); // le asigna un lï¿½mite al buffer de ediciones
 
-		buildTextArea(); // construye el ï¿½rea de ediciï¿½n, es importante que esta
+		jTextArea = new JTextArea(); 
+		buildTextArea(jTextArea, 16777215, true); // construye el ï¿½rea de ediciï¿½n, es importante que esta
 							// sea la primera parte en construirse
+
+		jTextAreaTranslate = new JTextArea();
+		jTextAreaTranslate.setEditable(false);
+		buildTextArea(jTextAreaTranslate, 15122687, false); // construye el ï¿½rea de ediciï¿½n, es importante que esta
+							// sea la primera parte en construirse
+		
 		buildMenuBar(); // construye la barra de menï¿½
 		buildToolBar(); // construye la barra de herramientas
 		buildStatusBar(); // construye la barra de estado
@@ -179,55 +195,83 @@ public class Editor {
 												// contendor
 
 		scrollPane = new JScrollPane(jTextArea);
-		c.add(scrollPane, BorderLayout.CENTER); // aï¿½ade el area de ediciï¿½n en
+		//c.add(scrollPane, BorderLayout.EAST); // aï¿½ade el area de ediciï¿½n en
 												// el CENTRO
-		buildColumnLineCounter();
+		
+		scrollPaneTranslate = new JScrollPane(jTextAreaTranslate);
+		//c.add(scrollPane, BorderLayout.WEST); // aï¿½ade el area de ediciï¿½n en
+												// el CENTRO
+		labeltitle = new JLabel("Codigo Maquina");
+		buidTitlePanel(scrollPane, labeltitle);
+		columnLineCounter = new TextLineNumber(jTextArea); 
+		buildColumnLineCounter(columnLineCounter, scrollPane);
+		
+		labeltitleTraslate = new JLabel("Assembler");
+		buidTitlePanel(scrollPaneTranslate, labeltitleTraslate);
+		columnLineCounterTranslate = new TextLineNumber(jTextArea); 
+		buildColumnLineCounter(columnLineCounterTranslate, scrollPaneTranslate);
+
+		//Provide minimum sizes for the two components in the split pane
+		Dimension minimumSize = new Dimension(100, 50);
+		scrollPane.setMinimumSize(minimumSize);
+		scrollPaneTranslate.setMinimumSize(minimumSize);
+		
+		//Create a split pane with the two scroll panes in it.
+		lastdividerPosition = pantalla.width / 4;
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,	scrollPane, scrollPaneTranslate);
+		splitPane.setOneTouchExpandable(true);
+		splitPane.setDividerLocation(1000000);
+		splitPane.setDividerSize(0);
+		//this.enableTraslate();
+		c.add(splitPane, BorderLayout.CENTER);
+		
+		
 		c.add(statusBar, BorderLayout.SOUTH); // aï¿½ade la barra de estado,
 												// orientaciï¿½n SUR
 
-		// configura el JFrame con un tamaï¿½o inicial proporcionado con respecto
-		// a la pantalla
-		/*Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
-		jFrame.setSize(pantalla.width / 2, pantalla.height / 2);*/
-		jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		jFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
 
 		// centra el JFrame en pantalla
 		jFrame.setLocationRelativeTo(null);
+		
 	}
 
 	/**
 	 * Construye el ï¿½rea de ediciï¿½n.
 	 */
-	private void buildTextArea() {
-		jTextArea = new JTextArea(); // construye un JTextArea
-
+	private void buildTextArea(JTextArea jTextArea, int color, boolean principal) {
+		//jTextArea = new JTextArea(); // construye un JTextArea
+		jTextArea.setBackground(new Color(color));
+		
 		// se configura por defecto para que se ajusten las lï¿½neas al tamaï¿½o del
 		// ï¿½rea de texto ...
 		jTextArea.setLineWrap(true);
 		// ... y que se respete la integridad de las palaras en el ajuste
 		jTextArea.setWrapStyleWord(true);
 
-		// asigna el manejador de eventos para el cursor
-		jTextArea.addCaretListener(eventHandler);
-		// asigna el manejador de eventos para el ratï¿½n
-		jTextArea.addMouseListener(eventHandler);
-		// asigna el manejador de eventos para registrar los cambios sobre el
-		// documento
-		jTextArea.getDocument().addUndoableEditListener(eventHandler);
-
-		// asigna el manejador de eventos para el teclado
-		jTextArea.addKeyListener(eventHandler);
-		// remueve las posibles combinaciones de teclas asociadas por defecto
-		// con el JTextArea
-		jTextArea.getInputMap().put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK),
-				"none"); // remueve CTRL + X ("Cortar")
-		jTextArea.getInputMap().put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK),
-				"none"); // remueve CTRL + C ("Copiar")
-		jTextArea.getInputMap().put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK),
-				"none"); // remueve CTRL + V ("Pegar")
+		if (principal) {
+			// asigna el manejador de eventos para el cursor
+			jTextArea.addCaretListener(eventHandler);
+			// asigna el manejador de eventos para el ratï¿½n
+			jTextArea.addMouseListener(eventHandler);
+			// asigna el manejador de eventos para registrar los cambios sobre el
+			// documento
+			jTextArea.getDocument().addUndoableEditListener(eventHandler);
+	
+			// asigna el manejador de eventos para el teclado
+			jTextArea.addKeyListener(eventHandler);
+			// remueve las posibles combinaciones de teclas asociadas por defecto
+			// con el JTextArea
+			jTextArea.getInputMap().put(
+					KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK),
+					"none"); // remueve CTRL + X ("Cortar")
+			jTextArea.getInputMap().put(
+					KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK),
+					"none"); // remueve CTRL + C ("Copiar")
+			jTextArea.getInputMap().put(
+					KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK),
+					"none"); // remueve CTRL + V ("Pegar")
+		}
 	}
 
 	/**
@@ -242,25 +286,25 @@ public class Editor {
 		// construye el item "Nuevo"
 		JMenu itemNew = new JMenu("Nuevo");
 
-		JMenuItem itemNewMaq = new JMenuItem("Código Máquina");
+		JMenuItem itemNewMaq = new JMenuItem("Cï¿½digo Mï¿½quina");
 		itemNewMaq.setActionCommand("cmd_new_maq");
 		// le asigna una combinaciï¿½n de teclas
 		itemNewMaq.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
-				KeyEvent.CTRL_MASK));
+				InputEvent.CTRL_MASK));
 
-		JMenuItem itemNewAsm = new JMenuItem("Código Assembler");
+		JMenuItem itemNewAsm = new JMenuItem("Cï¿½digo Assembler");
 		itemNewAsm.setActionCommand("cmd_new_asm");
 		itemNewAsm.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
-				KeyEvent.CTRL_MASK));
+				InputEvent.CTRL_MASK));
 
 		JMenuItem itemOpen = new JMenuItem("Abrir");
 		itemOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
-				KeyEvent.CTRL_MASK));
+				InputEvent.CTRL_MASK));
 		itemOpen.setActionCommand("cmd_open");
 
 		JMenuItem itemSave = new JMenuItem("Guardar");
 		itemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-				KeyEvent.CTRL_MASK));
+				InputEvent.CTRL_MASK));
 		itemSave.setActionCommand("cmd_save");
 
 		JMenuItem itemSaveAs = new JMenuItem("Guardar como...");
@@ -269,12 +313,12 @@ public class Editor {
 
 		JMenuItem itemPrint = new JMenuItem("Imprimir");
 		itemPrint.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
-				KeyEvent.CTRL_MASK));
+				InputEvent.CTRL_MASK));
 		itemPrint.setActionCommand("cmd_print");
 
 		JMenuItem itemExit = new JMenuItem("Salir");
 		itemExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
-				KeyEvent.CTRL_MASK));
+				InputEvent.CTRL_MASK));
 		itemExit.setActionCommand("cmd_exit");
 
 		itemNew.add(itemNewMaq);
@@ -520,7 +564,13 @@ public class Editor {
 		buttonCompile.setIcon(new ImageIcon(getClass().getResource(
 				"/editor/res/compile.png")));
 		buttonCompile.setActionCommand("cmd_compile");
-
+		
+		buttonTraducir = new JToggleButton();
+		buttonTraducir.setToolTipText("Traduccion");
+		buttonTraducir.setIcon(new ImageIcon(getClass().getResource(
+				"/editor/res/traslate.png")));
+		buttonTraducir.setActionCommand("cmd_translate");
+		
 		jToolBar.add(buttonNew); // se aï¿½aden los botones construidos a la barra
 									// de herramientas
 		jToolBar.add(buttonOpen);
@@ -537,7 +587,9 @@ public class Editor {
 		jToolBar.add(buttonPaste);
 		jToolBar.addSeparator();
 		jToolBar.add(buttonCompile);
-
+		jToolBar.addSeparator();
+		jToolBar.add(buttonTraducir);
+		
 		/**
 		 * itera sobre todos los componentes de la barra de herramientas, se les
 		 * asigna el mismo margen y el mismo manejador de eventos unicamente a
@@ -549,6 +601,10 @@ public class Editor {
 				JButton jb = (JButton) c;
 				jb.setMargin(new Insets(0, 0, 0, 0));
 				jb.addActionListener(eventHandler);
+			} else if (c.getClass().equals(javax.swing.JToggleButton.class)) {
+				JToggleButton jb = (JToggleButton) c;
+				jb.setMargin(new Insets(0, 0, 0, 0));
+				jb.addActionListener(eventHandler);			
 			}
 		}
 	}
@@ -648,12 +704,19 @@ public class Editor {
 		}
 	}
 
+
+	private void buidTitlePanel(JScrollPane scrollPane, JLabel labeltitle) {
+		labeltitle.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLoweredBevelBorder(),
+				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+		scrollPane.setColumnHeaderView(labeltitle);
+	}
+	
 	/**
 	 * Construye la barra de estado.
 	 */
-	private void buildColumnLineCounter() {
-		columnLineCounter = new TextLineNumber(jTextArea); // construye un
-															// JPanel
+	private void buildColumnLineCounter(TextLineNumber columnLineCounter, JScrollPane scrollPane) {
+		
 		// se configura con un BoxLayout
 		columnLineCounter.setLayout(new BoxLayout(columnLineCounter,
 				BoxLayout.PAGE_AXIS));
@@ -663,7 +726,7 @@ public class Editor {
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		scrollPane.setRowHeaderView(columnLineCounter);
-
+		
 		/**
 		 * se aï¿½aden las etiquetas construidas al JPanel, el resultado es un
 		 * panel similar a una barra de estado
@@ -710,6 +773,31 @@ public class Editor {
 		mpItemRedo.setEnabled(canRedo);
 	}
 
+	private void enableTraslate() {
+		if (buttonTraducir.isSelected()) {
+			splitPane.setDividerLocation(lastdividerPosition);
+			splitPane.setDividerSize(10);
+			doTraslate();
+		} else {
+			lastdividerPosition = splitPane.getDividerLocation();
+			splitPane.setDividerLocation(1000000);
+			splitPane.setDividerSize(0);
+		}
+	}
+	
+	private void doTraslate() {
+		try {
+			String text = jTextArea.getDocument().getText(0, jTextArea.getDocument().getLength());
+			
+			//traducir
+			
+			jTextAreaTranslate.getDocument().remove(0, jTextAreaTranslate.getDocument().getLength());
+			jTextAreaTranslate.setText(text);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}		
+	}
+	
 	/**
 	 * Retorna la instancia de EventHandler, la clase interna que maneja
 	 * eventos.
@@ -739,6 +827,29 @@ public class Editor {
 		return hasChanged;
 	}
 
+	public int getLanguajeType() {
+		return languajeType;
+	}
+
+	public void setLanguajeType(int languajeType) {
+		this.languajeType = languajeType;
+	}
+
+	public TextLineNumber getColumnLineCounter() {
+		return columnLineCounter;
+	}
+
+	public TextLineNumber getColumnLineCounterTranslate() {
+		return columnLineCounterTranslate;
+	}
+	
+	public JLabel getLabeltitle() {
+		return labeltitle;
+	}
+
+	public JLabel getLabeltitleTraslate() {
+		return labeltitleTraslate;
+	}
 	/**
 	 * Establece el estado del documento actual.
 	 * 
@@ -757,7 +868,12 @@ public class Editor {
 	JTextArea getJTextArea() {
 		return jTextArea;
 	}
+	
+	JTextArea getJTextAreaTranslate() {
+		return jTextAreaTranslate;
+	}
 
+	
 	/**
 	 * Retorna la instancia de JFrame, la ventana principal del editor.
 	 * 
@@ -807,6 +923,43 @@ public class Editor {
 	}
 
 	/**
+	 * @return
+	 */
+	private AutoSuggestor newAutoSuggestor() {
+		return new AutoSuggestor(jTextArea, jFrame, words,
+				Color.WHITE.brighter(), Color.BLUE, Color.RED, 0.75f) {
+			@Override
+			boolean wordTyped(String typedWord) {
+				System.out.println(typedWord);
+				return super.wordTyped(typedWord);// checks for a match in
+													// dictionary and returns
+													// true or false if found or
+													// not
+			}
+		};
+	}
+
+	private void loadLanguageWords() {
+		words = new ArrayList<String>();
+		try {
+			reader = new BufferedReader(new FileReader(
+					"./src/editor/res/reservedWords.properties"));
+			String linea = reader.readLine();
+			while (linea != null) {
+				if (!linea.isEmpty()) {
+					words.add(linea.trim());
+				}
+
+				linea = reader.readLine();
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
 	 * Clase interna que extiende e implementa las clases e interfaces
 	 * necesarias para atender y manejar los eventos sobre la GUI principal del
 	 * editor.
@@ -814,6 +967,7 @@ public class Editor {
 	class EventHandler extends MouseAdapter implements ActionListener,
 			CaretListener, UndoableEditListener, KeyListener {
 
+		private boolean keytyped = false;
 		/**
 		 * Atiende y maneja los eventos de acciï¿½n.
 		 * 
@@ -827,13 +981,13 @@ public class Editor {
 
 			if (ac.equals("cmd_new_asm") == true) { // opciï¿½n seleccionada:
 													// "Nuevo"
-				columnLineCounter.setMode(Mode.DECIMAL);
-				jTextArea.setColumns(4);
+				setLanguajeType(1);
+				//jTextArea.setColumns(4);
 				actionPerformer.actionNew();
 			} else if (ac.equals("cmd_new_maq") == true) { // opciï¿½n
 															// seleccionada:
 															// "Nuevo"
-				columnLineCounter.setMode(Mode.HEXADECIMAL);
+				setLanguajeType(0);
 				actionPerformer.actionNew();
 			} else if (ac.equals("cmd_open") == true) { // opciï¿½n seleccionada:
 														// "Abrir"
@@ -929,6 +1083,10 @@ public class Editor {
 				// presenta un dialogo modal con alguna informacion
 				JOptionPane.showMessageDialog(jFrame, "Compilar", "TODO",
 						JOptionPane.INFORMATION_MESSAGE);
+			} else if (ac.equals("cmd_translate") == true) {	// opciï¿½n
+															// seleccionada:
+															// "Traducir"
+				enableTraslate();
 			}
 		}
 
@@ -1020,7 +1178,13 @@ public class Editor {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			// TODO Auto-generated method stub
+			if (e.getKeyCode() == 38 || e.getKeyCode() == 40) {
+				if (buttonTraducir.isSelected() && keytyped) {
+					doTraslate();
+				}
+				
+				keytyped = false;
+			}
 		}
 
 		@Override
@@ -1030,10 +1194,17 @@ public class Editor {
 
 		@Override
 		public void keyTyped(KeyEvent e) {
+			keytyped = true;
+
 			char c = e.getKeyChar();
 			if (c == '\n') {
 				// Acï¿½ se buscarï¿½an en la base de datos de conocimientos para la
 				// ayuda en lï¿½nea
+				
+				if (buttonTraducir.isSelected()) {
+					// traduce el nuevo texto
+					doTraslate();
+				}
 			}
 			// Detecta el evento Ctrol+Space
 			if ((e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK
@@ -1043,41 +1214,6 @@ public class Editor {
 		}
 	}
 
-	/**
-	 * @return
-	 */
-	private AutoSuggestor newAutoSuggestor() {
-		return new AutoSuggestor(jTextArea, jFrame, words,
-				Color.WHITE.brighter(), Color.BLUE, Color.RED, 0.75f) {
-			@Override
-			boolean wordTyped(String typedWord) {
-				System.out.println(typedWord);
-				return super.wordTyped(typedWord);// checks for a match in
-													// dictionary and returns
-													// true or false if found or
-													// not
-			}
-		};
-	}
 
-	private void loadLanguageWords() {
-		words = new ArrayList<String>();
-		try {
-			reader = new BufferedReader(new FileReader(
-					"./src/editor/res/reservedWords.properties"));
-			String linea = reader.readLine();
-			while (linea != null) {
-				if (!linea.isEmpty()) {
-					words.add(linea.trim());
-				}
-
-				linea = reader.readLine();
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
 
 }

@@ -14,4 +14,10 @@ public class ParserAssembler implements Parse {
 
 	}
 
+	@Override
+	public void transalate() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -1,5 +1,8 @@
 package domain;
 
+import java.util.HashMap;
+import java.util.List;
+
 import javax.swing.text.html.parser.Parser;
 
 public class ExecutionEngine {
@@ -7,8 +10,12 @@ public class ExecutionEngine {
 	public ExecutionEngine() {
 		super();
 		// TODO Auto-generated constructor stub
+		
+		//Genera en memoria la lista de instrucciones (ver en donde va realmente)
+		
+		
+				
 	}
-	
 	
 	private Byte currentInstruction;
 	private Integer programCounter;

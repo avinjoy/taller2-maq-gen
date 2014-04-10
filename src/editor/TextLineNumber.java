@@ -40,6 +40,7 @@ import javax.swing.text.Utilities;
  *  of a JScrollPane.
  */
 @SuppressWarnings("serial")
+
 public class TextLineNumber extends JPanel
 	implements CaretListener, DocumentListener, PropertyChangeListener
 {
