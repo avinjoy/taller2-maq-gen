@@ -33,24 +33,7 @@ public class AutoSuggestor {
     private String typedWord;
     private final ArrayList<String> dictionary = new ArrayList<>();
     private int currentIndexOfSpace, tW, tH;
-//    private DocumentListener documentListener = new DocumentListener() {
-//        
-//    	@Override
-//        public void insertUpdate(DocumentEvent de) {
-//            checkForAndShowSuggestions();
-//        }
-//
-//        @Override
-//        public void removeUpdate(DocumentEvent de) {
-//            checkForAndShowSuggestions();
-//        }
-//
-//        @Override
-//        public void changedUpdate(DocumentEvent de) {
-//            checkForAndShowSuggestions();
-//        }
-//    };
-    
+  
     private final Color suggestionsTextColor;
     private final Color suggestionFocusedColor;
     
@@ -59,7 +42,6 @@ public class AutoSuggestor {
         this.suggestionsTextColor = textColor;
         this.container = mainWindow;
         this.suggestionFocusedColor = suggestionFocusedColor;
-      //  this.textComp.getDocument().addDocumentListener(documentListener);
 
         setDictionary(words);
 
