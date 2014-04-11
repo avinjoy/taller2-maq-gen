@@ -71,7 +71,7 @@ public class Editor implements ActionListener {
     private JPanel statusBar; // instancia de JPanel (barra de estado)
 
     private JSplitPane splitPane;
-    private JTextArea jTextArea; // instancia de JTextArea (Ã�rea de ediciÃ³n)
+    private JTextArea jTextArea; // instancia de JTextArea (Área de ediciÃ³n)
     private JTextArea jTextAreaTranslate; // instancia de JTextArea para la traduccion(Ã�rea de ediciÃ³n)
     private JLabel labeltitle;
     private JLabel labeltitleTraslate;
