@@ -52,7 +52,7 @@ public class ActionPerformer {
     public void actionNew() {
         if (tpEditor.documentHasChanged() == true) {    //si el documento esta marcado como modificado
             //le ofrece al usuario guardar los cambios
-            int option = JOptionPane.showConfirmDialog(tpEditor.getJFrame(), "ï¿½Desea guardar los cambios?");
+            int option = JOptionPane.showConfirmDialog(tpEditor.getJFrame(), "¿Desea guardar los cambios?");
  
             switch (option) {
                 case JOptionPane.YES_OPTION:       //si elige que si
@@ -103,7 +103,7 @@ public class ActionPerformer {
     public void actionOpen() {
         if (tpEditor.documentHasChanged() == true) {    //si el documento esta marcado como modificado
             //le ofrece al usuario guardar los cambios
-            int option = JOptionPane.showConfirmDialog(tpEditor.getJFrame(), "ï¿½Desea guardar los cambios?");
+            int option = JOptionPane.showConfirmDialog(tpEditor.getJFrame(), "¿Desea guardar los cambios?");
  
             switch (option) {
                 case JOptionPane.YES_OPTION:     //si elige que si
@@ -255,7 +255,7 @@ public class ActionPerformer {
     public void actionExit() {
         if (tpEditor.documentHasChanged() == true) {    //si el documento esta marcado como modificado
             //le ofrece al usuario guardar los cambios
-            int option = JOptionPane.showConfirmDialog(tpEditor.getJFrame(), "ï¿½Desea guardar los cambios?");
+            int option = JOptionPane.showConfirmDialog(tpEditor.getJFrame(), "¿Desea guardar los cambios?");
  
             switch (option) {
                 case JOptionPane.YES_OPTION:     //si elige que si

@@ -45,24 +45,24 @@ public class MachineErrorParser implements ErrorParser {
 
                     if (!w.matches("^[\\da-fA-F]*$") && amountWord <3){
                         
-                        throw new InvalidInstruccionException("No es un valor hexadecimal vÃ¡lido");
+                        throw new InvalidInstruccionException("No es un valor hexadecimal válido");
                     }
                     switch (amountWord) {
                         case 1:
                             if (w.length() != 2) {
                              
-                                throw new InvalidInstruccionException("El primer argumento corresponde a la posiciÃ³n de memoria y solo hay 256 direcciones disponibles");
+                                throw new InvalidInstruccionException("El primer argumento corresponde a la posición de memoria y solo hay 256 direcciones disponibles");
                             }
                             break;
                         case 2:
                             if (w.length() != 4) {
 
-                                throw new InvalidInstruccionException("El segundo argumento corresponde a la instrucciÃ³n y solo puede tener 4 caracteres en hexadecimal");
+                                throw new InvalidInstruccionException("El segundo argumento corresponde a la instrucción y solo puede tener 4 caracteres en hexadecimal");
                             }
                             break;
                     }
                 } catch (NumberFormatException ex) {
-                    throw new InvalidInstruccionException("No es un formato hexadecimal vÃ¡lido");
+                    throw new InvalidInstruccionException("No es un formato hexadecimal válido");
                     
                 }catch(InvalidInstruccionException ex1){
                     try {
