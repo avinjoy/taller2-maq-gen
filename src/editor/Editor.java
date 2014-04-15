@@ -63,7 +63,11 @@ import editor.TextLineNumber.Mode;
  */
 public class Editor implements ActionListener {
 
-    private int languajeType = 0; // 0 codigo maquina, 1 assembler
+    public enum LanguajeType{
+    	MACHINE, ASSEMBLER    	
+    };
+
+    private LanguajeType languajeType = LanguajeType.MACHINE; // 0 codigo maquina, 1 assembler
     private JFrame jFrame; // instancia de JFrame (ventana principal)
     private JMenuBar jMenuBar; // instancia de JMenuBar (barra de menÃº)
     private JToolBar jToolBar; // instancia de JToolBar (barra de herramientas)
@@ -840,16 +844,16 @@ public class Editor implements ActionListener {
         return hasChanged;
     }
 
-    public int getLanguajeType() {
+    public LanguajeType getLanguajeType() {
         return languajeType;
     }
 
-    public void setLanguajeType(int languajeType) {
+    public void setLanguajeType(LanguajeType languajeType) {
         this.languajeType = languajeType;        
-        if (languajeType == 0) {
+        if (languajeType == LanguajeType.MACHINE) {
             errorParser = new MachineErrorParser();
             this.columnLineCounter.setMode(Mode.HEXADECIMAL);
-        } else if (languajeType == 1) {
+        } else if (languajeType == LanguajeType.ASSEMBLER) {
             errorParser = new NataliusErrorParser();
             this.columnLineCounter.setMode(Mode.DECIMAL);
         }
@@ -1004,13 +1008,13 @@ public class Editor implements ActionListener {
 
             if (ac.equals("cmd_new_asm") == true) { // opciÃ³n seleccionada:
                 // "Nuevo"
-                setLanguajeType(1);
+                setLanguajeType(LanguajeType.ASSEMBLER);
                 //jTextArea.setColumns(4);
                 actionPerformer.actionNew();
             } else if (ac.equals("cmd_new_maq") == true) { // opciÃ³n
                 // seleccionada:
                 // "Nuevo"
-                setLanguajeType(0);
+                setLanguajeType(LanguajeType.MACHINE);
                 actionPerformer.actionNew();
             } else if (ac.equals("cmd_open") == true) { // opciÃ³n seleccionada:
                 // "Abrir"
@@ -1104,8 +1108,7 @@ public class Editor implements ActionListener {
                 // seleccionada:
                 // "Compilar"
                 // presenta un dialogo modal con alguna informacion
-                JOptionPane.showMessageDialog(jFrame, "Compilar", "TODO",
-                        JOptionPane.INFORMATION_MESSAGE);
+            	actionPerformer.actionCompile();
             } else if (ac.equals("cmd_translate") == true) {	// opciÃ³n
                 // seleccionada:
                 // "Traducir"

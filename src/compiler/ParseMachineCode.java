@@ -1,13 +1,13 @@
-package domain;
+package compiler;
 
-public class ParseMachineCode implements Parse {
+import java.util.List;
 
-	@Override
-	public void parse() {
-		// TODO Auto-generated method stub
+public class ParseMachineCode extends Parser {
 
+	public ParseMachineCode(List<String> tokens){
+		super(tokens);
 	}
-
+	
 	@Override
 	public void compile() {
 		// TODO Auto-generated method stub

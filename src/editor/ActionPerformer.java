@@ -23,6 +23,11 @@ import javax.swing.text.BadLocationException;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
+import compiler.Parser;
+import compiler.ParserAssembler;
+import compiler.Scanner;
+
+import editor.Editor.LanguajeType;
 import editor.TextLineNumber.Mode;
  
 /**
@@ -70,16 +75,16 @@ public class ActionPerformer {
         tpEditor.getJTextArea().setText("");
         tpEditor.getJTextAreaTranslate().setText("");
 
-        if (tpEditor.getLanguajeType() == 0) {
+        if (tpEditor.getLanguajeType() == LanguajeType.MACHINE) {
         	tpEditor.getColumnLineCounter().setMode(Mode.DECIMAL);
         	tpEditor.getColumnLineCounterTranslate().setMode(Mode.DECIMAL);
-        	tpEditor.getLabeltitle().setText("Codigo Maquina");
+        	tpEditor.getLabeltitle().setText("Codigo Máquina");
         	tpEditor.getLabeltitleTraslate().setText("Assembler");
         } else {
         	tpEditor.getColumnLineCounter().setMode(Mode.DECIMAL);
         	tpEditor.getColumnLineCounterTranslate().setMode(Mode.DECIMAL);
         	tpEditor.getLabeltitle().setText("Assembler");
-        	tpEditor.getLabeltitleTraslate().setText("Codigo Maquina");
+        	tpEditor.getLabeltitleTraslate().setText("Codigo Máquina");
         }
         
         //limpia el contenido de las etiquetas en la barra de estado
@@ -500,10 +505,17 @@ public class ActionPerformer {
      * Redondea la longitud de un archivo en KiloBytes si es necesario.
      * 
      * @param length longitud de un archivo
-     * @return el tama�o redondeado  
+     * @return el tamaño redondeado  
      */
     private static String roundFileSize(long length) {
         //retorna el tama�o del archivo redondeado
         return (length < 1024) ? length + " bytes" : (length / 1024) + " Kbytes";
     }
+    
+    public void actionCompile(){    	
+    	String text = tpEditor.getJTextArea().getText();
+    	Parser parser = new ParserAssembler(new Scanner(text).getTokens());
+    	parser.compile();
+    }
+    
 }
