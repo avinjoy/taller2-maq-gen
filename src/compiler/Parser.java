@@ -10,7 +10,7 @@ public class Parser {
 
 	protected List<String> tokens;
 	protected List<Instruction> instructions;
-	protected List<InvalidInstruccionException> invalid;
+	protected List<IllegalArgumentException> invalid;
 	protected int index;
 	
 	public List<String> getTokens() {
@@ -25,7 +25,7 @@ public class Parser {
 		this.tokens = tokens;
 		this.index = 0;
 		this.instructions = new ArrayList<Instruction>();
-		this.invalid = new ArrayList<InvalidInstruccionException>();
+		this.invalid = new ArrayList<IllegalArgumentException>();
 		this.parse();
 	}
 	
@@ -34,28 +34,25 @@ public class Parser {
 		Instruction instruction = null;
 		Iterator<String> it = this.tokens.iterator();
 		int indexSpace = 0;
-		Boolean bValid = false;
     	while (it.hasNext()){
-    		bValid = false;
     		instr=(String)it.next();
     		indexSpace = instr.indexOf(" ")!=-1?instr.indexOf(" "):instr.length();
 			if (instr.substring(0, indexSpace).compareTo("add") == 0){
-				instruction = new Add();
-				bValid = true;
+				instruction = new Add(instr.substring(instr.indexOf(" ")).trim());
 			}
 			if (instr.substring(0, indexSpace).compareTo("ldi") == 0){
 				instruction = new Ldi();
-				bValid = true;
 			}
 			if (instr.substring(0, indexSpace).compareTo("end") == 0){
 				instruction = new End();
-				bValid = true;
-			}			
-			if (bValid){
-				if (instruction.hasParams)
-					instruction.args = instr.substring(instr.indexOf(" ")).trim();
-				this.instructions.add(instruction);
-				this.index++;
+			}
+			if (instruction instanceof Instruction){
+				if (instruction.isValid()){
+					this.instructions.add(instruction);
+					this.index++;
+				}
+				else
+					this.invalid.addAll(this.invalid);	
 			}	
 			else			
 				this.invalid.add(new InvalidInstruccionException("La instrucción: " + instr.substring(0, instr.indexOf(" ")) + " es invalida"));

@@ -14,7 +14,7 @@ public class ParserAssembler extends Parser {
 	@Override
 	public void compile() {		
 		Iterator<Instruction> it = this.instructions.iterator();
-		Iterator<InvalidInstruccionException> itex = this.invalid.iterator();
+		Iterator<IllegalArgumentException> itex = this.invalid.iterator();
 		while (it.hasNext()){
 			System.out.printf(((Instruction)it.next()).toHex()+"\n");
 		}

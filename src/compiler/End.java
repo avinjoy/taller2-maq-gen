@@ -3,10 +3,16 @@ package compiler;
 public class End extends Instruction {
 
 	public End(){
-		this.hasParams = false;
+		
 	}
 	
 	public String toHex() {
 		return "C000";
+	}
+
+	@Override
+	public void validate() {
+		// TODO Auto-generated method stub
+		
 	}	
 }
