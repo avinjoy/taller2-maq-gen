@@ -3,8 +3,6 @@ package compiler;
 import java.util.Iterator;
 import java.util.List;
 
-import editor.exceptions.InvalidInstruccionException;
-
 public class ParserAssembler extends Parser {
 
 	public ParserAssembler(List<String> tokens){
@@ -19,7 +17,7 @@ public class ParserAssembler extends Parser {
 			System.out.printf(((Instruction)it.next()).toHex()+"\n");
 		}
 		while (itex.hasNext()){
-			System.out.printf(((InvalidInstruccionException)itex.next()).getMessage()+"\n");			
+			System.out.printf(((IllegalArgumentException)itex.next()).getMessage()+"\n");			
 		}
 
 	} 

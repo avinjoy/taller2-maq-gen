@@ -1,30 +1,26 @@
 package compiler;
 
-import java.util.StringTokenizer;
-
-import editor.exceptions.InvalidArgumentException;
+import compiler.Parameter.Type;
 
 public class Ldi extends Instruction {
 
-	public String toHex() {
-		String asm = "4";
-		StringTokenizer token = new StringTokenizer(this.args, ",");
-		String param;
-		while (token.hasMoreTokens()){
-			try {
-				param = Integer.toHexString(Integer.parseInt(token.nextToken()));
-				asm += param.toUpperCase();
-			} catch (InvalidArgumentException ex) {
-				
-			}
+	final int CANT_PARAMETROS = 2;
+	final String HEXA = "2";
+
+	public Ldi(int lineNumber, String args){
+		super(lineNumber,args);
+		this.qParameters = CANT_PARAMETROS;
+		this.hexaInstruction = HEXA;
+		this.validate();
+	}
+
+	public void validateArgument(Integer iArgument, String arg){
+		if (iArgument == 1){
+			if (this.validateRegisterNumber(iArgument, arg))
+				this.parameters.add(new Parameter(iArgument, Type.REGISTER, arg));
 		}
-		return asm;
-	}
-
-	@Override
-	public void validate() {
-		// TODO Auto-generated method stub
-		
-	}
-
+		else
+			if (this.validateMemoryAddress(iArgument, arg))
+				this.parameters.add(new Parameter(iArgument, Type.ADRRESS, arg));
+	};	
 }
