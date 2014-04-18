@@ -1,16 +1,26 @@
 package compiler;
 
+import compiler.Parameter.Type;
+
 public class Ldm extends Instruction {
 
-	public Ldm(int lineNumber, String args) {
+	final int CANT_PARAMETROS = 2;
+	final String HEXA = "1";
+
+	public Ldm(int lineNumber, String args){
 		super(lineNumber,args);
-		// TODO Auto-generated constructor stub
+		this.qParameters = CANT_PARAMETROS;
+		this.hexaInstruction = HEXA;
+		this.validate();
 	}
 
-	@Override
-	public void validate() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void validateArgument(Integer iArgument, String arg){
+		if (iArgument == 1){
+			if (this.validateRegisterNumber(iArgument, arg))
+				this.parameters.add(new Parameter(iArgument, Type.REGISTER, arg));
+		}
+		else
+			if (this.validateMemoryAddress(iArgument, arg))
+				this.parameters.add(new Parameter(iArgument, Type.ADRRESS, arg));
+	};
 }

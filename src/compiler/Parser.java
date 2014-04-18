@@ -40,15 +40,36 @@ public class Parser {
     		instr=(String)it.next();
     		indexSpace = instr.indexOf(" ")!=-1?instr.indexOf(" "):instr.length();
     		instruction = null;
-			if (instr.substring(0, indexSpace).compareTo("add") == 0){
-				instruction = new Add(lnNumber, instr.substring(instr.indexOf(" ")).trim());
+			if (instr.substring(0, indexSpace).compareTo("ldm") == 0){
+				instruction = new Ldm(lnNumber, instr.substring(indexSpace).trim());
 			}
 			if (instr.substring(0, indexSpace).compareTo("ldi") == 0){
-				instruction = new Ldi(lnNumber, instr.substring(instr.indexOf(" ")).trim());
+				instruction = new Ldi(lnNumber, instr.substring(indexSpace).trim());
 			}
 			if (instr.substring(0, indexSpace).compareTo("stm") == 0){
-				instruction = new Ldi(lnNumber, instr.substring(instr.indexOf(" ")).trim());
+				instruction = new Ldi(lnNumber, instr.substring(indexSpace).trim());
 			}
+			if (instr.substring(0, indexSpace).compareTo("cpy") == 0){
+				instruction = new Cpy(lnNumber, instr.substring(indexSpace).trim());
+			}
+			if (instr.substring(0, indexSpace).compareTo("add") == 0){
+				instruction = new Add(lnNumber, instr.substring(indexSpace).trim());
+			}
+			if (instr.substring(0, indexSpace).compareTo("orr") == 0){
+				instruction = new Oor(lnNumber, instr.substring(indexSpace).trim());
+			}
+			if (instr.substring(0, indexSpace).compareTo("and") == 0){
+				instruction = new And(lnNumber, instr.substring(indexSpace).trim());
+			}
+			if (instr.substring(0, indexSpace).compareTo("xor") == 0){
+				instruction = new Xor(lnNumber, instr.substring(indexSpace).trim());
+			}
+			if (instr.substring(0, indexSpace).compareTo("rrr") == 0){
+				instruction = new Rrr(lnNumber, instr.substring(indexSpace).trim());
+			}			
+			if (instr.substring(0, indexSpace).compareTo("jmp") == 0){
+				instruction = new Jmp(lnNumber, instr.substring(indexSpace).trim());
+			}			
 			if (instr.substring(0, indexSpace).compareTo("end") == 0){
 				instruction = new End(lnNumber);
 			}
@@ -69,3 +90,4 @@ public class Parser {
 	public void transalate(){};
 	
 }
+

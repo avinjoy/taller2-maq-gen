@@ -5,14 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import editor.exceptions.InvalidArgumentException;
+import compiler.exceptions.CompilationtException;
 
 public class Instruction {
 
 	protected List<Parameter> parameters; 
 	protected boolean valid = false;
 	protected String args;
-	protected List<InvalidArgumentException> argumentExceptions;
+	protected List<CompilationtException> argumentExceptions;
 	protected int qParameters;
 	protected String hexaInstruction;
 	protected int lineNumber;
@@ -22,13 +22,14 @@ public class Instruction {
 	public Instruction (int lineNumber){
 		this.lineNumber = lineNumber;
 		this.parameters = new ArrayList<Parameter>();
-		this.argumentExceptions = new ArrayList<InvalidArgumentException>();		
+		this.argumentExceptions = new ArrayList<CompilationtException>();		
 	}
 	
 	public Instruction (int lineNumber, String args){
 		this.args = args;
+		this.lineNumber = lineNumber;
 		this.parameters = new ArrayList<Parameter>();
-		this.argumentExceptions = new ArrayList<InvalidArgumentException>();
+		this.argumentExceptions = new ArrayList<CompilationtException>();
 	}
 	
 	public Boolean isValid() {
@@ -43,7 +44,7 @@ public class Instruction {
 			String arg = "";
 		
 			if (token.countTokens() != this.qParameters)
-				this.argumentExceptions.add(new InvalidArgumentException("Cantidad erronea de argumentos"));
+				this.argumentExceptions.add(new CompilationtException("Cantidad erronea de argumentos"));
 			else{
 				while (token.hasMoreTokens()){
 					iArgument++;
@@ -65,11 +66,11 @@ public class Instruction {
 		try {
 			Integer intArg = Integer.parseInt(arg);
 			if (intArg < 0 || intArg > 15){				
-				this.argumentExceptions.add(new InvalidArgumentException("El valor del argumento #"+ iArgument.toString() + " (" + arg + ") es inválido"));
+				this.argumentExceptions.add(new CompilationtException("El valor del argumento #"+ iArgument.toString() + " (" + arg + ") es inválido"));
 				valid = false;
 			}
 		} catch (Exception ex) {
-			this.argumentExceptions.add(new InvalidArgumentException("El argumento #"+ iArgument.toString() + " (" + arg + ") es inválido"));
+			this.argumentExceptions.add(new CompilationtException("El argumento #"+ iArgument.toString() + " (" + arg + ") es inválido"));
 			valid = false;
 		}
 		return valid;
@@ -78,20 +79,20 @@ public class Instruction {
 	protected boolean validateMemoryAddress(Integer iArgument, String arg){
 		boolean valid = true;
 		if (arg.length() != 2){
-			this.argumentExceptions.add(new InvalidArgumentException("La dirección de memoria "+ arg + " es inválida"));
+			this.argumentExceptions.add(new CompilationtException("La dirección de memoria "+ arg + " es inválida"));
 			valid = false;
 		}
 		else{
 			try{
 				Integer.parseInt(arg, 16);				
 				if (arg.compareTo("00") == 0 || arg.compareTo("FF") == 0 || arg.compareTo("FE") == 0 || arg.compareTo("FD") == 0){
-					this.argumentExceptions.add(new InvalidArgumentException("La dirección de memoria "+ arg + " no puede ser utilizada"));
+					this.argumentExceptions.add(new CompilationtException("La dirección de memoria "+ arg + " no puede ser utilizada"));
 					valid = false;
 				}
 			}
 			catch(Exception ex){
 				// Falla si pongo MM
-				this.argumentExceptions.add(new InvalidArgumentException("La dirección de memoria "+ arg + " es inválida"));
+				this.argumentExceptions.add(new CompilationtException("La dirección de memoria "+ arg + " es inválida"));
 				valid = false;
 			}
 		}
@@ -99,13 +100,24 @@ public class Instruction {
 	};
 
 	public String toHex() {
-		String asm = this.hexaInstruction;
+		String asm = this.getMemoryAddress();
+		asm += " " + this.hexaInstruction;
 		Iterator<Parameter> it = this.parameters.iterator();
 		while (it.hasNext()){
 			asm += it.next().getHexaValue();			
 		}								
 		return asm.toUpperCase();
 	}
+	
+	protected String getMemoryAddress(){
+		
+		String memAddress = "";
+		memAddress = Integer.toHexString((this.lineNumber-1)*2).toUpperCase();
+		if (memAddress.length() == 1)
+			memAddress = "0"+memAddress.toUpperCase();
+		
+		return memAddress;		
+	} 
 	
 	public String toAsm(){return null;};
 

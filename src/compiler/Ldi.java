@@ -22,5 +22,5 @@ public class Ldi extends Instruction {
 		else
 			if (this.validateMemoryAddress(iArgument, arg))
 				this.parameters.add(new Parameter(iArgument, Type.ADRRESS, arg));
-	};	
+	};
 }

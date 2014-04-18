@@ -69,23 +69,26 @@ public class Editor implements ActionListener {
 
     private LanguajeType languajeType = LanguajeType.MACHINE; // 0 codigo maquina, 1 assembler
     private JFrame jFrame; // instancia de JFrame (ventana principal)
-    private JMenuBar jMenuBar; // instancia de JMenuBar (barra de menÃº)
+    private JMenuBar jMenuBar; // instancia de JMenuBar (barra de menú)
     private JToolBar jToolBar; // instancia de JToolBar (barra de herramientas)
-    private JPopupMenu jPopupMenu; // instancia de JPopupMenu (menÃº emergente)
+    private JPopupMenu jPopupMenu; // instancia de JPopupMenu (menú emergente)
     private JPanel statusBar; // instancia de JPanel (barra de estado)
 
     private JSplitPane splitPane;
-    private JTextArea jTextArea; // instancia de JTextArea (Área de ediciÃ³n)
-    private JTextArea jTextAreaTranslate; // instancia de JTextArea para la traduccion(Ã�rea de ediciÃ³n)
+    //private JSplitPane problemPanel;
+    private JTextArea jTextArea; // instancia de JTextArea (Área de edición)
+    private JTextArea jTextAreaTranslate; // instancia de JTextArea para la traduccion(Área de edición)
+    private JTextArea jTextAreaProblems;
     private JLabel labeltitle;
     private JLabel labeltitleTraslate;
     private TextLineNumber columnLineCounter;
     private TextLineNumber columnLineCounterTranslate;
     private JScrollPane scrollPane;
     private JScrollPane scrollPaneTranslate;
+    //private JScrollPane scrollPaneProblems;
 
     private JCheckBoxMenuItem itemLineWrap; // instancias de algunos items de
-    // menÃº que necesitan ser accesibles
+    // menú que necesitan ser accesibles
     private JCheckBoxMenuItem itemShowToolBar;
     private JCheckBoxMenuItem itemFixedToolBar;
     private JCheckBoxMenuItem itemShowStatusBar;
@@ -101,12 +104,12 @@ public class Editor implements ActionListener {
 
     private JToggleButton buttonTraducir;
 
-    private JLabel sbFilePath; // etiqueta que muestra la ubicaciÃ³n del archivo
+    private JLabel sbFilePath; // etiqueta que muestra la ubicación del archivo
     // actual
-    private JLabel sbFileSize; // etiqueta que muestra el tamaÃ±o del archivo
+    private JLabel sbFileSize; // etiqueta que muestra el tamaño del archivo
     // actual
-    private JLabel sbCaretPos; // etiqueta que muestra la posiciÃ³n del cursor en
-    // el Ã�rea de ediciÃ³n
+    private JLabel sbCaretPos; // etiqueta que muestra la posición del cursor en
+    // el Área de edición
 
     private boolean hasChanged = false; // el estado del documento actual, no
     // modificado por defecto
@@ -118,11 +121,12 @@ public class Editor implements ActionListener {
     // ActionPerformer (la clase
     // que ejecuta acciones)
     private final UndoManager undoManager; // instancia de UndoManager
-    // (administrador de ediciÃ³n)
+    // (administrador de edición)
     private ArrayList<String> words;
     private AutoSuggestor autoSuggestor;
     private BufferedReader reader;
     private int lastdividerPosition;
+    //private int lastproblemPanelLocation;
     private ErrorParser errorParser;
 
     /**
@@ -130,7 +134,7 @@ public class Editor implements ActionListener {
      *
      * Instanciamos esta clase para construir la GUI y hacerla visible.
      *
-     * @param args argumentos de la lÃ­nea de comandos.
+     * @param args argumentos de la línea de comandos.
      */
     public static void main(String[] args) {
         // construye la GUI en el EDT (Event Dispatch Thread)
@@ -168,7 +172,7 @@ public class Editor implements ActionListener {
 
             @Override
             public void windowClosing(WindowEvent we) {
-                actionPerformer.actionExit(); // invoca el mÃ©todo actionExit()
+                actionPerformer.actionExit(); // invoca el método actionExit()
             }
         });
 
@@ -178,37 +182,43 @@ public class Editor implements ActionListener {
         // de ActionPerformer
         undoManager = new UndoManager(); // construye una instancia de
         // UndoManager
-        undoManager.setLimit(50); // le asigna un lÃ­mite al buffer de ediciones
+        undoManager.setLimit(50); // le asigna un límite al buffer de ediciones
 
         jTextArea = new JTextArea();
-        buildTextArea(jTextArea, 16777215, true); // construye el Ã�rea de ediciÃ³n, es importante que esta
+        buildTextArea(jTextArea, 16777215, true); // construye el Área de edición, es importante que esta
         // sea la primera parte en construirse
 
         jTextAreaTranslate = new JTextArea();
         jTextAreaTranslate.setEditable(false);
-        buildTextArea(jTextAreaTranslate, 15122687, false); // construye el Ã�rea de ediciÃ³n, es importante que esta
+        buildTextArea(jTextAreaTranslate, 15122687, false); // construye el Área de edición, es importante que esta
         // sea la primera parte en construirse
 
-        buildMenuBar(); // construye la barra de menÃº
+        jTextAreaProblems = new JTextArea();
+        jTextAreaProblems.setEditable(false);
+        buildTextArea(jTextAreaProblems, 16777215, false); // construye el Área de edición, es importante que esta
+        // sea la primera parte en construirse
+
+        buildMenuBar(); // construye la barra de menú
         buildToolBar(); // construye la barra de herramientas
         buildStatusBar(); // construye la barra de estado
-        buildPopupMenu(); // construye el menÃº emergente
+        buildPopupMenu(); // construye el menú emergente
         loadLanguageWords();
 
         autoSuggestor = newAutoSuggestor();
 
-        jFrame.setJMenuBar(jMenuBar); // designa la barra de menÃº del JFrame
+        jFrame.setJMenuBar(jMenuBar); // designa la barra de menú del JFrame
+        //jFrame.setLayout(new GridLayout(4, 1));
         Container c = jFrame.getContentPane(); // obtiene el contendor principal
-        c.add(jToolBar, BorderLayout.NORTH); // aÃ±ade la barra de herramientas,
-        // orientaciÃ³n NORTE del
+        c.add(jToolBar, BorderLayout.NORTH); // añade la barra de herramientas,
+        // orientación NORTE del
         // contendor
 
         scrollPane = new JScrollPane(jTextArea);
-        //c.add(scrollPane, BorderLayout.EAST); // aÃ±ade el area de ediciÃ³n en
+        //c.add(scrollPane, BorderLayout.EAST); // añade el area de edición en
         // el CENTRO
 
         scrollPaneTranslate = new JScrollPane(jTextAreaTranslate);
-        //c.add(scrollPane, BorderLayout.WEST); // aÃ±ade el area de ediciÃ³n en
+        //c.add(scrollPane, BorderLayout.WEST); // añade el area de edición en
         // el CENTRO
         labeltitle = new JLabel("Codigo Máquina");
         buidTitlePanel(scrollPane, labeltitle);
@@ -226,16 +236,29 @@ public class Editor implements ActionListener {
         scrollPaneTranslate.setMinimumSize(minimumSize);
 
         //Create a split pane with the two scroll panes in it.
-        lastdividerPosition = pantalla.width / 4;
+        lastdividerPosition = pantalla.width / 2;
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, scrollPaneTranslate);
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerLocation(1000000);
         splitPane.setDividerSize(0);
         //this.enableTraslate();
         c.add(splitPane, BorderLayout.CENTER);
-
-        c.add(statusBar, BorderLayout.SOUTH); // aÃ±ade la barra de estado,
-        // orientaciÃ³n SUR
+        
+        /*scrollPaneProblems = new JScrollPane(jTextAreaProblems);
+        scrollPaneProblems.setMinimumSize(minimumSize);
+        
+        
+        lastproblemPanelLocation = pantalla.height / 2;
+        problemPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollPane, scrollPaneProblems);
+        problemPanel.setMinimumSize(minimumSize);
+        problemPanel.setOneTouchExpandable(true);
+        problemPanel.setDividerLocation(1000000);
+        problemPanel.setDividerSize(0);
+        
+        c.add(problemPanel, BorderLayout.CENTER);*/
+        
+        c.add(statusBar, BorderLayout.SOUTH); // añade la barra de estado,
+        // orientación SUR
 
         jFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
 
@@ -261,8 +284,8 @@ public class Editor implements ActionListener {
         //jTextArea = new JTextArea(); // construye un JTextArea
         jTextArea.setBackground(new Color(color));
 
-        // se configura por defecto para que se ajusten las lÃ­neas al tamaÃ±o del
-        // Ã�rea de texto ...
+        // se configura por defecto para que se ajusten las líneas al tamaño del
+        // Área de texto ...
         jTextArea.setLineWrap(true);
         // ... y que se respete la integridad de las palaras en el ajuste
         jTextArea.setWrapStyleWord(true);
@@ -270,7 +293,7 @@ public class Editor implements ActionListener {
         if (principal) {
             // asigna el manejador de eventos para el cursor
             jTextArea.addCaretListener(eventHandler);
-            // asigna el manejador de eventos para el ratÃ³n
+            // asigna el manejador de eventos para el ratón
             jTextArea.addMouseListener(eventHandler);
             // asigna el manejador de eventos para registrar los cambios sobre el
             // documento
@@ -295,20 +318,20 @@ public class Editor implements ActionListener {
     }
 
     /**
-     * Construye la barra de menÃº.
+     * Construye la barra de menú.
      */
     private void buildMenuBar() {
         jMenuBar = new JMenuBar(); // construye un JMenuBar
 
-        // construye el menÃº "Archivo", a continuaciÃ³n se construyen los items
-        // para este menÃº
+        // construye el menú "Archivo", a continuación se construyen los items
+        // para este menú
         JMenu menuFile = new JMenu("Archivo");
         // construye el item "Nuevo"
         JMenu itemNew = new JMenu("Nuevo");
 
         JMenuItem itemNewMaq = new JMenuItem("Código Máquina");
         itemNewMaq.setActionCommand("cmd_new_maq");
-        // le asigna una combinaciÃ³n de teclas
+        // le asigna una combinación de teclas
         itemNewMaq.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
                 InputEvent.CTRL_MASK));
 
@@ -343,7 +366,7 @@ public class Editor implements ActionListener {
 
         itemNew.add(itemNewMaq);
         itemNew.add(itemNewAsm);
-        menuFile.add(itemNew); // se aÃ±aden los items al menÃº "Archivo"
+        menuFile.add(itemNew); // se añaden los items al menú "Archivo"
         menuFile.add(itemOpen);
         menuFile.add(itemSave);
         menuFile.add(itemSaveAs);
@@ -353,8 +376,8 @@ public class Editor implements ActionListener {
         menuFile.add(itemExit);
 		// ----------------------------------------------
 
-        // construye el menÃº "Editar", a continuaciÃ³n se construyen los items
-        // para este menÃº
+        // construye el menú "Editar", a continuación se construyen los items
+        // para este menú
         JMenu menuEdit = new JMenu("Editar");
 
         mbItemUndo = new JMenuItem("Deshacer");
@@ -394,7 +417,7 @@ public class Editor implements ActionListener {
                 .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
         itemSearchNext.setActionCommand("cmd_searchnext");
 
-        JMenuItem itemGotoLine = new JMenuItem("Ir a la lÃ­nea...");
+        JMenuItem itemGotoLine = new JMenuItem("Ir a la línea...");
         itemGotoLine.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T,
                 ActionEvent.CTRL_MASK));
         itemGotoLine.setActionCommand("cmd_gotoline");
@@ -404,9 +427,9 @@ public class Editor implements ActionListener {
                 ActionEvent.CTRL_MASK));
         itemSelectAll.setActionCommand("cmd_selectall");
 
-        menuEdit.add(mbItemUndo); // se aÃ±aden los items al menÃº "Editar"
+        menuEdit.add(mbItemUndo); // se añaden los items al menú "Editar"
         menuEdit.add(mbItemRedo);
-        menuEdit.addSeparator(); // aÃ±ade separadores entre algunos items
+        menuEdit.addSeparator(); // añade separadores entre algunos items
         menuEdit.add(itemCut);
         menuEdit.add(itemCopy);
         menuEdit.add(itemPaste);
@@ -418,11 +441,11 @@ public class Editor implements ActionListener {
         menuEdit.add(itemSelectAll);
 		// ----------------------------------------------
 
-        // construye el menÃº "Opciones", a continuaciÃ³n se construyen los items
-        // para este menÃº
+        // construye el menú "Opciones", a continuación se construyen los items
+        // para este menú
         JMenu menuTools = new JMenu("Opciones");
 
-        itemLineWrap = new JCheckBoxMenuItem("Ajuste de lÃ­nea");
+        itemLineWrap = new JCheckBoxMenuItem("Ajuste de línea");
         itemLineWrap.setSelected(true);
         itemLineWrap.setActionCommand("cmd_linewrap");
 
@@ -447,7 +470,7 @@ public class Editor implements ActionListener {
         JMenuItem itemBackgroundColor = new JMenuItem("Color de fondo");
         itemBackgroundColor.setActionCommand("cmd_backgroundcolor");
 
-        menuTools.add(itemLineWrap); // se aÃ±aden los items al menÃº "Opciones"
+        menuTools.add(itemLineWrap); // se añaden los items al menú "Opciones"
         menuTools.add(itemShowToolBar);
         menuTools.add(itemFixedToolBar);
         menuTools.add(itemShowStatusBar);
@@ -456,20 +479,20 @@ public class Editor implements ActionListener {
         menuTools.add(itemFontColor);
         menuTools.add(itemBackgroundColor);
 
-        // construye el menÃº "Ayuda", a continuaciÃ³n se construye el Ãºnico item
-        // para este menÃº
+        // construye el menú "Ayuda", a continuación se construye el único item
+        // para este menú
         JMenu menuHelp = new JMenu("Ayuda");
 
         JMenuItem itemAbout = new JMenuItem("Acerca de");
         itemAbout.setActionCommand("cmd_about");
 
-        menuHelp.add(itemAbout); // se aÃ±ade el Ãºnico item al menÃº "Ayuda"
+        menuHelp.add(itemAbout); // se añade el único item al menú "Ayuda"
         // ----------------------------------------------
 
-        jMenuBar.add(menuFile); // se aÃ±aden los menÃºes construidos a la barra
-        // de menÃº
-        jMenuBar.add(Box.createHorizontalStrut(5)); // aÃ±ade espacios entre cada
-        // menÃº
+        jMenuBar.add(menuFile); // se añaden los menúes construidos a la barra
+        // de menú
+        jMenuBar.add(Box.createHorizontalStrut(5)); // añade espacios entre cada
+        // menú
         jMenuBar.add(menuEdit);
         jMenuBar.add(Box.createHorizontalStrut(5));
         jMenuBar.add(menuTools);
@@ -477,13 +500,13 @@ public class Editor implements ActionListener {
         jMenuBar.add(menuHelp);
 
         /**
-         * itera sobre todos los componentes de la barra de menÃº, se les asigna
+         * itera sobre todos los componentes de la barra de menú, se les asigna
          * el mismo manejador de eventos a todos excepto a los separadores
          */
         for (Component c1 : jMenuBar.getComponents()) {
-            // si el componente es un menÃº
+            // si el componente es un menú
             if (c1.getClass().equals(javax.swing.JMenu.class)) {
-                // itera sobre los componentes del menÃº
+                // itera sobre los componentes del menú
                 for (Component c2 : ((JMenu) c1).getMenuComponents()) {
                     if (c2.getClass().equals(javax.swing.JMenu.class)) {
                         for (Component c3 : ((JMenu) c2).getMenuComponents()) {
@@ -513,7 +536,7 @@ public class Editor implements ActionListener {
         jToolBar.setFloatable(false); // se configura por defecto como barra
         // fija
 
-        // construye el botÃ³n "Nuevo"
+        // construye el botón "Nuevo"
         JButton buttonNew = new JButton();
         // le asigna una etiqueta flotante
         buttonNew.setToolTipText("Nuevo");
@@ -591,12 +614,12 @@ public class Editor implements ActionListener {
                 "/editor/res/traslate.png")));
         buttonTraducir.setActionCommand("cmd_translate");
 
-        jToolBar.add(buttonNew); // se aÃ±aden los botones construidos a la barra
+        jToolBar.add(buttonNew); // se añaden los botones construidos a la barra
         // de herramientas
         jToolBar.add(buttonOpen);
         jToolBar.add(buttonSave);
         jToolBar.add(buttonSaveAs);
-        jToolBar.addSeparator(); // aÃ±ade separadores entre algunos botones
+        jToolBar.addSeparator(); // añade separadores entre algunos botones
         jToolBar.add(buttonPrint);
         jToolBar.addSeparator();
         jToolBar.add(buttonUndo);
@@ -616,7 +639,7 @@ public class Editor implements ActionListener {
          * los botones
          */
         for (Component c : jToolBar.getComponents()) {
-            // si el componente es un botÃ³n
+            // si el componente es un botón
             if (c.getClass().equals(javax.swing.JButton.class)) {
                 JButton jb = (JButton) c;
                 jb.setMargin(new Insets(0, 0, 0, 0));
@@ -636,21 +659,21 @@ public class Editor implements ActionListener {
         statusBar = new JPanel(); // construye un JPanel
         // se configura con un BoxLayout
         statusBar.setLayout(new BoxLayout(statusBar, BoxLayout.LINE_AXIS));
-        // le aÃ±ade un borde compuesto
+        // le añade un borde compuesto
         statusBar.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLoweredBevelBorder(),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
-        // construye la etiqueta para mostrar la ubicaciÃ³n del archivo actual
+        // construye la etiqueta para mostrar la ubicación del archivo actual
         sbFilePath = new JLabel("...");
-        // construye la etiqueta para mostrar el tamaÃ±o del archivo actual
+        // construye la etiqueta para mostrar el tamaño del archivo actual
         sbFileSize = new JLabel("");
-        // construye la etiqueta para mostrar la posiciÃ³n del cursor en el
+        // construye la etiqueta para mostrar la posición del cursor en el
         // documento actual
         sbCaretPos = new JLabel("...");
 
         /**
-         * se aÃ±aden las etiquetas construidas al JPanel, el resultado es un
+         * se añaden las etiquetas construidas al JPanel, el resultado es un
          * panel similar a una barra de estado
          */
         statusBar.add(sbFilePath);
@@ -662,7 +685,7 @@ public class Editor implements ActionListener {
     }
 
     /**
-     * Construye el menÃº emergente.
+     * Construye el menú emergente.
      */
     private void buildPopupMenu() {
         jPopupMenu = new JPopupMenu(); // construye un JPopupMenu
@@ -699,9 +722,9 @@ public class Editor implements ActionListener {
         JMenuItem itemSelectAll = new JMenuItem("Seleccionar todo");
         itemSelectAll.setActionCommand("cmd_selectall");
 
-        jPopupMenu.add(mpItemUndo); // se aÃ±aden los items al menÃº emergente
+        jPopupMenu.add(mpItemUndo); // se añaden los items al menú emergente
         jPopupMenu.add(mpItemRedo);
-        jPopupMenu.addSeparator(); // aÃ±ade separadores entre algunos items
+        jPopupMenu.addSeparator(); // añade separadores entre algunos items
         jPopupMenu.add(itemCut);
         jPopupMenu.add(itemCopy);
         jPopupMenu.add(itemPaste);
@@ -713,7 +736,7 @@ public class Editor implements ActionListener {
         jPopupMenu.add(itemSelectAll);
 
         /**
-         * itera sobre todos los componentes del menÃº emergente, se les asigna
+         * itera sobre todos los componentes del menú emergente, se les asigna
          * el mismo manejador de eventos a todos excepto a los separadores
          */
         for (Component c : jPopupMenu.getComponents()) {
@@ -739,7 +762,7 @@ public class Editor implements ActionListener {
         // se configura con un BoxLayout
         columnLineCounter.setLayout(new BoxLayout(columnLineCounter,
                 BoxLayout.PAGE_AXIS));
-        // le aÃ±ade un borde compuesto
+        // le añade un borde compuesto
         columnLineCounter.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLoweredBevelBorder(),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
@@ -747,7 +770,7 @@ public class Editor implements ActionListener {
         scrollPane.setRowHeaderView(columnLineCounter);
 
         /**
-         * se aÃ±aden las etiquetas construidas al JPanel, el resultado es un
+         * se añaden las etiquetas construidas al JPanel, el resultado es un
          * panel similar a una barra de estado
          */
         columnLineCounter.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -756,15 +779,15 @@ public class Editor implements ActionListener {
     }
 
     /**
-     * Hace visible el menÃº emergente.
+     * Hace visible el menú emergente.
      *
-     * @param me evento del ratÃ³n
+     * @param me evento del ratón
      */
     private void showPopupMenu(MouseEvent me) {
         if (me.isPopupTrigger() == true) { // si el evento es el desencadenador
-            // de menÃº emergente
-            // hace visible el menÃº emergente en las coordenadas actuales del
-            // ratÃ³n
+            // de menú emergente
+            // hace visible el menú emergente en las coordenadas actuales del
+            // ratón
             jPopupMenu.show(me.getComponent(), me.getX(), me.getY());
         }
     }
@@ -778,7 +801,7 @@ public class Editor implements ActionListener {
         // averigua si se pueden rehacer los cambios en el documento actual
         boolean canRedo = undoManager.canRedo();
 
-        // activa o desactiva las opciones en la barra de menÃº
+        // activa o desactiva las opciones en la barra de menú
         mbItemUndo.setEnabled(canUndo);
         mbItemRedo.setEnabled(canRedo);
 
@@ -786,7 +809,7 @@ public class Editor implements ActionListener {
         buttonUndo.setEnabled(canUndo);
         buttonRedo.setEnabled(canRedo);
 
-        // activa o desactiva las opciones en el menÃº emergente
+        // activa o desactiva las opciones en el menú emergente
         mpItemUndo.setEnabled(canUndo);
         mpItemRedo.setEnabled(canRedo);
     }
@@ -827,9 +850,9 @@ public class Editor implements ActionListener {
 
     /**
      * Retorna la instancia de UndoManager, la cual administra las ediciones
-     * sobre el documento en el Ã�rea de texto.
+     * sobre el documento en el Área de texto.
      *
-     * @return el administrador de ediciÃ³n.
+     * @return el administrador de edición.
      */
     UndoManager getUndoManager() {
         return undoManager;
@@ -885,9 +908,9 @@ public class Editor implements ActionListener {
     }
 
     /**
-     * Retorna la instancia de JTextArea, el Ã�rea de ediciÃ³n.
+     * Retorna la instancia de JTextArea, el Área de edición.
      *
-     * @return retorna el Ã�rea de ediciÃ³n.
+     * @return retorna el Área de edición.
      */
     JTextArea getJTextArea() {
         return jTextArea;
@@ -926,7 +949,7 @@ public class Editor implements ActionListener {
 
     /**
      * Retorna la instancia de la etiqueta sbFilePath, donde se muestra la
-     * ubicaciÃ³n del archivo actual.
+     * ubicación del archivo actual.
      *
      * @return la instancia de la etiqueta sbFilePath
      */
@@ -936,7 +959,7 @@ public class Editor implements ActionListener {
 
     /**
      * Retorna la instancia de la etiqueta sbFileSize, donde se muestra el
-     * tamaÃ±o del archivo actual
+     * tamaño del archivo actual
      *
      * @return la instancia de la etiqueta sbFileSize
      */
@@ -997,119 +1020,122 @@ public class Editor implements ActionListener {
         private boolean keytyped = false;
 
         /**
-         * Atiende y maneja los eventos de acciÃ³n.
+         * Atiende y maneja los eventos de acción.
          *
-         * @param ae evento de acciÃ³n
+         * @param ae evento de acción
          */
         @Override
         public void actionPerformed(ActionEvent ae) {
             String ac = ae.getActionCommand(); // se obtiene el nombre del
             // comando ejecutado
 
-            if (ac.equals("cmd_new_asm") == true) { // opciÃ³n seleccionada:
+            if (ac.equals("cmd_new_asm") == true) { // opción seleccionada:
                 // "Nuevo"
                 setLanguajeType(LanguajeType.ASSEMBLER);
                 //jTextArea.setColumns(4);
                 actionPerformer.actionNew();
-            } else if (ac.equals("cmd_new_maq") == true) { // opciÃ³n
+            } else if (ac.equals("cmd_new_maq") == true) { // opción
                 // seleccionada:
                 // "Nuevo"
                 setLanguajeType(LanguajeType.MACHINE);
                 actionPerformer.actionNew();
-            } else if (ac.equals("cmd_open") == true) { // opciÃ³n seleccionada:
+            } else if (ac.equals("cmd_open") == true) { // opción seleccionada:
                 // "Abrir"
                 actionPerformer.actionOpen();
-            } else if (ac.equals("cmd_save") == true) { // opciÃ³n seleccionada:
+            } else if (ac.equals("cmd_save") == true) { // opción seleccionada:
                 // "Guardar"
                 actionPerformer.actionSave();
-            } else if (ac.equals("cmd_saveas") == true) { // opciÃ³n
+            } else if (ac.equals("cmd_saveas") == true) { // opción
                 // seleccionada:
                 // "Guardar como"
                 actionPerformer.actionSaveAs();
-            } else if (ac.equals("cmd_print") == true) { // opciÃ³n seleccionada:
+            } else if (ac.equals("cmd_print") == true) { // opción seleccionada:
                 // "Imprimir"
                 actionPerformer.actionPrint();
-            } else if (ac.equals("cmd_exit") == true) { // opciÃ³n seleccionada:
+            } else if (ac.equals("cmd_exit") == true) { // opción seleccionada:
                 // "Salir"
                 actionPerformer.actionExit();
-            } else if (ac.equals("cmd_undo") == true) { // opciÃ³n seleccionada:
+            } else if (ac.equals("cmd_undo") == true) { // opción seleccionada:
                 // "Deshacer"
                 actionPerformer.actionUndo();
-            } else if (ac.equals("cmd_redo") == true) { // opciÃ³n seleccionada:
+            } else if (ac.equals("cmd_redo") == true) { // opción seleccionada:
                 // "Rehacer"
                 actionPerformer.actionRedo();
-            } else if (ac.equals("cmd_cut") == true) { // opciÃ³n seleccionada:
+            } else if (ac.equals("cmd_cut") == true) { // opción seleccionada:
                 // "Cortar"
                 // corta el texto seleccionado en el documento
                 jTextArea.cut();
-            } else if (ac.equals("cmd_copy") == true) { // opciÃ³n seleccionada:
+            } else if (ac.equals("cmd_copy") == true) { // opción seleccionada:
                 // "Copiar"
                 // copia el texto seleccionado en el documento
                 jTextArea.copy();
-            } else if (ac.equals("cmd_paste") == true) { // opciÃ³n seleccionada:
+            } else if (ac.equals("cmd_paste") == true) { // opción seleccionada:
                 // "Pegar"
                 // pega en el documento el texto del portapapeles
                 jTextArea.paste();
-            } else if (ac.equals("cmd_gotoline") == true) { // opciÃ³n
+            } else if (ac.equals("cmd_gotoline") == true) { // opción
                 // seleccionada:
-                // "Ir a la lÃ­nea..."
+                // "Ir a la línea..."
                 actionPerformer.actionGoToLine();
-            } else if (ac.equals("cmd_search") == true) { // opciÃ³n
+            } else if (ac.equals("cmd_search") == true) { // opción
                 // seleccionada:
                 // "Buscar"
                 actionPerformer.actionSearch();
-            } else if (ac.equals("cmd_searchnext") == true) { // opciÃ³n
+            } else if (ac.equals("cmd_searchnext") == true) { // opción
                 // seleccionada:
                 // "Buscar siguiente"
                 actionPerformer.actionSearchNext();
-            } else if (ac.equals("cmd_selectall") == true) { // opciÃ³n
+            } else if (ac.equals("cmd_selectall") == true) { // opción
                 // seleccionada:
                 // "Seleccionar todo"
                 jTextArea.selectAll();
-            } else if (ac.equals("cmd_linewrap") == true) { // opciÃ³n
+            } else if (ac.equals("cmd_linewrap") == true) { // opción
                 // seleccionada:
-                // "Ajuste de lÃ­nea"
+                // "Ajuste de línea"
                 // si esta propiedad esta activada se desactiva, o lo inverso
                 jTextArea.setLineWrap(!jTextArea.getLineWrap());
                 jTextArea.setWrapStyleWord(!jTextArea.getWrapStyleWord());
-            } else if (ac.equals("cmd_showtoolbar") == true) { // opciÃ³n
+            } else if (ac.equals("cmd_showtoolbar") == true) { // opción
                 // seleccionada:
                 // "Ver barra de herramientas"
                 // si la barra de herramientas esta visible se oculta, o lo
                 // inverso
                 jToolBar.setVisible(!jToolBar.isVisible());
-            } else if (ac.equals("cmd_fixedtoolbar") == true) { // opciÃ³n
+            } else if (ac.equals("cmd_fixedtoolbar") == true) { // opción
                 // seleccionada:
                 // "Fijar barra de herramientas"
                 // si esta propiedad esta activada se desactiva, o lo inverso
                 jToolBar.setFloatable(!jToolBar.isFloatable());
-            } else if (ac.equals("cmd_showstatusbar") == true) { // opciÃ³n
+            } else if (ac.equals("cmd_showstatusbar") == true) { // opción
                 // seleccionada:
                 // "Ver barra de estado"
                 // si la barra de estado esta visible se oculta, o lo inverso
                 statusBar.setVisible(!statusBar.isVisible());
-            } else if (ac.equals("cmd_font") == true) { // opciÃ³n seleccionada:
+            } else if (ac.equals("cmd_font") == true) { // opción seleccionada:
                 // "Fuente de letra"
                 actionPerformer.actionSelectFont();
-            } else if (ac.equals("cmd_fontcolor") == true) { // opciÃ³n
+            } else if (ac.equals("cmd_fontcolor") == true) { // opción
                 // seleccionada:
                 // "Color de letra"
                 actionPerformer.actionSelectFontColor();
-            } else if (ac.equals("cmd_backgroundcolor") == true) { // opciÃ³n
+            } else if (ac.equals("cmd_backgroundcolor") == true) { // opción
                 // seleccionada:
                 // "Color de fondo"
                 actionPerformer.actionSelectBackgroundColor();
-            } else if (ac.equals("cmd_about") == true) { // opciÃ³n seleccionada:
+            } else if (ac.equals("cmd_about") == true) { // opción seleccionada:
                 // "Acerca de"
                 // presenta un dialogo modal con alguna informacion
                 JOptionPane.showMessageDialog(jFrame, "Generic Sim",
                         "Acerca de", JOptionPane.INFORMATION_MESSAGE);
-            } else if (ac.equals("cmd_compile") == true) { // opciÃ³n
+            } else if (ac.equals("cmd_compile") == true) { // opción
                 // seleccionada:
                 // "Compilar"
                 // presenta un dialogo modal con alguna informacion
             	actionPerformer.actionCompile();
-            } else if (ac.equals("cmd_translate") == true) {	// opciÃ³n
+            	/*problemPanel.setDividerLocation(lastproblemPanelLocation);
+            	problemPanel.setDividerSize(10);*/
+
+            } else if (ac.equals("cmd_translate") == true) {	// opción
                 // seleccionada:
                 // "Traducir"
                 enableTraslate();
@@ -1123,52 +1149,52 @@ public class Editor implements ActionListener {
          */
         @Override
         public void caretUpdate(CaretEvent e) {
-            final int caretPos; // valor de la posiciÃ³n del cursor sin
+            final int caretPos; // valor de la posición del cursor sin
             // inicializar
-            int y = 1; // valor de la lÃ­nea inicialmente en 1
+            int y = 1; // valor de la línea inicialmente en 1
             int x = 1; // valor de la columna inicialmente en 1
 
             try {
-                // obtiene la posiciÃ³n del cursor con respecto al inicio del
-                // JTextArea (Ã�rea de ediciÃ³n)
+                // obtiene la posición del cursor con respecto al inicio del
+                // JTextArea (Área de edición)
                 caretPos = jTextArea.getCaretPosition();
-                // sabiendo lo anterior se obtiene el valor de la lÃ­nea actual
+                // sabiendo lo anterior se obtiene el valor de la línea actual
                 // (se cuenta desde 0)
                 y = jTextArea.getLineOfOffset(caretPos);
 
                 /**
-                 * a la posiciÃ³n del cursor se le resta la posiciÃ³n del inicio
-                 * de la lÃ­nea para determinar el valor de la columna actual
+                 * a la posición del cursor se le resta la posición del inicio
+                 * de la línea para determinar el valor de la columna actual
                  */
                 x = caretPos - jTextArea.getLineStartOffset(y);
 
-                // al valor de la lÃ­nea actual se le suma 1 porque estas
+                // al valor de la línea actual se le suma 1 porque estas
                 // comienzan contÃ¡ndose desde 0
                 y += 1;
             } catch (BadLocationException ex) { // en caso de que ocurra una
-                // excepciÃ³n
+                // excepción
                 System.err.println(ex);
             }
 
             /**
-             * muestra la informaciÃ³n recolectada en la etiqueta sbCaretPos de
-             * la barra de estado, tambiÃ©n se incluye el nÃºmero total de lineas
+             * muestra la información recolectada en la etiqueta sbCaretPos de
+             * la barra de estado, también se incluye el número total de lineas
              */
             sbCaretPos.setText("Ln: " + jTextArea.getLineCount() + " - Col: "
                     + x);
         }
 
         /**
-         * Atiende y maneja los eventos sobre el documento en el Ã�rea de
-         * ediciÃ³n.
+         * Atiende y maneja los eventos sobre el documento en el Área de
+         * edición.
          *
-         * @param uee evento de ediciÃ³n
+         * @param uee evento de edición
          */
         @Override
         public void undoableEditHappened(UndoableEditEvent uee) {
             /**
-             * el cambio realizado en el Ã�rea de ediciÃ³n se guarda en el buffer
-             * del administrador de ediciÃ³n
+             * el cambio realizado en el Área de edición se guarda en el buffer
+             * del administrador de edición
              */
             undoManager.addEdit(uee.getEdit());
             updateControls(); // actualiza el estado de las opciones "Deshacer"
@@ -1178,10 +1204,10 @@ public class Editor implements ActionListener {
         }
 
         /**
-         * Atiende y maneja los eventos sobre el ratÃ³n cuando este es
+         * Atiende y maneja los eventos sobre el ratón cuando este es
          * presionado.
          *
-         * @param me evento del ratÃ³n
+         * @param me evento del ratón
          */
         @Override
         public void mousePressed(MouseEvent me) {
@@ -1211,9 +1237,9 @@ public class Editor implements ActionListener {
         }
 
         /**
-         * Atiende y maneja los eventos sobre el ratÃ³n cuando este es liberado.
+         * Atiende y maneja los eventos sobre el ratón cuando este es liberado.
          *
-         * @param me evento del ratÃ³n
+         * @param me evento del ratón
          */
         @Override
         public void mouseReleased(MouseEvent me) {
@@ -1242,8 +1268,8 @@ public class Editor implements ActionListener {
 
             char c = e.getKeyChar();
             if (c == '\n') {
-                // AcÃ¡ se buscarÃ­an en la base de datos de conocimientos para la
-                // ayuda en lÃ­nea
+                // AcÃ¡ se buscarían en la base de datos de conocimientos para la
+                // ayuda en línea
 
                 if (buttonTraducir.isSelected()) {
                     // traduce el nuevo texto

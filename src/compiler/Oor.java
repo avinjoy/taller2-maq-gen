@@ -2,12 +2,12 @@ package compiler;
 
 import compiler.Parameter.Type;
 
-public class Cpy extends Instruction {
+public class Oor extends Instruction {
 
-	final int CANT_PARAMETROS = 2;
-	final String HEXA = "40";
+	final int CANT_PARAMETROS = 3;
+	final String HEXA = "7";
 	
-	public Cpy(int lineNumber, String args){
+	public Oor(int lineNumber, String args){
 		super(lineNumber,args);
 		this.qParameters = CANT_PARAMETROS;
 		this.hexaInstruction = HEXA;

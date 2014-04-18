@@ -1,15 +1,15 @@
-package editor.exceptions;
+package compiler.exceptions;
 
 @SuppressWarnings("serial")
-public class InvalidArgumentException extends IllegalArgumentException {
+public class CompilationtException extends IllegalArgumentException {
 
 	private int lineNumber;
 
-	public InvalidArgumentException (String s) {
+	public CompilationtException (String s) {
         super (s);
     }
 
-    public InvalidArgumentException (String s, int lnNumber) {
+    public CompilationtException (String s, int lnNumber) {
         super (s);
         this.lineNumber = lnNumber;
     }

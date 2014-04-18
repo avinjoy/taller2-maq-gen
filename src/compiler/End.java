@@ -13,6 +13,8 @@ public class End extends Instruction {
 	}
 	
 	public String toHex() {
-		return "C000";
+		String asm = this.getMemoryAddress();
+		asm += " " + this.hexaInstruction + "000";		
+		return asm;
 	}
 }

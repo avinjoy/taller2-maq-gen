@@ -3,7 +3,7 @@ package compiler;
 public class Parameter {
 
 	public enum Type{
-		REGISTER, ADRRESS,INTEGER,FLOAT
+		REGISTER, ADRRESS,INTEGER,FLOAT,BYTEINTEGER
 	}
 	
 	public Type parameterType;
@@ -20,8 +20,10 @@ public class Parameter {
 		String value = "";
 		if (this.parameterType == Type.REGISTER)
 			value = Integer.toHexString(Integer.parseInt(this.value));
+		if (this.parameterType == Type.BYTEINTEGER)
+			value = "0" + Integer.toHexString(Integer.parseInt(this.value));
 		if (this.parameterType == Type.ADRRESS)
-			value = this.value;
+			value = this.value;		
 		return value;
 	}
 }
