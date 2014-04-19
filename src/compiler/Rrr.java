@@ -5,12 +5,16 @@ import compiler.Parameter.Type;
 public class Rrr extends Instruction {
 
 	final int CANT_PARAMETROS = 2;
-	final String HEXA = "A";
-	
-	public Rrr(int lineNumber, String args){
+	final static String HEXA = "A";
+	final static String ASSEMBLER = "rrr";
+
+	public Rrr(int lineNumber, String args, Language lang){
 		super(lineNumber,args);
 		this.qParameters = CANT_PARAMETROS;
 		this.hexaInstruction = HEXA;
+		this.asmInstruction = ASSEMBLER;
+		if (lang == Language.MACHINE)
+			this.translateArguments();		
 		this.validate();
 	}
 	
@@ -24,5 +28,12 @@ public class Rrr extends Instruction {
 			if (this.validateRegisterNumber(iArgument, arg))
 				this.parameters.add(new Parameter(iArgument, Type.BYTEINTEGER, arg));
 	};
+
+	private void translateArguments(){
+		String reg = this.args.substring(0,1);
+		Integer regInt = Integer.parseInt(reg, 16);
+		String integer = this.args.substring(2, 3);		
+		this.args = regInt.toString() + "," + integer;		
+	}
 
 }

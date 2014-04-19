@@ -26,4 +26,8 @@ public class Parameter {
 			value = this.value;		
 		return value;
 	}
+	
+	public String getValue(){
+		return this.value;		
+	}
 }

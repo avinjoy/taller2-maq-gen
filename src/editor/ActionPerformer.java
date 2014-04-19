@@ -25,8 +25,8 @@ import javax.swing.undo.CannotUndoException;
 
 import compiler.Parser;
 import compiler.ParserAssembler;
+import compiler.ParserMachineCode;
 import compiler.Scanner;
-
 import editor.Editor.LanguajeType;
 import editor.TextLineNumber.Mode;
  
@@ -514,7 +514,11 @@ public class ActionPerformer {
     
     public void actionCompile(){    	
     	String text = tpEditor.getJTextArea().getText();
-    	Parser parser = new ParserAssembler(new Scanner(text).getTokens());
+    	Parser parser;
+    	if (tpEditor.getLanguajeType() == LanguajeType.ASSEMBLER)
+    		parser = new ParserAssembler(new Scanner(text).getTokens());
+    	else
+    		parser = new ParserMachineCode(new Scanner(text).getTokens());
     	parser.compile();
     }
     

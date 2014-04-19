@@ -9,13 +9,16 @@ import compiler.exceptions.CompilationtException;
 
 public class Instruction {
 
+	public enum Language {ASSEMBLER,MACHINE};
 	protected List<Parameter> parameters; 
 	protected boolean valid = false;
 	protected String args;
 	protected List<CompilationtException> argumentExceptions;
 	protected int qParameters;
 	protected String hexaInstruction;
+	protected String asmInstruction;
 	protected int lineNumber;
+	protected Language lang;
 
 	public Instruction(){}
 	
@@ -26,6 +29,7 @@ public class Instruction {
 	}
 	
 	public Instruction (int lineNumber, String args){
+		this.lang = Language.ASSEMBLER;
 		this.args = args;
 		this.lineNumber = lineNumber;
 		this.parameters = new ArrayList<Parameter>();
@@ -84,7 +88,7 @@ public class Instruction {
 		}
 		else{
 			try{
-				Integer.parseInt(arg, 16);				
+				Integer.parseInt(arg, 16);
 				if (arg.compareTo("00") == 0 || arg.compareTo("FF") == 0 || arg.compareTo("FE") == 0 || arg.compareTo("FD") == 0){
 					this.argumentExceptions.add(new CompilationtException("La dirección de memoria "+ arg + " no puede ser utilizada"));
 					valid = false;
@@ -99,16 +103,6 @@ public class Instruction {
 		return valid;
 	};
 
-	public String toHex() {
-		String asm = this.getMemoryAddress();
-		asm += " " + this.hexaInstruction;
-		Iterator<Parameter> it = this.parameters.iterator();
-		while (it.hasNext()){
-			asm += it.next().getHexaValue();			
-		}								
-		return asm.toUpperCase();
-	}
-	
 	protected String getMemoryAddress(){
 		
 		String memAddress = "";
@@ -118,7 +112,26 @@ public class Instruction {
 		
 		return memAddress;		
 	} 
-	
-	public String toAsm(){return null;};
+
+	public String toHex() {
+		String hex = this.getMemoryAddress();
+		hex += " " + this.hexaInstruction;
+		Iterator<Parameter> it = this.parameters.iterator();
+		while (it.hasNext()){
+			hex += it.next().getHexaValue();			
+		}								
+		return hex.toUpperCase();
+	}
+		
+	public String toAsm(){
+		String asm = this.asmInstruction + " ";
+		Iterator<Parameter> it = this.parameters.iterator();
+		while (it.hasNext()){
+			asm += it.next().getValue().toUpperCase() + ",";			
+		}
+		if (this.parameters.size() > 0)
+			asm = asm.substring(0, asm.length()-1);
+		return asm;		
+	};
 
 }
