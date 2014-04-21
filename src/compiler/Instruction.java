@@ -28,8 +28,8 @@ public class Instruction {
 		this.argumentExceptions = new ArrayList<CompilationtException>();		
 	}
 	
-	public Instruction (int lineNumber, String args){
-		this.lang = Language.ASSEMBLER;
+	public Instruction (int lineNumber, String args, Language lang){
+		this.lang = lang;
 		this.args = args;
 		this.lineNumber = lineNumber;
 		this.parameters = new ArrayList<Parameter>();
@@ -68,7 +68,12 @@ public class Instruction {
 	protected boolean validateRegisterNumber(Integer iArgument, String arg){
 		boolean valid = true;
 		try {
-			Integer intArg = Integer.parseInt(arg);
+			Integer intArg = 0;
+			if (this.lang == Language.ASSEMBLER)
+				intArg = Integer.parseInt(arg);
+			else
+				intArg = Integer.parseInt(arg,16);
+			
 			if (intArg < 0 || intArg > 15){				
 				this.argumentExceptions.add(new CompilationtException("El valor del argumento #"+ iArgument.toString() + " (" + arg + ") es inválido"));
 				valid = false;
@@ -125,7 +130,7 @@ public class Instruction {
 		
 	public String toAsm(){
 		String asm = this.asmInstruction + " ";
-		Iterator<Parameter> it = this.parameters.iterator();
+		Iterator<Parameter> it = this.parameters.iterator();		
 		while (it.hasNext()){
 			asm += it.next().getValue().toUpperCase() + ",";			
 		}

@@ -28,6 +28,13 @@ public class Parameter {
 	}
 	
 	public String getValue(){
-		return this.value;		
+		String value = "";
+		if (this.parameterType == Type.REGISTER || this.parameterType == Type.BYTEINTEGER){
+			Integer sValue = Integer.parseInt(this.value, 16);
+			value = sValue.toString();
+		}
+		if (this.parameterType == Type.ADRRESS)
+			value = this.value;				
+		return value;		
 	}
 }

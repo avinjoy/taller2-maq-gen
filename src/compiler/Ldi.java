@@ -9,12 +9,11 @@ public class Ldi extends Instruction {
 	final static String ASSEMBLER = "ldi";
 
 	public Ldi(int lineNumber, String args, Language lang){
-		super(lineNumber,args);
+		super(lineNumber,args,lang);
 		this.qParameters = CANT_PARAMETROS;
 		this.hexaInstruction = HEXA;
 		this.asmInstruction = ASSEMBLER;		
-		if (lang == Language.MACHINE)
-			this.translateArguments();
+		this.parseMachineArguments();
 		this.validate();
 	}
 
@@ -28,11 +27,8 @@ public class Ldi extends Instruction {
 				this.parameters.add(new Parameter(iArgument, Type.ADRRESS, arg));
 	};
 	
-	private void translateArguments(){
-		String reg = this.args.substring(0,1);
-		Integer regInt = Integer.parseInt(reg, 16);
-		String memAddress = this.args.substring(1, 3);		
-		this.args = regInt.toString() + "," + memAddress;		
-	}
-
+	private void parseMachineArguments(){
+		if (lang == Language.MACHINE)
+			this.args = this.args.substring(0,1) + "," + this.args.substring(1,3);
+	}	
 }
