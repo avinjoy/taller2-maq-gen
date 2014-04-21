@@ -48,7 +48,7 @@ public class Instruction {
 			String arg = "";
 		
 			if (token.countTokens() != this.qParameters)
-				this.argumentExceptions.add(new CompilationtException("Cantidad erronea de argumentos"));
+				this.argumentExceptions.add(new CompilationtException("Cantidad erronea de argumentos", this.lineNumber));
 			else{
 				while (token.hasMoreTokens()){
 					iArgument++;
@@ -75,11 +75,11 @@ public class Instruction {
 				intArg = Integer.parseInt(arg,16);
 			
 			if (intArg < 0 || intArg > 15){				
-				this.argumentExceptions.add(new CompilationtException("El valor del argumento #"+ iArgument.toString() + " (" + arg + ") es inválido"));
+				this.argumentExceptions.add(new CompilationtException("El valor del argumento #"+ iArgument.toString() + " (" + arg + ") es inválido", this.lineNumber));
 				valid = false;
 			}
 		} catch (Exception ex) {
-			this.argumentExceptions.add(new CompilationtException("El argumento #"+ iArgument.toString() + " (" + arg + ") es inválido"));
+			this.argumentExceptions.add(new CompilationtException("El argumento #"+ iArgument.toString() + " (" + arg + ") es inválido", this.lineNumber));
 			valid = false;
 		}
 		return valid;
@@ -88,20 +88,20 @@ public class Instruction {
 	protected boolean validateMemoryAddress(Integer iArgument, String arg){
 		boolean valid = true;
 		if (arg.length() != 2){
-			this.argumentExceptions.add(new CompilationtException("La dirección de memoria "+ arg + " es inválida"));
+			this.argumentExceptions.add(new CompilationtException("La dirección de memoria "+ arg + " es inválida", this.lineNumber));
 			valid = false;
 		}
 		else{
 			try{
 				Integer.parseInt(arg, 16);
 				if (arg.compareTo("00") == 0 || arg.compareTo("FF") == 0 || arg.compareTo("FE") == 0 || arg.compareTo("FD") == 0){
-					this.argumentExceptions.add(new CompilationtException("La dirección de memoria "+ arg + " no puede ser utilizada"));
+					this.argumentExceptions.add(new CompilationtException("La dirección de memoria "+ arg + " no puede ser utilizada", this.lineNumber));
 					valid = false;
 				}
 			}
 			catch(Exception ex){
 				// Falla si pongo MM
-				this.argumentExceptions.add(new CompilationtException("La dirección de memoria "+ arg + " es inválida"));
+				this.argumentExceptions.add(new CompilationtException("La dirección de memoria "+ arg + " es inválida", this.lineNumber));
 				valid = false;
 			}
 		}

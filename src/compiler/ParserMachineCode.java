@@ -15,7 +15,7 @@ public class ParserMachineCode extends Parser {
 		
 	public Instruction parseInstruction(int lnNumber, String instr){
 		Instruction instruction = null;
-		int indexSpace = instr.indexOf(" ")!=-1?instr.indexOf(" ")+1:instr.length();
+		int indexSpace = instr.indexOf(" ")!=-1?instr.indexOf(" ")+1:instr.length()-1;
 		this.currentInstruction = instr.substring(indexSpace, indexSpace+1);
 		String args = instr.substring(indexSpace+1).trim();
 

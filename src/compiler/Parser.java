@@ -47,7 +47,7 @@ public class Parser {
 					this.invalid.addAll(instruction.argumentExceptions);	
 			}	
 			else{
-				this.invalid.add(new CompilationtException("Ln " + lnNumber.toString() + ": La instrucción " + this.currentInstruction + " es invalida"));
+				this.invalid.add(new CompilationtException("La instrucción " + this.currentInstruction + " es invalida", lnNumber));
 			}
 				
     	}			
