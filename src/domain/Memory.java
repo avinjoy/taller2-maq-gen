@@ -7,12 +7,17 @@ public class Memory {
 	private Vector<Byte> mem;
 	private Byte input;
 	private Byte output;
+	private static Memory INSTANCE = new Memory();
 	
-		
-	public Memory() {
-		super();
-		// TODO Auto-generated constructor stub
+	private Memory() {
+		this.mem = new Vector<Byte>();
+		this.cleanMemory();
 	}
+
+    public static Memory getInstance() {
+        return INSTANCE;
+    }
+    
 	public Vector<Byte> getMem() {
 		return mem;
 	}
@@ -32,6 +37,20 @@ public class Memory {
 		this.output = output;
 	}
 
+	public Byte getValue(Integer pos){
+		return this.mem.elementAt(pos);
+	}
+
+	public void setValue(Integer pos, Byte value){
+		this.mem.set(pos, value);
+	}
 	
+	private void cleanMemory(){
+		Byte bt = 0;
+		for (int i = 0; i < 255; i++) {
+			this.mem.add(bt);
+		}
+		
+	}
 
 }

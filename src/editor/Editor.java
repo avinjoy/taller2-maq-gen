@@ -614,6 +614,12 @@ public class Editor implements ActionListener {
                 "/editor/res/traslate.png")));
         buttonTraducir.setActionCommand("cmd_translate");
 
+        JButton buttonExecute = new JButton();
+        buttonExecute.setToolTipText("Ejecutar");
+        buttonExecute.setIcon(new ImageIcon(getClass().getResource(
+                "/editor/res/execute.png")));
+        buttonExecute.setActionCommand("cmd_execute");
+
         jToolBar.add(buttonNew); // se añaden los botones construidos a la barra
         // de herramientas
         jToolBar.add(buttonOpen);
@@ -632,6 +638,7 @@ public class Editor implements ActionListener {
         jToolBar.add(buttonCompile);
         jToolBar.addSeparator();
         jToolBar.add(buttonTraducir);
+        jToolBar.add(buttonExecute);
 
         /**
          * itera sobre todos los componentes de la barra de herramientas, se les
@@ -1033,11 +1040,13 @@ public class Editor implements ActionListener {
                 // "Nuevo"
                 setLanguajeType(LanguajeType.ASSEMBLER);
                 //jTextArea.setColumns(4);
+                errorParser = new NataliusErrorParser(); 
                 actionPerformer.actionNew();
             } else if (ac.equals("cmd_new_maq") == true) { // opción
                 // seleccionada:
                 // "Nuevo"
                 setLanguajeType(LanguajeType.MACHINE);
+                errorParser = new MachineErrorParser();
                 actionPerformer.actionNew();
             } else if (ac.equals("cmd_open") == true) { // opción seleccionada:
                 // "Abrir"
@@ -1139,7 +1148,11 @@ public class Editor implements ActionListener {
                 // seleccionada:
                 // "Traducir"
                 enableTraslate();
-            }
+	        } else if (ac.equals("cmd_execute") == true) {	// opción
+	        	// seleccionada:
+	        	// "Traducir"
+	        	actionPerformer.actionExecute();
+	        }            
         }
 
         /**

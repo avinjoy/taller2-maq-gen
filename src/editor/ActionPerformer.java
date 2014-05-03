@@ -27,6 +27,7 @@ import compiler.Parser;
 import compiler.ParserAssembler;
 import compiler.ParserMachineCode;
 import compiler.Scanner;
+import domain.ExecutionEngine;
 import editor.Editor.LanguajeType;
 import editor.TextLineNumber.Mode;
  
@@ -508,7 +509,7 @@ public class ActionPerformer {
      * @return el tamaño redondeado  
      */
     private static String roundFileSize(long length) {
-        //retorna el tama�o del archivo redondeado
+        //retorna el tamaño del archivo redondeado
         return (length < 1024) ? length + " bytes" : (length / 1024) + " Kbytes";
     }
     
@@ -520,6 +521,21 @@ public class ActionPerformer {
     	else
     		parser = new ParserMachineCode(new Scanner(text).getTokens());
     	parser.compile();
+    }
+ 
+    public void actionExecute(){
+    	String text = tpEditor.getJTextArea().getText();
+    	Parser parser;
+    	ExecutionEngine engine = new ExecutionEngine();
+    	if (tpEditor.getLanguajeType() == LanguajeType.ASSEMBLER)
+    		parser = new ParserAssembler(new Scanner(text).getTokens());
+    	else
+    		parser = new ParserMachineCode(new Scanner(text).getTokens());
+    	
+    	if (parser.getExceptions().size() == 0){
+    		engine.setParser(parser);
+    		engine.executeProgram();
+    	}
     }
     
 }

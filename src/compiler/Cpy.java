@@ -3,6 +3,8 @@ package compiler;
 import java.util.Iterator;
 
 import compiler.Parameter.Type;
+import domain.MemoryController;
+import domain.RegisterController;
 
 public class Cpy extends Instruction {
 
@@ -37,6 +39,12 @@ public class Cpy extends Instruction {
 			hex += it.next().getHexaValue();			
 		}								
 		return hex.toUpperCase();
+	}
+
+	public void execute(RegisterController regCtrl, MemoryController memCtrl){				
+		Integer regSourceNumber = Integer.parseInt(this.parameters.get(0).getValue());
+		Integer regDestinationNumber = Integer.parseInt(this.parameters.get(1).getValue());
+		regCtrl.setRegisterValue(regDestinationNumber, regCtrl.getRegisterValue(regSourceNumber));
 	}
 
 }

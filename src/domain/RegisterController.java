@@ -7,23 +7,17 @@ public class RegisterController {
 	private Vector<Register> reg;
 
 	public RegisterController() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public Vector<Register> getReg() {
-		return reg;
-	}
-
-	public void setReg(Vector<Register> reg) {
-		this.reg = reg;
+		this.reg = new Vector<Register>();
+		for (int i = 1; i < 16; i++) {			
+			this.reg.add(new Register(i));
+		}		
 	}
 	
-	public void setValueToRegister(Integer Pos, Byte value){
-		
+	public void setRegisterValue(Integer Pos, Byte value){
+		this.reg.elementAt(Pos).setValue(value);
 	}
 	
-	public Byte getValueFromRegister(Integer Pos){
-		return null;
+	public Byte getRegisterValue(Integer Pos){
+		return this.reg.elementAt(Pos).getValue();		
 	}
 }

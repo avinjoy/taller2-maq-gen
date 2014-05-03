@@ -1,6 +1,8 @@
 package compiler;
 
 import compiler.Parameter.Type;
+import domain.MemoryController;
+import domain.RegisterController;
 
 public class Stm extends Instruction {
 
@@ -31,4 +33,11 @@ public class Stm extends Instruction {
 		if (lang == Language.MACHINE)
 			this.args = this.args.substring(0,1) + "," + this.args.substring(1,3);
 	}
+	
+	public void execute(RegisterController regCtrl, MemoryController memCtrl){				
+		Integer regNumber = Integer.parseInt(this.parameters.get(0).getValue());
+		Integer memAddr = Integer.parseInt(this.parameters.get(1).getValue());
+		memCtrl.setValue(memAddr, regCtrl.getRegisterValue(regNumber));		
+	}
+
 }

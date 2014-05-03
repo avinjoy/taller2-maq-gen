@@ -6,9 +6,14 @@ public class Parameter {
 		REGISTER, ADRRESS,INTEGER,FLOAT,BYTEINTEGER
 	}
 	
+	public enum DataDir{
+		INPUT,OUTPUT
+	} 
+	
 	public Type parameterType;
 	private String value;
 	public int number;
+	private DataDir dataDirection;
 	
 	public Parameter(int number, Type pt, String val){
 		this.number = number;
@@ -36,5 +41,13 @@ public class Parameter {
 		if (this.parameterType == Type.ADRRESS)
 			value = this.value;				
 		return value;		
+	}
+
+	public DataDir getDataDirection() {
+		return dataDirection;
+	}
+
+	public void setDataDirection(DataDir dataDirection) {
+		this.dataDirection = dataDirection;
 	}
 }

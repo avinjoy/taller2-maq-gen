@@ -1,17 +1,17 @@
 package domain;
 
-import javax.swing.text.html.parser.Parser;
+import java.util.Iterator;
+
+import compiler.Instruction;
+import compiler.Parser;
 
 public class ExecutionEngine {
 
 	public ExecutionEngine() {
 		super();
-		// TODO Auto-generated constructor stub
-		
-		//Genera en memoria la lista de instrucciones (ver en donde va realmente)
-		
-		
-				
+		this.regControl = new RegisterController();
+		this.memControl = new MemoryController();
+		//Genera en memoria la lista de instrucciones (ver en donde va realmente)						
 	}
 	
 	private Byte currentInstruction;
@@ -58,7 +58,7 @@ public class ExecutionEngine {
 		this.nextInstruction = nextInstruction;
 	}
 	
-	public void nextIntruction(){
+	public void nextInstruction(){
 		
 	}
 	
@@ -66,4 +66,10 @@ public class ExecutionEngine {
 		
 	}
 
+	public void executeProgram(){
+		Iterator<Instruction> it = this.parser.getInstructions().iterator();
+		while (it.hasNext()){
+			((Instruction)it.next()).execute(this.regControl, this.memControl);
+		}			
+	}
 }

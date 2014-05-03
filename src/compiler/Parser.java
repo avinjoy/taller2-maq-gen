@@ -18,6 +18,10 @@ public class Parser {
 		return tokens;
 	}
 
+	public List<CompilationtException> getExceptions() {
+		return invalid;
+	}
+	
 	public List<Instruction> getInstructions() {
 		return instructions;
 	}

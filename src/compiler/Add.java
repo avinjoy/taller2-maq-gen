@@ -1,5 +1,6 @@
 package compiler;
 
+import compiler.Parameter.DataDir;
 import compiler.Parameter.Type;
 
 public class Add extends Instruction {
@@ -18,12 +19,20 @@ public class Add extends Instruction {
 	}
 	
 	public void validateArgument(Integer iArgument, String arg){
-		if (this.validateRegisterNumber(iArgument, arg))
-			this.parameters.add(new Parameter(iArgument, Type.REGISTER, arg));
+		Parameter param;
+		if (this.validateRegisterNumber(iArgument, arg)){
+			param = new Parameter(iArgument, Type.REGISTER, arg);
+			this.parameters.add(param);
+			if (iArgument == 1)
+				param.setDataDirection(DataDir.OUTPUT);
+			else
+				param.setDataDirection(DataDir.INPUT);
+		}
 	}
 
 	private void parseMachineArguments(){
 		if (lang == Language.MACHINE)
 			this.args = this.args.substring(0,1) + "," + this.args.substring(1,2) + "," + this.args.substring(2,3);
-	}	
+	}
+	
 }

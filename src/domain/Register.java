@@ -5,9 +5,8 @@ public class Register {
 	private Integer number;
 	private Byte value;
 	
-	public Register() {
-		super();
-		// TODO Auto-generated constructor stub
+	public Register(Integer registerNumber) {
+		this.number = registerNumber;
 	}
 
 	public Integer getNumber() {

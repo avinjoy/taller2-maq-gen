@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import compiler.exceptions.CompilationtException;
+import domain.MemoryController;
+import domain.RegisterController;
 
 public class Instruction {
 
@@ -139,4 +141,6 @@ public class Instruction {
 		return asm;		
 	};
 
+	public void execute(RegisterController regCtrl, MemoryController memCtrl){};
+	
 }

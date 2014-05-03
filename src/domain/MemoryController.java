@@ -3,11 +3,9 @@ package domain;
 public class MemoryController {
 	
 	private Memory mem;
-
 		
 	public MemoryController() {
-		super();
-		// TODO Auto-generated constructor stub
+		this.mem = Memory.getInstance();
 	}
 
 	public Memory getMem() {
@@ -19,16 +17,14 @@ public class MemoryController {
 	}
 	
 	public Byte getValue(Integer memPos){
-		return null;
+		return this.mem.getValue(memPos);
 	}
 	
-	public void setValue(Byte val){
-		
+	public void setValue(Integer memAddr, Byte value){
+		this.mem.setValue(memAddr, value);
 	}
 	
-	public void showCurrentState(){
-		
+	public void showCurrentState(){		
 	}
 	
-
 }
