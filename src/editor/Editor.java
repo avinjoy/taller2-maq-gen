@@ -274,7 +274,7 @@ public class Editor implements ActionListener {
         Timer timer = new Timer(2, this);
         timer.setRepeats(true);
         timer.start();
-        errorParser = new MachineErrorParser();
+        errorParser = new MachineErrorParser(jTextArea);
     }
 
     /**
@@ -881,10 +881,10 @@ public class Editor implements ActionListener {
     public void setLanguajeType(LanguajeType languajeType) {
         this.languajeType = languajeType;        
         if (languajeType == LanguajeType.MACHINE) {
-            errorParser = new MachineErrorParser();
+            errorParser = new MachineErrorParser(jTextArea);
             this.columnLineCounter.setMode(Mode.HEXADECIMAL);
         } else if (languajeType == LanguajeType.ASSEMBLER) {
-            errorParser = new NataliusErrorParser();
+            errorParser = new NataliusErrorParser(jTextArea);
             this.columnLineCounter.setMode(Mode.DECIMAL);
         }
     }
@@ -1013,7 +1013,7 @@ public class Editor implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        errorParser.checkError(jTextArea);
+        errorParser.checkError();
     }
 
     /**
@@ -1040,13 +1040,13 @@ public class Editor implements ActionListener {
                 // "Nuevo"
                 setLanguajeType(LanguajeType.ASSEMBLER);
                 //jTextArea.setColumns(4);
-                errorParser = new NataliusErrorParser(); 
+                errorParser = new NataliusErrorParser(jTextArea); 
                 actionPerformer.actionNew();
             } else if (ac.equals("cmd_new_maq") == true) { // opción
                 // seleccionada:
                 // "Nuevo"
                 setLanguajeType(LanguajeType.MACHINE);
-                errorParser = new MachineErrorParser();
+                errorParser = new MachineErrorParser(jTextArea);
                 actionPerformer.actionNew();
             } else if (ac.equals("cmd_open") == true) { // opción seleccionada:
                 // "Abrir"

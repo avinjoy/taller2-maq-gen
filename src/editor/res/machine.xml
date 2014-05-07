@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<machine>
+    <command>
+        <parameter>
+            <pattern>[\da-fA-F]{2} </pattern>
+            <message>El primer argumento corresponde a la memoria y solo hay disponible 256 posiciones de memoria (El valor debe ser hexadecimal)</message>
+        </parameter>
+        <parameter>
+            <pattern>[\da-fA-F]{4}($| )</pattern>
+            <message>El segundo argumento corresponde a la instrucción y solo puede tener 4 caracteres en hexadecimal</message>
+        </parameter>
+    </command>
+</machine>
