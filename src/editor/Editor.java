@@ -1,5 +1,7 @@
 package editor;
 
+import domain.Console;
+import editor.TextLineNumber.Mode;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -54,7 +56,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Highlighter;
 import javax.swing.undo.UndoManager;
 
-import editor.TextLineNumber.Mode;
 
 /**
  * Clase principal donde se construye la GUI del editor.
@@ -128,6 +129,8 @@ public class Editor implements ActionListener {
     private int lastdividerPosition;
     //private int lastproblemPanelLocation;
     private ErrorParser errorParser;
+    
+    private EditorConsole console;
 
     /**
      * Punto de entrada del programa.
@@ -1295,6 +1298,11 @@ public class Editor implements ActionListener {
                 autoSuggestor.checkForAndShowSuggestions();
             }
         }
+    }
+    
+    public Console getConsole(){
+        
+        return console;
     }
 
 }

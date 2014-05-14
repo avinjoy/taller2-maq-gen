@@ -22,13 +22,14 @@ public class ParserMachineCode extends Parser {
 		// Verifica que las instrucciones tengan 2 bytes
 		if (instr.substring(indexSpace).length() == 4){
 			if (this.currentInstruction.compareTo(Ldm.HEXA) == 0){
-				instruction = new Ldm(lnNumber, args, Language.MACHINE);
+				instruction = new Ldm(lnNumber, args, Language.MACHINE,console);
+                                
 			}
 			if (this.currentInstruction.compareTo(Ldi.HEXA) == 0){
 				instruction = new Ldi(lnNumber, args, Language.MACHINE);
 			}
 			if (this.currentInstruction.compareTo(Stm.HEXA) == 0){
-				instruction = new Stm(lnNumber, args, Language.MACHINE);
+				instruction = new Stm(lnNumber, args, Language.MACHINE, console);
 			}
 			if (this.currentInstruction.compareTo(Cpy.HEXA) == 0){
 				instruction = new Cpy(lnNumber, args, Language.MACHINE);

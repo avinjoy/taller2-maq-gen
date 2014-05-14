@@ -13,6 +13,7 @@ public class ParserAssembler extends Parser {
 		this.parse();
 	}
 	
+        @Override
 	public Instruction parseInstruction(int lnNumber, String instr){
 
 		Instruction instruction = null;
@@ -21,13 +22,13 @@ public class ParserAssembler extends Parser {
 		String args = instr.substring(indexSpace).trim();
 		
 		if (this.currentInstruction.compareTo(Ldm.ASSEMBLER) == 0){
-			instruction = new Ldm(lnNumber, args, Language.ASSEMBLER);
+			instruction = new Ldm(lnNumber, args, Language.ASSEMBLER,console);
 		}
 		if (this.currentInstruction.compareTo(Ldi.ASSEMBLER) == 0){
 			instruction = new Ldi(lnNumber, args, Language.ASSEMBLER);
 		}
 		if (this.currentInstruction.compareTo(Stm.ASSEMBLER) == 0){
-			instruction = new Stm(lnNumber, args, Language.ASSEMBLER);
+			instruction = new Stm(lnNumber, args, Language.ASSEMBLER,console);
 		}
 		if (this.currentInstruction.compareTo(Cpy.ASSEMBLER) == 0){
 			instruction = new Cpy(lnNumber, args, Language.ASSEMBLER);
@@ -59,14 +60,15 @@ public class ParserAssembler extends Parser {
 		return instruction;
 	}
 
+        @Override
 	public void compile() {		
 		Iterator<Instruction> it = this.instructions.iterator();
 		Iterator<CompilationtException> itex = this.invalid.iterator();
 		while (it.hasNext()){
-			System.out.printf(((Instruction)it.next()).toHex()+"\n");
+			System.out.printf(it.next().toHex()+"\n");
 		}
 		while (itex.hasNext()){
-			System.out.printf(((CompilationtException)itex.next()).getMessage()+"\n");			
+			System.out.printf(itex.next().getMessage()+"\n");			
 		}
 	}
 

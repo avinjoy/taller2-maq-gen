@@ -59,11 +59,11 @@ public class JFontChooser extends JComponent {
     }
  
     /**
-     * MÈtodo est·tico que construye e inicializa la clase JFontChooser para presentar al 
-     * usuario el dialogo de selecciÛn de fuente.
+     * M√©todo est√°tico que construye e inicializa la clase JFontChooser para presentar al 
+     * usuario el dialogo de selecci√≥n de fuente.
      * 
      * @param owner la ventana padre
-     * @param title el tÌtulo de la ventana
+     * @param title el t√≠tulo de la ventana
      * @param initialFont el fuente inicial
      * 
      * @return el fuente seleccionado
@@ -71,7 +71,7 @@ public class JFontChooser extends JComponent {
     public static Font showDialog(Frame owner, String title, Font initialFont) {
         JFontChooser fontChooser = new JFontChooser(initialFont);    //construye una instancia de JFontChooser
  
-        //construye el dialogo de selecciÛn de fuente sobre la ventana padre
+        //construye el dialogo de selecci√≥n de fuente sobre la ventana padre
         JDialog dialog = new FontChooserDialog(owner, title, fontChooser);
         dialog.setVisible(true);    //hace visible el dialogo
  
@@ -111,13 +111,13 @@ class FontChooserDialog extends JDialog {
  
     private JTextField textFieldNames;     //campo de texto para el nombre del fuente
     private JTextField textFieldStyles;    //campo de texto para el estilo del fuente
-    private JTextField textFieldSizes;     //campo de texto para el tamaÒo del fuente
+    private JTextField textFieldSizes;     //campo de texto para el tama√±o del fuente
     @SuppressWarnings("rawtypes")
 	private JList listFontNames;     //lista para nombres de fuente
     @SuppressWarnings("rawtypes")
 	private JList listFontStyles;    //lista para estilos de fuente
     @SuppressWarnings("rawtypes")
-	private JList listFontSizes;     //lista para tamaÒos de fuente
+	private JList listFontSizes;     //lista para tama√±os de fuente
     private JLabel textExample;    //etiqueta que muestra un ejemplo del fuente seleccionado
     //arreglo con nombres de fuente disponibles
     private static final String[] FONT_NAMES = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
@@ -125,7 +125,7 @@ class FontChooserDialog extends JDialog {
     private static final String[] FONT_STYLES = {
         "Normal", "Bold", "Italic", "Bold Italic"
     };
-    //arreglo con tamaÒos de fuente
+    //arreglo con tama√±os de fuente
     private static final String[] FONT_SIZES = {
         "8", "9", "10", "11", "12", "13", "14", "16", "18", "20", "24", "28", "32", "48", "72"
     };
@@ -142,8 +142,8 @@ class FontChooserDialog extends JDialog {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public FontChooserDialog(Frame owner, String title, final JFontChooser jFontChooser) {
-        /** invoca el constructor de la superclase para establecer la ventana padre, el tÌtulo 
-        de la ventana, y que ser· una ventana modal */
+        /** invoca el constructor de la superclase para establecer la ventana padre, el t√≠tulo 
+        de la ventana, y que ser√° una ventana modal */
         super(owner, title, true);
  
         final EventHandler eventHandler = new EventHandler();    //construye una instancia de EventHandler
@@ -164,21 +164,21 @@ class FontChooserDialog extends JDialog {
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        cp.add(label1, gbc);    //aÒade la etiqueta, coordenadas X:1 - Y:1
+        cp.add(label1, gbc);    //a√±ade la etiqueta, coordenadas X:1 - Y:1
  
         JLabel label2 = new JLabel("Style:");    //construye la etiqueta "Style:"
         gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        cp.add(label2, gbc);    //aÒade la etiqueta, coordenadas X:2 - Y:1
+        cp.add(label2, gbc);    //a√±ade la etiqueta, coordenadas X:2 - Y:1
  
         JLabel label3 = new JLabel("Size:");    //construye la etiqueta "Size:"
         gbc.gridx = 3;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        cp.add(label3, gbc);    //aÒade la etiqueta, coordenadas X:3 - Y:1
+        cp.add(label3, gbc);    //a√±ade la etiqueta, coordenadas X:3 - Y:1
  
         textFieldNames = new JTextField("");    //construye el campo de texto para el nombre del fuente
         int fixedWidth = textFieldNames.getPreferredSize().width;
@@ -192,7 +192,7 @@ class FontChooserDialog extends JDialog {
         gbc.gridy = 2;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        cp.add(textFieldNames, gbc);    //aÒade el campo de texto, coordenadas X:1 - Y:2
+        cp.add(textFieldNames, gbc);    //a√±ade el campo de texto, coordenadas X:1 - Y:2
  
         textFieldStyles = new JTextField("");    //construye el campo de texto para el estilo del fuente
         fixedWidth = textFieldStyles.getPreferredSize().width;
@@ -206,9 +206,9 @@ class FontChooserDialog extends JDialog {
         gbc.gridy = 2;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        cp.add(textFieldStyles, gbc);    //aÒade el campo de texto, coordenadas X:2 - Y:2
+        cp.add(textFieldStyles, gbc);    //a√±ade el campo de texto, coordenadas X:2 - Y:2
  
-        textFieldSizes = new JTextField("");    //construye el campo de texto para el tamaÒo del fuente
+        textFieldSizes = new JTextField("");    //construye el campo de texto para el tama√±o del fuente
         fixedWidth = textFieldSizes.getPreferredSize().width;
         fixedSize = new Dimension(fixedWidth, 20);
         textFieldSizes.setMinimumSize(fixedSize);
@@ -220,7 +220,7 @@ class FontChooserDialog extends JDialog {
         gbc.gridy = 2;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        cp.add(textFieldSizes, gbc);    //aÒade el campo de texto, coordenadas X:3 - Y:2
+        cp.add(textFieldSizes, gbc);    //a√±ade el campo de texto, coordenadas X:3 - Y:2
  
         listFontNames = new JList(FONT_NAMES);    //construye la lista para nombres de fuente
         jScrollPane = new JScrollPane(listFontNames);
@@ -232,7 +232,7 @@ class FontChooserDialog extends JDialog {
         gbc.gridy = 3;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        cp.add(jScrollPane, gbc);    //aÒade la lista, coordenadas X:1 - Y:3
+        cp.add(jScrollPane, gbc);    //a√±ade la lista, coordenadas X:1 - Y:3
  
         listFontStyles = new JList(FONT_STYLES);    //construye la lista para estilos de fuente
         jScrollPane = new JScrollPane(listFontStyles);
@@ -244,19 +244,19 @@ class FontChooserDialog extends JDialog {
         gbc.gridy = 3;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        cp.add(jScrollPane, gbc);    //aÒade la lista, coordenadas X:2 - Y:3
+        cp.add(jScrollPane, gbc);    //a√±ade la lista, coordenadas X:2 - Y:3
  
-        listFontSizes = new JList(FONT_SIZES);    //construye la lista para tamaÒos de fuente
+        listFontSizes = new JList(FONT_SIZES);    //construye la lista para tama√±os de fuente
         jScrollPane = new JScrollPane(listFontSizes);
         String fontSize = String.valueOf(jFontChooser.getInitialFont().getSize());
-        listFontSizes.setSelectedValue(fontSize, true);    //selecciona el tamaÒo de fuente inicial
+        listFontSizes.setSelectedValue(fontSize, true);    //selecciona el tama√±o de fuente inicial
         textFieldSizes.setText(fontSize);
         listFontSizes.addListSelectionListener(eventHandler);
         gbc.gridx = 3;
         gbc.gridy = 3;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        cp.add(jScrollPane, gbc);    //aÒade la lista, coordenadas X:3 - Y:3
+        cp.add(jScrollPane, gbc);    //a√±ade la lista, coordenadas X:3 - Y:3
  
         textExample = new JLabel("AaBaCcDdEeFfGgHhJj");        //construye la etiqueta para mostrar un ejemplo del fuente seleccionado 
         textExample.setHorizontalAlignment(JLabel.CENTER);
@@ -274,19 +274,19 @@ class FontChooserDialog extends JDialog {
         gbc.gridy = 4;
         gbc.gridwidth = 3;
         gbc.gridheight = 1;
-        cp.add(textExample, gbc);    //aÒade la etiqueta, coordenadas X:1 - Y:4
+        cp.add(textExample, gbc);    //a√±ade la etiqueta, coordenadas X:1 - Y:4
  
         JPanel jp = new JPanel();                        //construye un panel para los botones
-        JButton buttonOk = new JButton("Ok");            //construye el botÛn de aceptar
-        JButton buttonCancel = new JButton("Cancel");    //construye el botÛn de cancelar
-        jp.add(buttonOk);                                //aÒade los botones al panel
+        JButton buttonOk = new JButton("Ok");            //construye el bot√≥n de aceptar
+        JButton buttonCancel = new JButton("Cancel");    //construye el bot√≥n de cancelar
+        jp.add(buttonOk);                                //a√±ade los botones al panel
         jp.add(buttonCancel);
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 1;
         gbc.gridy = 5;
-        cp.add(jp, gbc);    //aÒade el panel, coordenadas X:1 - Y:5
+        cp.add(jp, gbc);    //a√±ade el panel, coordenadas X:1 - Y:5
  
-        //asigna un manejador de eventos para el botÛn de cancelar
+        //asigna un manejador de eventos para el bot√≥n de cancelar
         buttonOk.addActionListener(new ActionListener() {
  
             @Override
@@ -297,7 +297,7 @@ class FontChooserDialog extends JDialog {
             }
         });
  
-        //asigna un manejador de eventos para el botÛn de cancelar
+        //asigna un manejador de eventos para el bot√≥n de cancelar
         buttonCancel.addActionListener(new ActionListener() {
  
             @Override
@@ -327,13 +327,13 @@ class FontChooserDialog extends JDialog {
         });
  
         setResizable(false);              //no se permite redimensionar la ventana
-        pack();                           //se le da el tamaÒo preferido
+        pack();                           //se le da el tama√±o preferido
         setLocationRelativeTo(owner);     //la ventana se centra sobre el editor de texto
     }
  
     /**
-     * Retorna el fuente seleccionado por el usuario. Es el producto resultante de la elecciÛn de 
-     * un tipo, un estilo y un tamaÒo
+     * Retorna el fuente seleccionado por el usuario. Es el producto resultante de la elecci√≥n de 
+     * un tipo, un estilo y un tama√±o
      * 
      * @return el fuente seleccionado.
      */
@@ -342,7 +342,7 @@ class FontChooserDialog extends JDialog {
             //retorna el fuente seleccionado en el dialogo
             return new Font(String.valueOf(listFontNames.getSelectedValue()), listFontStyles.getSelectedIndex(),
                             Integer.parseInt(String.valueOf(listFontSizes.getSelectedValue())));
-        } catch (NumberFormatException nfe) {    //en caso de que ocurra una excepciÛn
+        } catch (NumberFormatException nfe) {    //en caso de que ocurra una excepci√≥n
             System.err.println(nfe);
         }
         return null;    //retorna null
@@ -350,7 +350,7 @@ class FontChooserDialog extends JDialog {
  
     /**
      * Clase interna que extiende e implementa las clases e interfaces necesarias para 
-     * atender y manejar los eventos sobre la ventana de selecciÛn de fuente.
+     * atender y manejar los eventos sobre la ventana de selecci√≥n de fuente.
      */
     class EventHandler extends KeyAdapter implements Comparator<String>,
                                                      ListSelectionListener {
@@ -369,48 +369,48 @@ class FontChooserDialog extends JDialog {
  
             //se averigua en que campo de texto se ah ejecutado el evento
             if (eventTField == textFieldNames) {    //si el campo de texto es textFieldNames
-                //obtiene el Ìndice del proximo elemento en la lista que coincida con el contenido del campo de texto
+                //obtiene el √≠ndice del proximo elemento en la lista que coincida con el contenido del campo de texto
                 int index = listFontNames.getNextMatch(text, 0, Position.Bias.Forward);
  
-                if (index > -1) {    //si el Ìndice es mayor que -1
-                    /** realiza una b˙squeda binaria sobre el arreglo de nombres de fuente, se utiliza
+                if (index > -1) {    //si el √≠ndice es mayor que -1
+                    /** realiza una b√∫squeda binaria sobre el arreglo de nombres de fuente, se utiliza
                     esta clase como comparador implementando la interface Comparator */
                     if (Arrays.binarySearch(FONT_NAMES, text, this) > -1) //si el resultado es mayor que -1
                     {
-                        listFontNames.setSelectedIndex(index);    //selecciona el Ìndice
+                        listFontNames.setSelectedIndex(index);    //selecciona el √≠ndice
                     }
  
-                    listFontNames.ensureIndexIsVisible(index);    //hace el Ìndice visible en la lista
+                    listFontNames.ensureIndexIsVisible(index);    //hace el √≠ndice visible en la lista
                 }
             } else if (eventTField == textFieldStyles) {    //si el campo de texto es textFieldStyles
-                //obtiene el Ìndice del proximo elemento en la lista que coincida con el contenido del campo de texto
+                //obtiene el √≠ndice del proximo elemento en la lista que coincida con el contenido del campo de texto
                 int index = listFontStyles.getNextMatch(text, 0, Position.Bias.Forward);
  
-                if (index > -1) {    //si el Ìndice es mayor que -1
+                if (index > -1) {    //si el √≠ndice es mayor que -1
                     //itera sobre los elementos en el arreglo de estilos de fuente
                     for (int i = 0 ; i < FONT_STYLES.length ; i++) {
                         //si el contenido del campo de texto es igual al elemento actual
                         if (text.equalsIgnoreCase(FONT_STYLES[i]) == true) {
-                            listFontStyles.setSelectedIndex(index);    //selecciona el Ìndice
+                            listFontStyles.setSelectedIndex(index);    //selecciona el √≠ndice
                         }
                     }
  
-                    listFontStyles.ensureIndexIsVisible(index);    //hace el Ìndice visible en la lista
+                    listFontStyles.ensureIndexIsVisible(index);    //hace el √≠ndice visible en la lista
                 }
             } else if (eventTField == textFieldSizes) {    //si el campo de texto es textFieldSizes
-                //obtiene el Ìndice del proximo elemento en la lista que coincida con el contenido del campo de texto
+                //obtiene el √≠ndice del proximo elemento en la lista que coincida con el contenido del campo de texto
                 int index = listFontSizes.getNextMatch(text, 0, Position.Bias.Forward);
  
-                if (index > -1) {    //si el Ìndice es mayor que -1
-                    //itera sobre los elementos en el arreglo de tamaÒos de fuente
+                if (index > -1) {    //si el √≠ndice es mayor que -1
+                    //itera sobre los elementos en el arreglo de tama√±os de fuente
                     for (int i = 0 ; i < FONT_SIZES.length ; i++) {
                         //si el contenido del campo de texto es igual al elemento actual
                         if (text.equalsIgnoreCase(FONT_SIZES[i]) == true) {
-                            listFontSizes.setSelectedIndex(index);    //selecciona el Ìndice
+                            listFontSizes.setSelectedIndex(index);    //selecciona el √≠ndice
                         }
                     }
  
-                    listFontSizes.ensureIndexIsVisible(index);    //hace el Ìndice visible en la lista
+                    listFontSizes.ensureIndexIsVisible(index);    //hace el √≠ndice visible en la lista
                 }
             }
  
@@ -419,7 +419,7 @@ class FontChooserDialog extends JDialog {
         }
  
         /**
-         * ComparaciÛn lexicogr·fica de dos cadenas de texto ignorando may˙sculas.
+         * Comparaci√≥n lexicogr√°fica de dos cadenas de texto ignorando may√∫sculas.
          * 
          * @param string1 una cadena de texto
          * @param string2 otra cadena de texto
@@ -427,14 +427,14 @@ class FontChooserDialog extends JDialog {
          */
         @Override
         public int compare(String string1, String string2) {
-            //compara dos cadenas de texto ignorando may˙sculas
+            //compara dos cadenas de texto ignorando may√∫sculas
             return string1.compareToIgnoreCase(string2);
         }
  
         /**
-         * Atiende y maneja los eventos de selecciÛn en las listas de la ventana.
+         * Atiende y maneja los eventos de selecci√≥n en las listas de la ventana.
          * 
-         * @param lse evento de selecciÛn en una lista
+         * @param lse evento de selecci√≥n en una lista
          */
         @Override
         public void valueChanged(ListSelectionEvent lse) {
