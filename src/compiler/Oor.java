@@ -1,6 +1,8 @@
 package compiler;
 
 import compiler.Parameter.Type;
+import domain.MemoryController;
+import domain.RegisterController;
 
 public class Oor extends Instruction {
 
@@ -25,5 +27,13 @@ public class Oor extends Instruction {
 	private void parseMachineArguments(){
 		if (lang == Language.MACHINE)
 			this.args = this.args.substring(0,1) + "," + this.args.substring(1,2) + "," + this.args.substring(2,3);
-	}	
+	}
+        
+        public void execute(RegisterController regCtrl, MemoryController memCtrl){				
+		Integer regOneNumber = Integer.parseInt(this.parameters.get(1).getValue());
+		Integer regTwoNumber = Integer.parseInt(this.parameters.get(2).getValue());
+                Integer regDestinationNumber = Integer.parseInt(this.parameters.get(0).getValue());
+                Byte orOperator = (byte)(regCtrl.getRegisterValue(regTwoNumber) | regCtrl.getRegisterValue(regOneNumber));
+                regCtrl.setRegisterValue(regDestinationNumber, orOperator);
+	}
 }
