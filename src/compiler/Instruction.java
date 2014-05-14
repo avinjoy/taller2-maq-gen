@@ -109,7 +109,30 @@ public class Instruction {
 		}
 		return valid;
 	};
-
+	
+	protected boolean validateInteger(Integer iArgument, String arg){
+		boolean valid = true;
+		Integer value = 0;
+		if (arg.length() != 2){
+			this.argumentExceptions.add(new CompilationtException("El valor ingresado "+ arg + " es inválido", this.lineNumber));
+			valid = false;
+		}
+		else{
+			try{
+				value = Integer.parseInt(arg, 16);
+				if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE){
+					this.argumentExceptions.add(new CompilationtException("El entero ingresado "+ value.toString() + " es inválido", this.lineNumber));
+					valid = false;										
+				}					
+			}
+			catch(Exception ex){
+				// Falla si pongo MM
+				this.argumentExceptions.add(new CompilationtException("El valor ingresado "+ arg + " es inválido", this.lineNumber));				valid = false;
+			}
+		}
+		return valid;
+	} 
+	
 	protected String getMemoryAddress(){
 		
 		String memAddress = "";

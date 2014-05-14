@@ -70,6 +70,8 @@ public class ExecutionEngine {
 		Iterator<Instruction> it = this.parser.getInstructions().iterator();
 		while (it.hasNext()){
 			((Instruction)it.next()).execute(this.regControl, this.memControl);
-		}			
+		}
+		this.regControl.getRecordValues();
+		this.memControl.showCurrentState();
 	}
 }

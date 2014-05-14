@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 public class Memory {
@@ -49,8 +50,13 @@ public class Memory {
 		Byte bt = 0;
 		for (int i = 0; i < 255; i++) {
 			this.mem.add(bt);
-		}
-		
+		}		
 	}
 
+	public void getRecordValues(){
+		Iterator<Byte> it = this.mem.iterator();
+		while (it.hasNext()){
+			System.out.printf(((Byte)it.next()).toString());
+		}		
+	}
 }

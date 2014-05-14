@@ -25,8 +25,8 @@ public class Ldi extends Instruction {
 				this.parameters.add(new Parameter(iArgument, Type.REGISTER, arg));
 		}
 		else
-			if (this.validateMemoryAddress(iArgument, arg))
-				this.parameters.add(new Parameter(iArgument, Type.ADRRESS, arg));
+			if (this.validateInteger(iArgument, arg))
+				this.parameters.add(new Parameter(iArgument, Type.INTEGER, arg));
 	};
 	
 	private void parseMachineArguments(){
@@ -35,8 +35,9 @@ public class Ldi extends Instruction {
 	}
 	
 	public void execute(RegisterController regCtrl, MemoryController memCtrl){				
-		Integer regNumber = Integer.parseInt(this.parameters.get(0).getValue());
-		Byte value = Byte.valueOf(this.parameters.get(1).getValue());
+		Integer regNumber = Integer.parseInt(this.parameters.get(0).getValue());		
+		Integer intValue = Integer.parseInt(this.parameters.get(1).getValue(),16);
+		Byte value = Byte.valueOf(intValue.toString());
 		regCtrl.setRegisterValue(regNumber, value);
 	}
 	

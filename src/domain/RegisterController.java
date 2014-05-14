@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 public class RegisterController {
@@ -19,5 +20,12 @@ public class RegisterController {
 	
 	public Byte getRegisterValue(Integer Pos){
 		return this.reg.elementAt(Pos).getValue();		
+	}
+	
+	public void getRecordValues(){
+		Iterator<Register> it = this.reg.iterator();
+		while (it.hasNext()){
+			System.out.printf(((Register)it.next()).toString()+"\n");
+		}		
 	}
 }

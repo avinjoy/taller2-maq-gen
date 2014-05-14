@@ -1,5 +1,6 @@
 package domain;
 
+
 public class MemoryController {
 	
 	private Memory mem;
@@ -24,7 +25,8 @@ public class MemoryController {
 		this.mem.setValue(memAddr, value);
 	}
 	
-	public void showCurrentState(){		
+	public void showCurrentState(){
+		this.mem.getRecordValues();
 	}
-	
+
 }

@@ -3,7 +3,7 @@ package domain;
 public class Register {
 
 	private Integer number;
-	private Byte value;
+	private Byte value = 0;
 	
 	public Register(Integer registerNumber) {
 		this.number = registerNumber;
@@ -25,5 +25,7 @@ public class Register {
 		this.value = value;
 	}
 	
-	
+	public String toString(){		
+		return "Reg #" + this.number.toString() + " " + this.value.toString();
+	}
 }

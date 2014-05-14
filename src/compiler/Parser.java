@@ -1,12 +1,13 @@
 package compiler;
 
-import compiler.exceptions.CompilationtException;
-import domain.Console;
-import domain.Observable;
-import domain.Observer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import compiler.exceptions.CompilationtException;
+
+import domain.Console;
+import domain.Observer;
 
 public class Parser {
 
@@ -58,27 +59,16 @@ public class Parser {
             }
 
         }
-    }
-
-    ;
+    };
 	
 	public Instruction parseInstruction(int lnNumber, String instr) {
         return null;
-    }
-
-    ;
-	public void compile() {
-    }
-
-    ;
-	public void transalate() {
-    }
-
-    ;
-
+    };
+    
+	public void compile() {};
+	public void transalate() {};
         
-    public void setConsole(Console c){
-        
+    public void setConsole(Console c){        
         console = c;
     }
 

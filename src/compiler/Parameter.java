@@ -27,14 +27,14 @@ public class Parameter {
 			value = Integer.toHexString(Integer.parseInt(this.value));
 		if (this.parameterType == Type.BYTEINTEGER)
 			value = "0" + Integer.toHexString(Integer.parseInt(this.value));
-		if (this.parameterType == Type.ADRRESS)
+		if (this.parameterType == Type.ADRRESS || this.parameterType == Type.INTEGER)
 			value = this.value;		
 		return value;
 	}
 	
 	public String getValue(){
 		String value = "";
-		if (this.parameterType == Type.REGISTER || this.parameterType == Type.BYTEINTEGER){
+		if (this.parameterType == Type.REGISTER || this.parameterType == Type.BYTEINTEGER || this.parameterType == Type.INTEGER){
 			Integer sValue = Integer.parseInt(this.value, 16);
 			value = sValue.toString();
 		}
