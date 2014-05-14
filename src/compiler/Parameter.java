@@ -34,11 +34,11 @@ public class Parameter {
 	
 	public String getValue(){
 		String value = "";
-		if (this.parameterType == Type.REGISTER || this.parameterType == Type.BYTEINTEGER || this.parameterType == Type.INTEGER){
+		if (this.parameterType == Type.BYTEINTEGER || this.parameterType == Type.INTEGER){
 			Integer sValue = Integer.parseInt(this.value, 16);
 			value = sValue.toString();
 		}
-		if (this.parameterType == Type.ADRRESS)
+		if (this.parameterType == Type.ADRRESS || this.parameterType == Type.REGISTER)
 			value = this.value;				
 		return value;		
 	}

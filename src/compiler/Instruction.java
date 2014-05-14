@@ -41,7 +41,11 @@ public class Instruction {
 	public Boolean isValid() {
 		return valid;
 	}
-	
+
+	public Integer getLineNumber() {
+		return this.lineNumber;
+	}
+
 	public void validate(){
 		if (this.qParameters > 0){
 			StringTokenizer token = new StringTokenizer(this.args, ",");

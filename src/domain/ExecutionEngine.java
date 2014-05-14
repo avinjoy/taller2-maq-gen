@@ -74,4 +74,13 @@ public class ExecutionEngine {
 		this.regControl.getRecordValues();
 		this.memControl.showCurrentState();
 	}
+	
+	public void loadProgram(){
+		Iterator<Instruction> it = this.parser.getInstructions().iterator();
+		while (it.hasNext()){
+			Instruction curInst =((Instruction)it.next()); 
+			this.memControl.setValue(curInst.getLineNumber(), Byte.valueOf(curInst.toHex().substring(3, 5)));			
+			this.memControl.setValue(curInst.getLineNumber()+1, Byte.valueOf(curInst.toHex().substring(5, 7)));
+		}
+	}
 }

@@ -517,20 +517,17 @@ public class ActionPerformer {
         return (length < 1024) ? length + " bytes" : (length / 1024) + " Kbytes";
     }
 
-    public void actionCompile() {
-       
+    public void actionCompile() {       
         getParser().compile();
     }
 
     public void actionExecute() {
-        String text = tpEditor.getJTextArea().getText();
-        
-        Parser parser = getParser();
-       
+        Parser parser = getParser();       
         ExecutionEngine engine = new ExecutionEngine();
        
         if (parser.getExceptions().size() == 0) {
             engine.setParser(parser);
+        	//engine.loadProgram();
             engine.executeProgram();
         }
     }

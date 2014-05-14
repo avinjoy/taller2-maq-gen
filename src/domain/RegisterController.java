@@ -15,11 +15,11 @@ public class RegisterController {
 	}
 	
 	public void setRegisterValue(Integer Pos, Byte value){
-		this.reg.elementAt(Pos).setValue(value);
+		this.reg.elementAt(Pos-1).setValue(value);
 	}
 	
 	public Byte getRegisterValue(Integer Pos){
-		return this.reg.elementAt(Pos).getValue();		
+		return this.reg.elementAt(Pos-1).getValue();		
 	}
 	
 	public void getRecordValues(){

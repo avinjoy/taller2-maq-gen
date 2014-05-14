@@ -2,8 +2,10 @@ package editor;
 
 import domain.Console;
 import domain.Observer;
+
 import javax.swing.JTextArea;
 
+@SuppressWarnings("serial")
 public class EditorConsole extends JTextArea implements Console, Observer {
 
     @Override
