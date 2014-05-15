@@ -12,6 +12,9 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -69,13 +72,23 @@ public class Editor implements ActionListener {
     };
 
     private LanguajeType languajeType = LanguajeType.MACHINE; // 0 codigo maquina, 1 assembler
+    private Dimension pantalla;
+    
     private JFrame jFrame; // instancia de JFrame (ventana principal)
     private JMenuBar jMenuBar; // instancia de JMenuBar (barra de menú)
     private JToolBar jToolBar; // instancia de JToolBar (barra de herramientas)
     private JPopupMenu jPopupMenu; // instancia de JPopupMenu (menú emergente)
     private JPanel statusBar; // instancia de JPanel (barra de estado)
-
-    private JSplitPane splitPane;
+    
+    private int indextest = 0;
+    
+    private JSplitPane splitPaneMain;
+    private JSplitPane splitPaneDebug;
+    private ConsolePanel consolePanel;
+    private RegisterPanel registerPanel;
+    private PortPanel portPanel;
+    private MemoryPanel memoryPanel;
+    
     //private JSplitPane problemPanel;
     private JTextArea jTextArea; // instancia de JTextArea (Área de edición)
     private JTextArea jTextAreaTranslate; // instancia de JTextArea para la traduccion(Área de edición)
@@ -88,8 +101,7 @@ public class Editor implements ActionListener {
     private JScrollPane scrollPaneTranslate;
     //private JScrollPane scrollPaneProblems;
 
-    private JCheckBoxMenuItem itemLineWrap; // instancias de algunos items de
-    // menú que necesitan ser accesibles
+    private JCheckBoxMenuItem itemLineWrap; // instancias de algunos items de menú que necesitan ser accesibles
     private JCheckBoxMenuItem itemShowToolBar;
     private JCheckBoxMenuItem itemFixedToolBar;
     private JCheckBoxMenuItem itemShowStatusBar;
@@ -99,38 +111,29 @@ public class Editor implements ActionListener {
     private JMenuItem mpItemUndo;
     private JMenuItem mpItemRedo;
 
-    private JButton buttonUndo; // instancias de algunos botones que necesitan
-    // ser accesibles
+    private JButton buttonUndo; // instancias de algunos botones que necesitan ser accesibles
     private JButton buttonRedo;
 
     private JToggleButton buttonTraducir;
 
-    private JLabel sbFilePath; // etiqueta que muestra la ubicación del archivo
-    // actual
-    private JLabel sbFileSize; // etiqueta que muestra el tamaño del archivo
-    // actual
-    private JLabel sbCaretPos; // etiqueta que muestra la posición del cursor en
-    // el Área de edición
+    private JLabel sbFilePath; // etiqueta que muestra la ubicación del archivo actual
+    private JLabel sbFileSize; // etiqueta que muestra el tamaño del archivo actual
+    private JLabel sbCaretPos; // etiqueta que muestra la posición del cursor en el Área de edición
 
-    private boolean hasChanged = false; // el estado del documento actual, no
-    // modificado por defecto
-    private File currentFile = null; // el archivo actual, ninguno por defecto
-
-    private final EventHandler eventHandler; // instancia de EventHandler (la
-    // clase que maneja eventos)
-    private final ActionPerformer actionPerformer; // instancia de
-    // ActionPerformer (la clase
-    // que ejecuta acciones)
-    private final UndoManager undoManager; // instancia de UndoManager
-    // (administrador de edición)
+    private boolean hasChanged = false; // el estado del documento actual, no modificado por defecto
+    private File currentFile = null; // el archivo actual, ninguno por defecto 
+    
+    private final EventHandler eventHandler; // instancia de EventHandler (la clase que maneja eventos) 
+    private final ActionPerformer actionPerformer; // instancia de ActionPerformer (la clase que ejecuta acciones)
+    private final UndoManager undoManager; // instancia de UndoManager (administrador de edición)
     private ArrayList<String> words;
     private AutoSuggestor autoSuggestor;
     private BufferedReader reader;
     private int lastdividerPosition;
     //private int lastproblemPanelLocation;
     private ErrorParser errorParser;
-    
-    private EditorConsole console;
+ 
+
 
     /**
      * Punto de entrada del programa.
@@ -152,6 +155,7 @@ public class Editor implements ActionListener {
         });
     }
 
+    
     /**
      * Constructor de la clase.
      *
@@ -164,12 +168,28 @@ public class Editor implements ActionListener {
             System.err.println(ex);
         }
 
-        Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension minimumSize = new Dimension(100, 50);
+        Dimension minimumSize2 = new Dimension(200, 50);
 
         // construye un JFrame con título
         jFrame = new JFrame("Gerenic Sim - Sin Título");
         jFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-
+        jFrame.setJMenuBar(jMenuBar); // designa la barra de menú del JFrame
+        jFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        jFrame.setLocationRelativeTo(null);
+        
+        // asigna un manejador de eventos la visualizacion del JFrame
+        jFrame.addComponentListener( new ComponentAdapter() {
+            
+        	public void componentShown(ComponentEvent evt) {
+                lastdividerPosition = pantalla.width / 2;
+        		enableTraslate();
+                //Component c = (Component) evt.getSource();
+                //System.out.println("Component is now visible");
+            }
+        });
+        
         // asigna un manejador de eventos para el cierre del JFrame
         jFrame.addWindowListener(new WindowAdapter() {
 
@@ -178,15 +198,49 @@ public class Editor implements ActionListener {
                 actionPerformer.actionExit(); // invoca el método actionExit()
             }
         });
-
-        eventHandler = new EventHandler(); // construye una instancia de
-        // EventHandler
-        actionPerformer = new ActionPerformer(this); // construye una instancia
-        // de ActionPerformer
-        undoManager = new UndoManager(); // construye una instancia de
-        // UndoManager
+        
+        eventHandler = new EventHandler(); // construye una instancia de EventHandler
+        actionPerformer = new ActionPerformer(this); // construye una instancia de ActionPerformer
+        undoManager = new UndoManager(); // construye una instancia de UndoManager
         undoManager.setLimit(50); // le asigna un límite al buffer de ediciones
 
+        buildMenuBar(); // construye la barra de menú
+        buildToolBar(); // construye la barra de herramientas
+        buildStatusBar(); // construye la barra de estado
+        buildPopupMenu(); // construye el menú emergente
+        loadLanguageWords();
+        
+        Container c = jFrame.getContentPane(); // obtiene el contendor principal
+        
+        // añade los componentes de la parte superior de la pantalla
+        c.add(jToolBar, BorderLayout.NORTH); // añade la barra de herramientas,
+        
+        // añade los compponentes a la derecha de la pantalla
+        //frame.setLayout(new BoxLayout(frame,BoxLayout.X_AXIS));
+        JPanel leftPanel = new JPanel(new BorderLayout());
+        registerPanel = new RegisterPanel();
+        portPanel = new PortPanel();
+        leftPanel.add(registerPanel, BorderLayout.CENTER);
+        leftPanel.add(portPanel, BorderLayout.SOUTH);
+        //leftPanel.add(portPanel, BorderLayout.PAGE_END);
+        
+        // añade los componentes del pie de la pantalla
+        JPanel bottonPanel = new JPanel(new BorderLayout());
+        consolePanel = new ConsolePanel();
+        memoryPanel = new MemoryPanel();
+        consolePanel.setMinimumSize(minimumSize2);
+        memoryPanel.setMinimumSize(minimumSize2);
+
+        //Create a split pane with the two scroll panes in it.
+        splitPaneDebug = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, memoryPanel, consolePanel);
+        splitPaneDebug.setOneTouchExpandable(true);
+        splitPaneDebug.setDividerLocation(500);
+        bottonPanel.add(splitPaneDebug, BorderLayout.CENTER);
+        bottonPanel.add(statusBar, BorderLayout.PAGE_END); 
+        
+        // añade los componentes al centro de la pantalla
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        
         jTextArea = new JTextArea();
         buildTextArea(jTextArea, 16777215, true); // construye el Área de edición, es importante que esta
         // sea la primera parte en construirse
@@ -201,27 +255,13 @@ public class Editor implements ActionListener {
         buildTextArea(jTextAreaProblems, 16777215, false); // construye el Área de edición, es importante que esta
         // sea la primera parte en construirse
 
-        buildMenuBar(); // construye la barra de menú
-        buildToolBar(); // construye la barra de herramientas
-        buildStatusBar(); // construye la barra de estado
-        buildPopupMenu(); // construye el menú emergente
-        loadLanguageWords();
-
         autoSuggestor = newAutoSuggestor();
 
-        jFrame.setJMenuBar(jMenuBar); // designa la barra de menú del JFrame
-        //jFrame.setLayout(new GridLayout(4, 1));
-        Container c = jFrame.getContentPane(); // obtiene el contendor principal
-        c.add(jToolBar, BorderLayout.NORTH); // añade la barra de herramientas,
-        // orientación NORTE del
         // contendor
-
         scrollPane = new JScrollPane(jTextArea);
-        //c.add(scrollPane, BorderLayout.EAST); // añade el area de edición en
-        // el CENTRO
-
         scrollPaneTranslate = new JScrollPane(jTextAreaTranslate);
         //c.add(scrollPane, BorderLayout.WEST); // añade el area de edición en
+        
         // el CENTRO
         labeltitle = new JLabel("Codigo Máquina");
         buidTitlePanel(scrollPane, labeltitle);
@@ -234,18 +274,19 @@ public class Editor implements ActionListener {
         buildColumnLineCounter(columnLineCounterTranslate, scrollPaneTranslate);
 
         //Provide minimum sizes for the two components in the split pane
-        Dimension minimumSize = new Dimension(100, 50);
         scrollPane.setMinimumSize(minimumSize);
         scrollPaneTranslate.setMinimumSize(minimumSize);
 
         //Create a split pane with the two scroll panes in it.
-        lastdividerPosition = pantalla.width / 2;
-        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, scrollPaneTranslate);
-        splitPane.setOneTouchExpandable(true);
-        splitPane.setDividerLocation(1000000);
-        splitPane.setDividerSize(0);
+        splitPaneMain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, scrollPaneTranslate);
+        splitPaneMain.setOneTouchExpandable(true);
+        splitPaneMain.setDividerLocation(0.5);
+        
+        //Set invisible
+        buttonTraducir.setSelected(true);
+        
         //this.enableTraslate();
-        c.add(splitPane, BorderLayout.CENTER);
+        mainPanel.add(splitPaneMain, BorderLayout.CENTER);
         
         /*scrollPaneProblems = new JScrollPane(jTextAreaProblems);
         scrollPaneProblems.setMinimumSize(minimumSize);
@@ -260,15 +301,12 @@ public class Editor implements ActionListener {
         
         c.add(problemPanel, BorderLayout.CENTER);*/
         
-        c.add(statusBar, BorderLayout.SOUTH); // añade la barra de estado,
-        // orientación SUR
-
-        jFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
-
-        // centra el JFrame en pantalla
-        jFrame.setLocationRelativeTo(null);
+        c.add(mainPanel, BorderLayout.CENTER);
+        c.add(leftPanel, BorderLayout.LINE_END);
+        c.add(bottonPanel, BorderLayout.PAGE_END);
 
         buildTimer();
+        enableDebug(false);
 
     }
 
@@ -826,13 +864,30 @@ public class Editor implements ActionListener {
 
     private void enableTraslate() {
         if (buttonTraducir.isSelected()) {
-            splitPane.setDividerLocation(lastdividerPosition);
-            splitPane.setDividerSize(10);
+            splitPaneMain.setDividerLocation(lastdividerPosition);
+            splitPaneMain.setDividerSize(10);
             doTraslate();
         } else {
-            lastdividerPosition = splitPane.getDividerLocation();
-            splitPane.setDividerLocation(1000000);
-            splitPane.setDividerSize(0);
+            lastdividerPosition = splitPaneMain.getDividerLocation();
+            splitPaneMain.setDividerLocation(1000000);
+            splitPaneMain.setDividerSize(0);
+        }
+    }
+    
+    private void enableDebug(boolean enable) {
+        if (enable) {
+        	consolePanel.clear();
+        	memoryPanel.resetValor("BASURA");
+        	registerPanel.resetValor("BASURA");
+        	portPanel.resetValor("BASURA", "NN");
+        	
+            splitPaneDebug.setVisible(true);
+            portPanel.setVisible(true);
+            registerPanel.setVisible(true);
+        } else {
+            splitPaneDebug.setVisible(false);
+            registerPanel.setVisible(false);
+            portPanel.setVisible(false);
         }
     }
 
@@ -1150,10 +1205,16 @@ public class Editor implements ActionListener {
             } else if (ac.equals("cmd_translate") == true) {	// opción
                 // seleccionada:
                 // "Traducir"
+            	//registerPanel.setValorAndMark("AAAABBBB", indextest);
+            	//consolePanel.output("hola " + indextest);
+            	//consolePanel.output("hola " + indextest);
+            	//consolePanel.input();
+            	//indextest++;
                 enableTraslate();
 	        } else if (ac.equals("cmd_execute") == true) {	// opción
 	        	// seleccionada:
 	        	// "Traducir"
+	        	enableDebug(true);
 	        	actionPerformer.actionExecute();
 	        }            
         }
@@ -1302,7 +1363,7 @@ public class Editor implements ActionListener {
     
     public Console getConsole(){
         
-        return console;
+        return consolePanel;
     }
 
 }
