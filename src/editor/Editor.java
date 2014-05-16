@@ -167,7 +167,8 @@ public class Editor implements ActionListener {
         } catch (Exception ex) {
             System.err.println(ex);
         }
-
+        
+        buildMenuBar(); // construye la barra de menú
         pantalla = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension minimumSize = new Dimension(100, 50);
         Dimension minimumSize2 = new Dimension(200, 50);
@@ -204,7 +205,6 @@ public class Editor implements ActionListener {
         undoManager = new UndoManager(); // construye una instancia de UndoManager
         undoManager.setLimit(50); // le asigna un límite al buffer de ediciones
 
-        buildMenuBar(); // construye la barra de menú
         buildToolBar(); // construye la barra de herramientas
         buildStatusBar(); // construye la barra de estado
         buildPopupMenu(); // construye el menú emergente
