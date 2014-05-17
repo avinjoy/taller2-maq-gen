@@ -1,7 +1,5 @@
 package editor;
 
-import domain.Console;
-import editor.TextLineNumber.Mode;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -14,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -59,6 +56,9 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Highlighter;
 import javax.swing.undo.UndoManager;
 
+import domain.Console;
+import editor.TextLineNumber.Mode;
+
 
 /**
  * Clase principal donde se construye la GUI del editor.
@@ -71,7 +71,7 @@ public class Editor implements ActionListener {
     	MACHINE, ASSEMBLER    	
     };
 
-    private LanguajeType languajeType = LanguajeType.MACHINE; // 0 codigo maquina, 1 assembler
+    private LanguajeType languajeType = LanguajeType.ASSEMBLER; // 0 codigo maquina, 1 assembler
     private Dimension pantalla;
     
     private JFrame jFrame; // instancia de JFrame (ventana principal)
@@ -168,7 +168,6 @@ public class Editor implements ActionListener {
             System.err.println(ex);
         }
         
-        buildMenuBar(); // construye la barra de menú
         pantalla = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension minimumSize = new Dimension(100, 50);
         Dimension minimumSize2 = new Dimension(200, 50);
@@ -176,7 +175,6 @@ public class Editor implements ActionListener {
         // construye un JFrame con título
         jFrame = new JFrame("Gerenic Sim - Sin Título");
         jFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        jFrame.setJMenuBar(jMenuBar); // designa la barra de menú del JFrame
         jFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
         jFrame.setLocationRelativeTo(null);
         
@@ -205,6 +203,7 @@ public class Editor implements ActionListener {
         undoManager = new UndoManager(); // construye una instancia de UndoManager
         undoManager.setLimit(50); // le asigna un límite al buffer de ediciones
 
+        buildMenuBar(); // construye la barra de menú
         buildToolBar(); // construye la barra de herramientas
         buildStatusBar(); // construye la barra de estado
         buildPopupMenu(); // construye el menú emergente
@@ -214,6 +213,7 @@ public class Editor implements ActionListener {
         
         // añade los componentes de la parte superior de la pantalla
         c.add(jToolBar, BorderLayout.NORTH); // añade la barra de herramientas,
+        jFrame.setJMenuBar(jMenuBar); // designa la barra de menú del JFrame
         
         // añade los compponentes a la derecha de la pantalla
         //frame.setLayout(new BoxLayout(frame,BoxLayout.X_AXIS));
