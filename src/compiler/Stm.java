@@ -53,7 +53,7 @@ public class Stm extends Instruction implements Observable {
     public void execute(RegisterController regCtrl, MemoryController memCtrl) {
         Integer regNumber = Integer.parseInt(this.parameters.get(0).getValue());
         Integer memAddr = Integer.parseInt(this.parameters.get(1).getValue(),16);
-        memCtrl.setValue(memAddr, regCtrl.getRegisterValue(regNumber));
+        memCtrl.setValue(memAddr, regCtrl.getRegisterValue(regNumber).shortValue());
     }
 
     @Override

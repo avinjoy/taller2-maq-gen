@@ -79,8 +79,8 @@ public class ExecutionEngine {
 		Iterator<Instruction> it = this.parser.getInstructions().iterator();
 		while (it.hasNext()){
 			Instruction curInst =((Instruction)it.next()); 
-			this.memControl.setValue(curInst.getLineNumber(), Byte.valueOf(curInst.toHex().substring(3, 5)));			
-			this.memControl.setValue(curInst.getLineNumber()+1, Byte.valueOf(curInst.toHex().substring(5, 7)));
+			this.memControl.setValue((2*curInst.getLineNumber())-1, Short.valueOf(curInst.toHex().substring(3, 5),16));			
+			this.memControl.setValue(2*curInst.getLineNumber(), Short.valueOf(curInst.toHex().substring(5, 7),16));
 		}
 	}
 }

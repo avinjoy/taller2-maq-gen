@@ -17,11 +17,11 @@ public class MemoryController {
 		this.mem = mem;
 	}
 	
-	public Byte getValue(Integer memPos){
+	public Short getValue(Integer memPos){
 		return this.mem.getValue(memPos);
 	}
 	
-	public void setValue(Integer memAddr, Byte value){
+	public void setValue(Integer memAddr, Short value){
 		this.mem.setValue(memAddr, value);
 	}
 	

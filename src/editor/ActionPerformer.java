@@ -527,7 +527,7 @@ public class ActionPerformer {
        
         if (parser.getExceptions().size() == 0) {
             engine.setParser(parser);
-        	//engine.loadProgram();
+        	engine.loadProgram();
             engine.executeProgram();
         }
     }
