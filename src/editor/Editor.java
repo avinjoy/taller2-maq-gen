@@ -56,6 +56,9 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Highlighter;
 import javax.swing.undo.UndoManager;
 
+import compiler.ParserAssembler;
+import compiler.Scanner;
+
 import domain.Console;
 import editor.TextLineNumber.Mode;
 
@@ -263,12 +266,12 @@ public class Editor implements ActionListener {
         //c.add(scrollPane, BorderLayout.WEST); // añade el area de edición en
         
         // el CENTRO
-        labeltitle = new JLabel("Codigo Máquina");
+        labeltitle = new JLabel("Assembler");
         buidTitlePanel(scrollPane, labeltitle);
         columnLineCounter = new TextLineNumber(jTextArea);
         buildColumnLineCounter(columnLineCounter, scrollPane);
 
-        labeltitleTraslate = new JLabel("Assembler");
+        labeltitleTraslate = new JLabel("Codigo Máquina");
         buidTitlePanel(scrollPaneTranslate, labeltitleTraslate);
         columnLineCounterTranslate = new TextLineNumber(jTextArea);
         buildColumnLineCounter(columnLineCounterTranslate, scrollPaneTranslate);
@@ -894,10 +897,9 @@ public class Editor implements ActionListener {
     private void doTraslate() {
         try {
             String text = jTextArea.getDocument().getText(0, jTextArea.getDocument().getLength());
-
-            //traducir
+            ParserAssembler parser = new ParserAssembler(new Scanner(text).getTokens());
             jTextAreaTranslate.getDocument().remove(0, jTextAreaTranslate.getDocument().getLength());
-            jTextAreaTranslate.setText(text);
+            jTextAreaTranslate.setText(parser.translate());
         } catch (BadLocationException e) {
             e.printStackTrace();
         }

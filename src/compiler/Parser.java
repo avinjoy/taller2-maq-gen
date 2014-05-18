@@ -31,6 +31,8 @@ public class Parser {
         return instructions;
     }
 
+    public Parser(){}
+    
     public Parser(List<String> tokens) {
         this.tokens = tokens;
         this.index = 0;
@@ -66,7 +68,7 @@ public class Parser {
     };
     
 	public void compile() {};
-	public void transalate() {};
+	public String translate() {return "";};
         
     public void setConsole(Console c){        
         console = c;

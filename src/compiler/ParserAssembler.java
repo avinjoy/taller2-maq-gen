@@ -13,7 +13,9 @@ public class ParserAssembler extends Parser {
 		this.parse();
 	}
 	
-        @Override
+	public ParserAssembler(){}
+	
+    @Override
 	public Instruction parseInstruction(int lnNumber, String instr){
 
 		Instruction instruction = null;
@@ -60,7 +62,7 @@ public class ParserAssembler extends Parser {
 		return instruction;
 	}
 
-        @Override
+    @Override
 	public void compile() {		
 		Iterator<Instruction> it = this.instructions.iterator();
 		Iterator<CompilationtException> itex = this.invalid.iterator();
@@ -72,4 +74,27 @@ public class ParserAssembler extends Parser {
 		}
 	}
 
+    private Instruction getInstructionByLineNumber(int lineNumber){
+    	Instruction instruction = null;
+		Iterator<Instruction> it = this.instructions.iterator();
+		Instruction currInst = null;
+		while (it.hasNext()){
+			currInst = it.next(); 
+			if (currInst.getLineNumber() == lineNumber)
+				instruction = (Instruction)currInst; 
+		}    	
+    	return instruction;
+    }
+    
+    public String translate(){
+    	String translation = "";		
+		for (int lineNumber = 1; lineNumber <= this.instructions.size() + this.invalid.size(); lineNumber++) {
+			Instruction instruction= this.getInstructionByLineNumber(lineNumber);
+			if (instruction != null)
+				translation += instruction.toHex()+"\n";
+			else
+				translation += "\n";			
+		}		
+    	return translation;
+    }
 }
