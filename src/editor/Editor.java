@@ -91,6 +91,7 @@ public class Editor implements ActionListener {
     private RegisterPanel registerPanel;
     private PortPanel portPanel;
     private MemoryPanel memoryPanel;
+    public ErrorPanel errorPanel;
     
     //private JSplitPane problemPanel;
     private JTextArea jTextArea; // instancia de JTextArea (Área de edición)
@@ -231,6 +232,7 @@ public class Editor implements ActionListener {
         JPanel bottonPanel = new JPanel(new BorderLayout());
         consolePanel = new ConsolePanel();
         memoryPanel = new MemoryPanel();
+        errorPanel = new ErrorPanel();
         consolePanel.setMinimumSize(minimumSize2);
         memoryPanel.setMinimumSize(minimumSize2);
 
@@ -238,7 +240,8 @@ public class Editor implements ActionListener {
         splitPaneDebug = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, memoryPanel, consolePanel);
         splitPaneDebug.setOneTouchExpandable(true);
         splitPaneDebug.setDividerLocation(500);
-        bottonPanel.add(splitPaneDebug, BorderLayout.CENTER);
+        bottonPanel.add(errorPanel, BorderLayout.CENTER);
+        //bottonPanel.add(splitPaneDebug, BorderLayout.CENTER);
         bottonPanel.add(statusBar, BorderLayout.PAGE_END); 
         
         // añade los componentes al centro de la pantalla
@@ -310,6 +313,7 @@ public class Editor implements ActionListener {
 
         buildTimer();
         enableDebug(false);
+        enableError(false);
 
     }
 
@@ -877,7 +881,7 @@ public class Editor implements ActionListener {
         }
     }
     
-    private void enableDebug(boolean enable) {
+    public void enableDebug(boolean enable) {
         if (enable) {
         	consolePanel.clear();
         	memoryPanel.resetValor("BASURA");
@@ -891,6 +895,14 @@ public class Editor implements ActionListener {
             splitPaneDebug.setVisible(false);
             registerPanel.setVisible(false);
             portPanel.setVisible(false);
+        }
+    }
+    
+    public void enableError(boolean enable) {
+        if (enable) {
+        	errorPanel.setVisible(true);
+        } else {
+        	errorPanel.setVisible(false);
         }
     }
 
@@ -1217,6 +1229,7 @@ public class Editor implements ActionListener {
 	        	// seleccionada:
 	        	// "Traducir"
 	        	enableDebug(true);
+	        	enableError(false);
 	        	actionPerformer.actionExecute();
 	        }            
         }

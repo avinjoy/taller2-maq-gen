@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.swing.JColorChooser;
@@ -26,6 +27,7 @@ import compiler.Parser;
 import compiler.ParserAssembler;
 import compiler.ParserMachineCode;
 import compiler.Scanner;
+import compiler.exceptions.CompilationtException;
 import domain.ExecutionEngine;
 import editor.Editor.LanguajeType;
 import editor.TextLineNumber.Mode;
@@ -518,7 +520,18 @@ public class ActionPerformer {
     }
 
     public void actionCompile() {       
-        getParser().compile();
+        Parser parser = getParser();
+        parser.compile();
+        
+        List<CompilationtException> exceptions = parser.getExceptions();
+        if (exceptions.size() > 0) {
+        	tpEditor.errorPanel.loadError(exceptions);
+        	tpEditor.enableError(true);
+        	//tpEditor.enableDebug(false);
+        } else {
+        	tpEditor.enableError(false);
+        }
+        
     }
 
     public void actionExecute() {
@@ -529,7 +542,7 @@ public class ActionPerformer {
             engine.setParser(parser);
         	engine.loadProgram();
             engine.executeProgram();
-        }
+        } 
     }
 
     public Parser getParser() {
