@@ -240,8 +240,8 @@ public class Editor implements ActionListener {
         splitPaneDebug = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, memoryPanel, consolePanel);
         splitPaneDebug.setOneTouchExpandable(true);
         splitPaneDebug.setDividerLocation(500);
-        bottonPanel.add(errorPanel, BorderLayout.CENTER);
-        //bottonPanel.add(splitPaneDebug, BorderLayout.CENTER);
+        bottonPanel.add(errorPanel, BorderLayout.PAGE_START);
+        bottonPanel.add(splitPaneDebug, BorderLayout.CENTER);
         bottonPanel.add(statusBar, BorderLayout.PAGE_END); 
         
         // añade los componentes al centro de la pantalla
@@ -1228,8 +1228,8 @@ public class Editor implements ActionListener {
 	        } else if (ac.equals("cmd_execute") == true) {	// opción
 	        	// seleccionada:
 	        	// "Traducir"
-	        	enableDebug(true);
 	        	enableError(false);
+	        	enableDebug(true);
 	        	actionPerformer.actionExecute();
 	        }            
         }
