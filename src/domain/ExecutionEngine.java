@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import compiler.Instruction;
 import compiler.Parser;
+import compiler.ParserMachineCode;
 
 public class ExecutionEngine {
 
@@ -14,17 +15,18 @@ public class ExecutionEngine {
 		//Genera en memoria la lista de instrucciones (ver en donde va realmente)						
 	}
 	
-	private Byte currentInstruction;
+	private Short currentInstruction;
 	private Integer programCounter;
 	private MemoryController memControl;
 	private RegisterController regControl;
 	private Parser parser;
-	private Byte nextInstruction;
+	private Short nextInstruction;
+	private Integer totalProgramInsturctions = 0;
 	
-	public Byte getCurrentInstruction() {
+	public Short getCurrentInstruction() {
 		return currentInstruction;
 	}
-	public void setCurrentInstruction(Byte currentInstruction) {
+	public void setCurrentInstruction(Short currentInstruction) {
 		this.currentInstruction = currentInstruction;
 	}
 	public Integer getProgramCounter() {
@@ -51,10 +53,10 @@ public class ExecutionEngine {
 	public void setParser(Parser parser) {
 		this.parser = parser;
 	}
-	public Byte getNextInstruction() {
+	public Short getNextInstruction() {
 		return nextInstruction;
 	}
-	public void setNextInstruction(Byte nextInstruction) {
+	public void setNextInstruction(Short nextInstruction) {
 		this.nextInstruction = nextInstruction;
 	}
 	
@@ -67,10 +69,22 @@ public class ExecutionEngine {
 	}
 
 	public void executeProgram(){
-		Iterator<Instruction> it = this.parser.getInstructions().iterator();
-		while (it.hasNext()){
-			((Instruction)it.next()).execute(this.regControl, this.memControl);
+		Instruction curInst = null;
+		this.programCounter = 1;
+		Parser programParser = new ParserMachineCode();
+		
+		while (this.programCounter<=this.totalProgramInsturctions){
+			String memAddr = "00";
+			String instr = Integer.toHexString(this.getMemControl().getValue((2*this.programCounter)-1)).toUpperCase();				
+			String instr2 = Integer.toHexString(this.getMemControl().getValue((2*this.programCounter))).toUpperCase();
+			if (instr2.length() == 1)
+				instr2 = "0"+instr2;
+			
+			curInst = programParser.parseInstruction(this.programCounter, memAddr+" "+instr+instr2);
+			curInst.execute(this.regControl, this.memControl);
+			this.programCounter++;
 		}
+		
 		this.regControl.getRecordValues();
 		this.memControl.showCurrentState();
 	}
@@ -81,6 +95,7 @@ public class ExecutionEngine {
 			Instruction curInst =((Instruction)it.next()); 
 			this.memControl.setValue((2*curInst.getLineNumber())-1, Short.valueOf(curInst.toHex().substring(3, 5),16));			
 			this.memControl.setValue(2*curInst.getLineNumber(), Short.valueOf(curInst.toHex().substring(5, 7),16));
+			this.totalProgramInsturctions++;
 		}
 	}
 }
