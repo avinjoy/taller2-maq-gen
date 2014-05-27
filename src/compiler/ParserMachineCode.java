@@ -8,6 +8,11 @@ import compiler.exceptions.CompilationtException;
 
 public class ParserMachineCode extends Parser {
 
+	public ParserMachineCode() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public ParserMachineCode(List<String> tokens){
 		super(tokens);
 		this.parse();

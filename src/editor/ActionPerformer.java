@@ -41,6 +41,7 @@ public class ActionPerformer {
 
     private final Editor tpEditor;    //instancia de TPEditor (la clase principal)
     private String lastSearch = "";     //la última búsqueda de texto realizada, por defecto no contiene nada
+    private int numberOfClicks;
 
     /**
      * Constructor de la clase.
@@ -49,6 +50,7 @@ public class ActionPerformer {
      */
     public ActionPerformer(Editor tpEditor) {
         this.tpEditor = tpEditor;    //guarda la instancia de la clase TPEditor
+        this.numberOfClicks=0;
     }
 
     /**
@@ -542,6 +544,18 @@ public class ActionPerformer {
             engine.setParser(parser);
         	engine.loadProgram();
             engine.executeProgram();
+        } 
+    }
+    
+    public void actionDebug() {
+        Parser parser = getParser();       
+        ExecutionEngine engine = new ExecutionEngine();
+       
+        if (parser.getExceptions().size() == 0) {
+        	this.numberOfClicks++; //Empezamos el pc en uno y seguimos incrementando.
+            engine.setParser(parser);
+        	engine.loadProgram();
+            engine.executeProgramOnDebugMode(numberOfClicks);
         } 
     }
 

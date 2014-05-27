@@ -2,19 +2,11 @@ package editor;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.TextArea;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
-
-import domain.Console;
-import domain.Observer;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,6 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+
+import domain.Console;
+import domain.Observer;
 
 
 public class ConsolePanel extends JPanel implements Console, Observer {

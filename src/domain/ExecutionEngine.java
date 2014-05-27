@@ -89,6 +89,27 @@ public class ExecutionEngine {
 		this.memControl.showCurrentState();
 	}
 	
+	public void executeProgramOnDebugMode(int pc){
+		Instruction curInst = null;
+		this.programCounter = pc;
+		Parser programParser = new ParserMachineCode();
+		
+		if (this.programCounter<=this.totalProgramInsturctions){
+			String memAddr = "00";
+			String instr = Integer.toHexString(this.getMemControl().getValue((2*this.programCounter)-1)).toUpperCase();				
+			String instr2 = Integer.toHexString(this.getMemControl().getValue((2*this.programCounter))).toUpperCase();
+			if (instr2.length() == 1)
+				instr2 = "0"+instr2;
+			
+			curInst = programParser.parseInstruction(this.programCounter, memAddr+" "+instr+instr2);
+			curInst.execute(this.regControl, this.memControl);
+			this.programCounter++;
+		}
+		
+		this.regControl.getRecordValues();
+		this.memControl.showCurrentState();
+	}
+	
 	public void loadProgram(){
 		Iterator<Instruction> it = this.parser.getInstructions().iterator();
 		while (it.hasNext()){

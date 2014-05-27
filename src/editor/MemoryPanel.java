@@ -8,15 +8,14 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 
-import domain.Console;
-import domain.Observer;
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
+
+import domain.Console;
+import domain.Observer;
 
 public class MemoryPanel extends JPanel implements Console, Observer {
 	private static final long serialVersionUID = 1L;
@@ -54,6 +53,11 @@ public class MemoryPanel extends JPanel implements Console, Observer {
 	private JPanel agregarPanelMemory(JPanel contenedor) {
 		// CREA UN PANEL PARA LOS REGISTROS
 		JPanel panelMemory = new JPanel(new GridBagLayout()) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -4166309657225245203L;
+
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);

@@ -9,14 +9,10 @@ import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 
-import domain.Console;
-import domain.Observer;
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 
 import compiler.exceptions.CompilationtException;
@@ -50,6 +46,11 @@ public class ErrorPanel extends JPanel {
 		this.add(label, c);
 		
 		panelError = new JPanel(new GridBagLayout()) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 3438850775900238569L;
+
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);

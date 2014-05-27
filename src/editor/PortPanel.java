@@ -63,6 +63,11 @@ public class PortPanel  extends JPanel {
 	private JPanel agregarPanelPuertos(JPanel contenedor) {
 		// CREA UN PANEL PARA LOS REGISTROS
 		JPanel panelPort = new JPanel(new GridBagLayout()) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -4409720857557537617L;
+
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);

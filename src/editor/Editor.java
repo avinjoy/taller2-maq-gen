@@ -667,6 +667,12 @@ public class Editor implements ActionListener {
         buttonExecute.setIcon(new ImageIcon(getClass().getResource(
                 "/editor/res/execute.png")));
         buttonExecute.setActionCommand("cmd_execute");
+        
+        JButton buttonDebug = new JButton();
+        buttonDebug.setToolTipText("Debug");
+        buttonDebug.setIcon(new ImageIcon(getClass().getResource(
+                "/editor/res/debug.png")));
+        buttonDebug.setActionCommand("cmd_debug");
 
         jToolBar.add(buttonNew); // se añaden los botones construidos a la barra
         // de herramientas
@@ -687,6 +693,8 @@ public class Editor implements ActionListener {
         jToolBar.addSeparator();
         jToolBar.add(buttonTraducir);
         jToolBar.add(buttonExecute);
+        jToolBar.add(buttonDebug);
+        
 
         /**
          * itera sobre todos los componentes de la barra de herramientas, se les
@@ -1231,7 +1239,11 @@ public class Editor implements ActionListener {
 	        	enableError(false);
 	        	enableDebug(true);
 	        	actionPerformer.actionExecute();
-	        }            
+	        } else if (ac.equals("cmd_debug") == true) {	// opción
+	        	enableError(false);
+	        	enableDebug(true);
+	        	actionPerformer.actionDebug();
+	        }           
         }
 
         /**

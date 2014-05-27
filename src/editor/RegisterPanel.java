@@ -60,6 +60,11 @@ public class RegisterPanel extends JPanel {
 	private JPanel agregarPanelRegistros(JPanel contenedor) {
 		// CREA UN PANEL PARA LOS REGISTROS
 		JPanel panelReg = new JPanel(new GridBagLayout()) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -6356007198983737348L;
+
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
