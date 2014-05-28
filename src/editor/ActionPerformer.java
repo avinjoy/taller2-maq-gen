@@ -28,7 +28,9 @@ import compiler.ParserAssembler;
 import compiler.ParserMachineCode;
 import compiler.Scanner;
 import compiler.exceptions.CompilationtException;
+
 import domain.ExecutionEngine;
+import domain.MachineState;
 import editor.Editor.LanguajeType;
 import editor.TextLineNumber.Mode;
 
@@ -536,7 +538,7 @@ public class ActionPerformer {
         
     }
 
-    public void actionExecute() {
+    public MachineState actionExecute() {
         Parser parser = getParser();       
         ExecutionEngine engine = new ExecutionEngine();
        
@@ -544,10 +546,11 @@ public class ActionPerformer {
             engine.setParser(parser);
         	engine.loadProgram();
             engine.executeProgram();
-        } 
+        }
+        return engine.getCurrentMachineState();
     }
     
-    public void actionDebug() {
+    public MachineState actionDebug() {
         Parser parser = getParser();       
         ExecutionEngine engine = new ExecutionEngine();
        
@@ -557,6 +560,8 @@ public class ActionPerformer {
         	engine.loadProgram();
             engine.executeProgramOnDebugMode(numberOfClicks);
         } 
+        return engine.getCurrentMachineState();
+        
     }
 
     public Parser getParser() {

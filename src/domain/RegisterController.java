@@ -28,4 +28,12 @@ public class RegisterController {
 			System.out.printf(((Register)it.next()).toString()+"\n");
 		}		
 	}
+	
+	public Vector<Byte> getRegisterState(){
+		Vector<Byte> values= new Vector<Byte>();
+		for (int i=0; i<reg.size(); i++){
+			values.add(reg.get(i).getValue());
+		}
+		return values;
+	}
 }

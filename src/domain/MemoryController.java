@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.Vector;
+
 
 public class MemoryController {
 	
@@ -27,6 +29,10 @@ public class MemoryController {
 	
 	public void showCurrentState(){
 		this.mem.getRecordValues();
+	}
+
+	public Vector<Short> getMemoryState() {
+		return mem.getMemoryState();
 	}
 
 }

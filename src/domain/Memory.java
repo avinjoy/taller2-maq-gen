@@ -61,4 +61,8 @@ public class Memory {
 			System.out.printf(Integer.toHexString(celd.intValue()).toUpperCase());
 		}		
 	}
+	
+	public Vector<Short> getMemoryState(){
+		return this.mem;
+	}
 }

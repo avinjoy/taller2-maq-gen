@@ -7,6 +7,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -217,12 +218,34 @@ public class MemoryPanel extends JPanel implements Console, Observer {
 			arrow_aux.setForeground(Color.BLACK);
 			valor_aux.setForeground(Color.BLACK);		
 			valor_aux.setText(valorinicial);
+
+			label_aux.repaint();
+			arrow_aux.repaint();
+			valor_aux.repaint();	
+		}
+	}
+	
+	public void loadMemoryValues(Vector<Short> values) {
+		JLabel label_aux = null;
+		JLabel arrow_aux = null;
+		JLabel valor_aux = null;
+		
+		for (int i = 0; i < values.size(); i++) {
+			label_aux = labelMem.get(i);
+			arrow_aux = arrowMem.get(i);
+			valor_aux = valorMem.get(i);
+
+			label_aux.setForeground(Color.BLACK);
+			arrow_aux.setForeground(Color.BLACK);
+			valor_aux.setForeground(Color.BLACK);		
+			valor_aux.setText(values.get(i).toString());
 			
 			label_aux.repaint();
 			arrow_aux.repaint();
 			valor_aux.repaint();	
 		}
-	}	
+	}
+	
     @Override
     public String input() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

@@ -60,6 +60,7 @@ import compiler.ParserAssembler;
 import compiler.Scanner;
 
 import domain.Console;
+import domain.MachineState;
 import editor.TextLineNumber.Mode;
 
 
@@ -136,7 +137,9 @@ public class Editor implements ActionListener {
     private int lastdividerPosition;
     //private int lastproblemPanelLocation;
     private ErrorParser errorParser;
- 
+    private MachineState currMachineState=null;
+    
+
 
 
     /**
@@ -1238,11 +1241,16 @@ public class Editor implements ActionListener {
 	        	// "Traducir"
 	        	enableError(false);
 	        	enableDebug(true);
-	        	actionPerformer.actionExecute();
+	        	currMachineState=actionPerformer.actionExecute();
+	        	registerPanel.loadRegisterValues(currMachineState.getRegControl().getRegisterState());
+	        	memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
 	        } else if (ac.equals("cmd_debug") == true) {	// opción
 	        	enableError(false);
 	        	enableDebug(true);
-	        	actionPerformer.actionDebug();
+	        	currMachineState=actionPerformer.actionDebug();
+	        	registerPanel.loadRegisterValues(currMachineState.getRegControl().getRegisterState());
+	        	memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
+	        	
 	        }           
         }
 

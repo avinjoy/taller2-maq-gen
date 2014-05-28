@@ -7,6 +7,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -224,6 +225,27 @@ public class RegisterPanel extends JPanel {
 			arrow_aux.setForeground(Color.BLACK);
 			valor_aux.setForeground(Color.BLACK);		
 			valor_aux.setText(valorinicial);
+			
+			label_aux.repaint();
+			arrow_aux.repaint();
+			valor_aux.repaint();	
+		}
+	}
+	
+	public void loadRegisterValues(Vector<Byte> values) {
+		JLabel label_aux = null;
+		JLabel arrow_aux = null;
+		JLabel valor_aux = null;
+		
+		for (int i = 0; i < values.size(); i++) {
+			label_aux = labelReg.get(i);
+			arrow_aux = arrowReg.get(i);
+			valor_aux = valorReg.get(i);
+
+			label_aux.setForeground(Color.BLACK);
+			arrow_aux.setForeground(Color.BLACK);
+			valor_aux.setForeground(Color.BLACK);		
+			valor_aux.setText(values.get(i).toString());
 			
 			label_aux.repaint();
 			arrow_aux.repaint();

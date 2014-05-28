@@ -64,10 +64,6 @@ public class ExecutionEngine {
 		
 	}
 	
-	public void showMachineState(){
-		
-	}
-
 	public void executeProgram(){
 		Instruction curInst = null;
 		this.programCounter = 1;
@@ -118,5 +114,9 @@ public class ExecutionEngine {
 			this.memControl.setValue(2*curInst.getLineNumber(), Short.valueOf(curInst.toHex().substring(5, 7),16));
 			this.totalProgramInsturctions++;
 		}
+	}
+	
+	public MachineState getCurrentMachineState(){
+		return new MachineState(this.currentInstruction, this.programCounter, this.memControl, this.regControl, this.nextInstruction, this.totalProgramInsturctions);
 	}
 }
