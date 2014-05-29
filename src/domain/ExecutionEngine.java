@@ -79,11 +79,11 @@ public class ExecutionEngine {
 			curInst = programParser.parseInstruction(this.programCounter, memAddr+" "+instr+instr2);
 			curInst.execute(this.regControl, this.memControl);
 			this.programCounter++;
-		}
-		
+	}
+
 		this.regControl.getRecordValues();
 		this.memControl.showCurrentState();
-	}
+		}
 	
 	public void executeProgramOnDebugMode(int pc){
 		Instruction curInst = null;
@@ -119,4 +119,9 @@ public class ExecutionEngine {
 	public MachineState getCurrentMachineState(){
 		return new MachineState(this.currentInstruction, this.programCounter, this.memControl, this.regControl, this.nextInstruction, this.totalProgramInsturctions);
 	}
+        
+        public void setConsole(Console c){
+            this.memControl.setObserver(c);
+           
+        }
 }

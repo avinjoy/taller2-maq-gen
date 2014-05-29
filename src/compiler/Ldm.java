@@ -6,7 +6,7 @@ import domain.Observable;
 import domain.Observer;
 import domain.RegisterController;
 
-public class Ldm extends Instruction implements Observable {
+public class Ldm extends Instruction{
 
     final int CANT_PARAMETROS = 2;
     final static String HEXA = "1";
@@ -54,33 +54,6 @@ public class Ldm extends Instruction implements Observable {
         Integer regNumber = Integer.parseInt(this.parameters.get(0).getValue());
         Integer memAddr = Integer.parseInt(this.parameters.get(1).getValue(),16);
         regCtrl.setRegisterValue(regNumber, memCtrl.getValue(memAddr).byteValue());
-    }
-
-    @Override
-    public String notifyInput() {
-
-        if (observer != null) {
-
-            return observer.input();
-        }
-
-        throw new NullPointerException("El no hay ningún observador registrado");
-    }
-
-    @Override
-    public void notifyOutput(String output) {
-
-        if (observer != null) {
-
-            observer.output(output);
-        }
-
-        throw new NullPointerException("El no hay ningún observador registrado");
-    }
-
-    @Override
-    public void setObserver(Observer o) {
-        observer = o;
     }
 
 }

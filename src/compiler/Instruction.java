@@ -100,7 +100,7 @@ public class Instruction {
 		else{
 			try{
 				Integer.parseInt(arg, 16);
-				if (arg.compareTo("00") == 0 || arg.compareTo("FF") == 0 || arg.compareTo("FE") == 0 || arg.compareTo("FD") == 0){
+				if (arg.compareTo("00") == 0 || arg.compareTo("FE") == 0 || arg.compareTo("FC") == 0){
 					this.argumentExceptions.add(new CompilationtException("La dirección de memoria "+ arg + " no puede ser utilizada", this.lineNumber));
 					valid = false;
 				}
@@ -124,7 +124,7 @@ public class Instruction {
 		else{
 			try{
 				value = Integer.parseInt(arg, 16);
-				if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE){
+				if (value < Byte.MIN_VALUE || value > 255){
 					this.argumentExceptions.add(new CompilationtException("El entero ingresado "+ value.toString() + " es inválido", this.lineNumber));
 					valid = false;										
 				}					

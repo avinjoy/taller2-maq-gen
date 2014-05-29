@@ -541,8 +541,9 @@ public class ActionPerformer {
     public MachineState actionExecute() {
         Parser parser = getParser();       
         ExecutionEngine engine = new ExecutionEngine();
-       
+
         if (parser.getExceptions().size() == 0) {
+            engine.setConsole(tpEditor.getConsole());
             engine.setParser(parser);
         	engine.loadProgram();
             engine.executeProgram();
@@ -574,7 +575,6 @@ public class ActionPerformer {
             parser = new ParserMachineCode(new Scanner(text).getTokens());
         }
 
-        parser.setConsole(tpEditor.getConsole());
         return parser;
     }
 

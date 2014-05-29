@@ -43,12 +43,13 @@ public class Memory {
 	}
 
 	public void setValue(Integer pos, Short value){
+            
 		this.mem.set(pos, value);
 	}
 	
 	private void cleanMemory(){
 		Short bt = 0;
-		for (int i = 0; i < 255; i++) {
+		for (int i = 0; i < 256; i++) {
 			this.mem.add(bt);
 		}		
 	}
@@ -56,9 +57,11 @@ public class Memory {
 	public void getRecordValues(){
 		Iterator<Short> it = this.mem.iterator();
 		Short celd = null;
+                int i=0;
 		while (it.hasNext()){
 			celd = (Short)it.next();
-			System.out.printf(Integer.toHexString(celd.intValue()).toUpperCase());
+			System.out.printf(Integer.toHexString(i)+":"+Integer.toHexString(celd.intValue()).toUpperCase()+" ");
+                        i++;
 		}		
 	}
 	

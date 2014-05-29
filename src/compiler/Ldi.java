@@ -36,9 +36,10 @@ public class Ldi extends Instruction {
 	
 	public void execute(RegisterController regCtrl, MemoryController memCtrl){				
 		Integer regNumber = Integer.parseInt(this.parameters.get(0).getValue());		
-		Integer intValue = Integer.parseInt(this.parameters.get(1).getValue(),16);
-		Byte value = Byte.valueOf(intValue.toString());
-		regCtrl.setRegisterValue(regNumber, value);
+		Integer intValue = Integer.parseInt(this.parameters.get(1).getValue());
+                
+		short value = Short.valueOf(intValue.toString());
+		regCtrl.setRegisterValue(regNumber, (byte)value);
 	}
 	
 }
