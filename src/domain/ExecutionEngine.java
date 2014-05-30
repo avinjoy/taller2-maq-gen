@@ -8,7 +8,13 @@ import compiler.ParserMachineCode;
 
 public class ExecutionEngine {
 
-	public ExecutionEngine() {
+	private static ExecutionEngine instance = new ExecutionEngine();
+	
+	public static ExecutionEngine getInstance(){
+		return instance;
+	}
+	
+	private ExecutionEngine() {
 		super();
 		this.regControl = new RegisterController();
 		this.memControl = new MemoryController();

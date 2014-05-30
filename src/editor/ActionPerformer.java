@@ -540,7 +540,7 @@ public class ActionPerformer {
 
     public MachineState actionExecute() {
         Parser parser = getParser();       
-        ExecutionEngine engine = new ExecutionEngine();
+        ExecutionEngine engine = ExecutionEngine.getInstance();
 
         if (parser.getExceptions().size() == 0) {
             engine.setConsole(tpEditor.getConsole());
@@ -553,7 +553,7 @@ public class ActionPerformer {
     
     public MachineState actionDebug() {
         Parser parser = getParser();       
-        ExecutionEngine engine = new ExecutionEngine();
+        ExecutionEngine engine = ExecutionEngine.getInstance();
        
         if (parser.getExceptions().size() == 0) {
         	this.numberOfClicks++; //Empezamos el pc en uno y seguimos incrementando.
