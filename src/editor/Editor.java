@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.FocusAdapter;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -31,6 +32,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -42,6 +44,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
@@ -62,7 +65,7 @@ import compiler.Scanner;
 import domain.Console;
 import domain.MachineState;
 import editor.TextLineNumber.Mode;
-
+import editor.res.Conversor;
 
 /**
  * Clase principal donde se construye la GUI del editor.
@@ -71,21 +74,22 @@ import editor.TextLineNumber.Mode;
  */
 public class Editor implements ActionListener {
 
-    public enum LanguajeType{
-    	MACHINE, ASSEMBLER    	
+    public enum LanguajeType {
+
+        MACHINE, ASSEMBLER
     };
 
     private LanguajeType languajeType = LanguajeType.ASSEMBLER; // 0 codigo maquina, 1 assembler
     private Dimension pantalla;
-    
+
     private JFrame jFrame; // instancia de JFrame (ventana principal)
     private JMenuBar jMenuBar; // instancia de JMenuBar (barra de menú)
     private JToolBar jToolBar; // instancia de JToolBar (barra de herramientas)
     private JPopupMenu jPopupMenu; // instancia de JPopupMenu (menú emergente)
     private JPanel statusBar; // instancia de JPanel (barra de estado)
-    
+
     private int indextest = 0;
-    
+
     private JSplitPane splitPaneMain;
     private JSplitPane splitPaneDebug;
     private ConsolePanel consolePanel;
@@ -93,7 +97,7 @@ public class Editor implements ActionListener {
     private PortPanel portPanel;
     private MemoryPanel memoryPanel;
     public ErrorPanel errorPanel;
-    
+
     //private JSplitPane problemPanel;
     private JTextArea jTextArea; // instancia de JTextArea (Área de edición)
     private JTextArea jTextAreaTranslate; // instancia de JTextArea para la traduccion(Área de edición)
@@ -127,7 +131,7 @@ public class Editor implements ActionListener {
 
     private boolean hasChanged = false; // el estado del documento actual, no modificado por defecto
     private File currentFile = null; // el archivo actual, ninguno por defecto 
-    
+
     private final EventHandler eventHandler; // instancia de EventHandler (la clase que maneja eventos) 
     private final ActionPerformer actionPerformer; // instancia de ActionPerformer (la clase que ejecuta acciones)
     private final UndoManager undoManager; // instancia de UndoManager (administrador de edición)
@@ -137,10 +141,12 @@ public class Editor implements ActionListener {
     private int lastdividerPosition;
     //private int lastproblemPanelLocation;
     private ErrorParser errorParser;
-    private MachineState currMachineState=null;
-    
+    private MachineState currMachineState = null;
 
-
+    //conversorHexa
+    JTextField textFieldConvHexa;
+    JLabel resultConvHexa;
+    JLabel textFieldLabel;
 
     /**
      * Punto de entrada del programa.
@@ -162,7 +168,6 @@ public class Editor implements ActionListener {
         });
     }
 
-    
     /**
      * Constructor de la clase.
      *
@@ -174,7 +179,7 @@ public class Editor implements ActionListener {
         } catch (Exception ex) {
             System.err.println(ex);
         }
-        
+
         pantalla = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension minimumSize = new Dimension(100, 50);
         Dimension minimumSize2 = new Dimension(200, 50);
@@ -184,18 +189,18 @@ public class Editor implements ActionListener {
         jFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         jFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
         jFrame.setLocationRelativeTo(null);
-        
+
         // asigna un manejador de eventos la visualizacion del JFrame
-        jFrame.addComponentListener( new ComponentAdapter() {
-            
-        	public void componentShown(ComponentEvent evt) {
+        jFrame.addComponentListener(new ComponentAdapter() {
+
+            public void componentShown(ComponentEvent evt) {
                 lastdividerPosition = pantalla.width / 2;
-        		enableTraslate();
+                enableTraslate();
                 //Component c = (Component) evt.getSource();
                 //System.out.println("Component is now visible");
             }
         });
-        
+
         // asigna un manejador de eventos para el cierre del JFrame
         jFrame.addWindowListener(new WindowAdapter() {
 
@@ -204,7 +209,7 @@ public class Editor implements ActionListener {
                 actionPerformer.actionExit(); // invoca el método actionExit()
             }
         });
-        
+
         eventHandler = new EventHandler(); // construye una instancia de EventHandler
         actionPerformer = new ActionPerformer(this); // construye una instancia de ActionPerformer
         undoManager = new UndoManager(); // construye una instancia de UndoManager
@@ -215,13 +220,13 @@ public class Editor implements ActionListener {
         buildStatusBar(); // construye la barra de estado
         buildPopupMenu(); // construye el menú emergente
         loadLanguageWords();
-        
+
         Container c = jFrame.getContentPane(); // obtiene el contendor principal
-        
+
         // añade los componentes de la parte superior de la pantalla
         c.add(jToolBar, BorderLayout.NORTH); // añade la barra de herramientas,
         jFrame.setJMenuBar(jMenuBar); // designa la barra de menú del JFrame
-        
+
         // añade los compponentes a la derecha de la pantalla
         //frame.setLayout(new BoxLayout(frame,BoxLayout.X_AXIS));
         JPanel leftPanel = new JPanel(new BorderLayout());
@@ -230,7 +235,7 @@ public class Editor implements ActionListener {
         leftPanel.add(registerPanel, BorderLayout.CENTER);
         leftPanel.add(portPanel, BorderLayout.SOUTH);
         //leftPanel.add(portPanel, BorderLayout.PAGE_END);
-        
+
         // añade los componentes del pie de la pantalla
         JPanel bottonPanel = new JPanel(new BorderLayout());
         consolePanel = new ConsolePanel();
@@ -245,11 +250,11 @@ public class Editor implements ActionListener {
         splitPaneDebug.setDividerLocation(500);
         bottonPanel.add(errorPanel, BorderLayout.PAGE_START);
         bottonPanel.add(splitPaneDebug, BorderLayout.CENTER);
-        bottonPanel.add(statusBar, BorderLayout.PAGE_END); 
-        
+        bottonPanel.add(statusBar, BorderLayout.PAGE_END);
+
         // añade los componentes al centro de la pantalla
         JPanel mainPanel = new JPanel(new BorderLayout());
-        
+
         jTextArea = new JTextArea();
         buildTextArea(jTextArea, 16777215, true); // construye el Área de edición, es importante que esta
         // sea la primera parte en construirse
@@ -270,7 +275,7 @@ public class Editor implements ActionListener {
         scrollPane = new JScrollPane(jTextArea);
         scrollPaneTranslate = new JScrollPane(jTextAreaTranslate);
         //c.add(scrollPane, BorderLayout.WEST); // añade el area de edición en
-        
+
         // el CENTRO
         labeltitle = new JLabel("Assembler");
         buidTitlePanel(scrollPane, labeltitle);
@@ -290,26 +295,25 @@ public class Editor implements ActionListener {
         splitPaneMain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, scrollPaneTranslate);
         splitPaneMain.setOneTouchExpandable(true);
         splitPaneMain.setDividerLocation(0.5);
-        
+
         //Set invisible
         buttonTraducir.setSelected(true);
-        
+
         //this.enableTraslate();
         mainPanel.add(splitPaneMain, BorderLayout.CENTER);
-        
+
         /*scrollPaneProblems = new JScrollPane(jTextAreaProblems);
-        scrollPaneProblems.setMinimumSize(minimumSize);
+         scrollPaneProblems.setMinimumSize(minimumSize);
         
         
-        lastproblemPanelLocation = pantalla.height / 2;
-        problemPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollPane, scrollPaneProblems);
-        problemPanel.setMinimumSize(minimumSize);
-        problemPanel.setOneTouchExpandable(true);
-        problemPanel.setDividerLocation(1000000);
-        problemPanel.setDividerSize(0);
+         lastproblemPanelLocation = pantalla.height / 2;
+         problemPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollPane, scrollPaneProblems);
+         problemPanel.setMinimumSize(minimumSize);
+         problemPanel.setOneTouchExpandable(true);
+         problemPanel.setDividerLocation(1000000);
+         problemPanel.setDividerSize(0);
         
-        c.add(problemPanel, BorderLayout.CENTER);*/
-        
+         c.add(problemPanel, BorderLayout.CENTER);*/
         c.add(mainPanel, BorderLayout.CENTER);
         c.add(leftPanel, BorderLayout.LINE_END);
         c.add(bottonPanel, BorderLayout.PAGE_END);
@@ -670,13 +674,33 @@ public class Editor implements ActionListener {
         buttonExecute.setIcon(new ImageIcon(getClass().getResource(
                 "/editor/res/execute.png")));
         buttonExecute.setActionCommand("cmd_execute");
-        
+
         JButton buttonDebug = new JButton();
         buttonDebug.setToolTipText("Debug");
         buttonDebug.setIcon(new ImageIcon(getClass().getResource(
                 "/editor/res/debug.png")));
         buttonDebug.setActionCommand("cmd_debug");
+        textFieldLabel = new JLabel("Conversor Dec-Hexa");
+        textFieldConvHexa = new JTextField();
+        resultConvHexa = new JLabel();
+        resultConvHexa.setMaximumSize(new Dimension(300, 100));
+        textFieldConvHexa.setMaximumSize(new Dimension(100, 100));
+        textFieldConvHexa.addActionListener(eventHandler);
+        textFieldConvHexa.addFocusListener(new FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
 
+                String value = textFieldConvHexa.getText();
+                Conversor c = new Conversor();
+                try {
+
+                    resultConvHexa.setText(c.decToHexa(value));
+                } catch (NumberFormatException e) {
+
+                    resultConvHexa.setText(e.getMessage());
+                }
+
+            }
+        });
         jToolBar.add(buttonNew); // se añaden los botones construidos a la barra
         // de herramientas
         jToolBar.add(buttonOpen);
@@ -697,7 +721,9 @@ public class Editor implements ActionListener {
         jToolBar.add(buttonTraducir);
         jToolBar.add(buttonExecute);
         jToolBar.add(buttonDebug);
-        
+        jToolBar.add(textFieldLabel);
+        jToolBar.add(textFieldConvHexa);
+        jToolBar.add(resultConvHexa);
 
         /**
          * itera sobre todos los componentes de la barra de herramientas, se les
@@ -715,7 +741,7 @@ public class Editor implements ActionListener {
                 jb.setMargin(new Insets(0, 0, 0, 0));
                 jb.addActionListener(eventHandler);
             }
-        }   
+        }
     }
 
     /**
@@ -891,14 +917,14 @@ public class Editor implements ActionListener {
             splitPaneMain.setDividerSize(0);
         }
     }
-    
+
     public void enableDebug(boolean enable) {
         if (enable) {
-        	consolePanel.clear();
-        	memoryPanel.resetValor("BASURA");
-        	registerPanel.resetValor("BASURA");
-        	portPanel.resetValor("BASURA", "NN");
-        	
+            consolePanel.clear();
+            memoryPanel.resetValor("BASURA");
+            registerPanel.resetValor("BASURA");
+            portPanel.resetValor("BASURA", "NN");
+
             splitPaneDebug.setVisible(true);
             portPanel.setVisible(true);
             registerPanel.setVisible(true);
@@ -908,12 +934,12 @@ public class Editor implements ActionListener {
             portPanel.setVisible(false);
         }
     }
-    
+
     public void enableError(boolean enable) {
         if (enable) {
-        	errorPanel.setVisible(true);
+            errorPanel.setVisible(true);
         } else {
-        	errorPanel.setVisible(false);
+            errorPanel.setVisible(false);
         }
     }
 
@@ -962,7 +988,7 @@ public class Editor implements ActionListener {
     }
 
     public void setLanguajeType(LanguajeType languajeType) {
-        this.languajeType = languajeType;        
+        this.languajeType = languajeType;
         if (languajeType == LanguajeType.MACHINE) {
             errorParser = new MachineErrorParser(jTextArea);
             this.columnLineCounter.setMode(Mode.HEXADECIMAL);
@@ -1123,7 +1149,7 @@ public class Editor implements ActionListener {
                 // "Nuevo"
                 setLanguajeType(LanguajeType.ASSEMBLER);
                 //jTextArea.setColumns(4);
-                errorParser = new NataliusErrorParser(jTextArea); 
+                errorParser = new NataliusErrorParser(jTextArea);
                 actionPerformer.actionNew();
             } else if (ac.equals("cmd_new_maq") == true) { // opción
                 // seleccionada:
@@ -1223,35 +1249,35 @@ public class Editor implements ActionListener {
                 // seleccionada:
                 // "Compilar"
                 // presenta un dialogo modal con alguna informacion
-            	actionPerformer.actionCompile();
-            	/*problemPanel.setDividerLocation(lastproblemPanelLocation);
-            	problemPanel.setDividerSize(10);*/
+                actionPerformer.actionCompile();
+                /*problemPanel.setDividerLocation(lastproblemPanelLocation);
+                 problemPanel.setDividerSize(10);*/
 
             } else if (ac.equals("cmd_translate") == true) {	// opción
                 // seleccionada:
                 // "Traducir"
-            	//registerPanel.setValorAndMark("AAAABBBB", indextest);
-            	//consolePanel.output("hola " + indextest);
-            	//consolePanel.output("hola " + indextest);
-            	//consolePanel.input();
-            	//indextest++;
+                //registerPanel.setValorAndMark("AAAABBBB", indextest);
+                //consolePanel.output("hola " + indextest);
+                //consolePanel.output("hola " + indextest);
+                //consolePanel.input();
+                //indextest++;
                 enableTraslate();
-	        } else if (ac.equals("cmd_execute") == true) {	// opción
-	        	// seleccionada:
-	        	// "Traducir"
-	        	enableError(false);
-	        	enableDebug(true);
-	        	currMachineState=actionPerformer.actionExecute();
-	        	registerPanel.loadRegisterValues(currMachineState.getRegControl().getRegisterState());
-	        	memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
-	        } else if (ac.equals("cmd_debug") == true) {	// opción
-	        	enableError(false);
-	        	enableDebug(true);
-	        	currMachineState=actionPerformer.actionDebug();
-	        	registerPanel.loadRegisterValues(currMachineState.getRegControl().getRegisterState());
-	        	memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
-	        	
-	        }           
+            } else if (ac.equals("cmd_execute") == true) {	// opción
+                // seleccionada:
+                // "Traducir"
+                enableError(false);
+                enableDebug(true);
+                currMachineState = actionPerformer.actionExecute();
+                registerPanel.loadRegisterValues(currMachineState.getRegControl().getRegisterState());
+                memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
+            } else if (ac.equals("cmd_debug") == true) {	// opción
+                enableError(false);
+                enableDebug(true);
+                currMachineState = actionPerformer.actionDebug();
+                registerPanel.loadRegisterValues(currMachineState.getRegControl().getRegisterState());
+                memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
+
+            }
         }
 
         /**
@@ -1395,9 +1421,9 @@ public class Editor implements ActionListener {
             }
         }
     }
-    
-    public Console getConsole(){
-        
+
+    public Console getConsole() {
+
         return consolePanel;
     }
 

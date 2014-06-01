@@ -100,7 +100,7 @@ public class Instruction {
 		else{
 			try{
 				Integer.parseInt(arg, 16);
-				if (arg.compareTo("00") == 0 || arg.compareTo("FE") == 0 || arg.compareTo("FC") == 0){
+				if (arg.compareTo("00") == 0){
 					this.argumentExceptions.add(new CompilationtException("La dirección de memoria "+ arg + " no puede ser utilizada", this.lineNumber));
 					valid = false;
 				}
