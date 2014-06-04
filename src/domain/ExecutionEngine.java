@@ -113,6 +113,7 @@ public class ExecutionEngine {
 	}
 	
 	public void loadProgram(){
+		this.totalProgramInsturctions = 0;
 		Iterator<Instruction> it = this.parser.getInstructions().iterator();
 		while (it.hasNext()){
 			Instruction curInst =((Instruction)it.next()); 
