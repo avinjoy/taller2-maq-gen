@@ -24,4 +24,8 @@ public class End extends Instruction {
 		return this.asmInstruction;
 	}
 
+	@Override
+	public String toString() {
+		return "Línea: " + this.lineNumber + " " + this.getClass().getSimpleName() + " " + showParameters();
+	}
 }

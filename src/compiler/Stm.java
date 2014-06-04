@@ -1,8 +1,8 @@
 package compiler;
 
 import compiler.Parameter.Type;
+
 import domain.MemoryController;
-import domain.Observable;
 import domain.Observer;
 import domain.RegisterController;
 
@@ -55,5 +55,10 @@ public class Stm extends Instruction{
         Integer memAddr = Integer.parseInt(this.parameters.get(1).getValue(),16);
         memCtrl.setValue(memAddr, regCtrl.getRegisterValue(regNumber).shortValue());
     }
+    
+    @Override
+	public String toString() {
+		return "Línea: " + this.lineNumber + " " + this.getClass().getSimpleName() + " " + showParameters();
+	}
 
 }

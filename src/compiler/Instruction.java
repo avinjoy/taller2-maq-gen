@@ -170,4 +170,11 @@ public class Instruction {
 
 	public void execute(RegisterController regCtrl, MemoryController memCtrl){};
 	
+	public String showParameters(){
+		String params="";
+		for (Parameter par : this.parameters){
+			params+=par.toString()+ " ";
+		}
+		return params;
+	}
 }

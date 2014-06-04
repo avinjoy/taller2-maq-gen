@@ -126,8 +126,15 @@ public class ExecutionEngine {
 		return new MachineState(this.currentInstruction, this.programCounter, this.memControl, this.regControl, this.nextInstruction, this.totalProgramInsturctions);
 	}
         
-        public void setConsole(Console c){
-            this.memControl.setObserver(c);
-           
-        }
+    public void setConsole(Console c){
+        this.memControl.setObserver(c);
+       
+    }
+    
+    public void cleanMachine(){
+    	this.currentInstruction=0;
+    	this.memControl.cleanMemory();
+    	this.nextInstruction=0;
+    	this.regControl=new RegisterController();
+    }
 }

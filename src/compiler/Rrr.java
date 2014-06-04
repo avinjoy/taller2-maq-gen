@@ -33,4 +33,9 @@ public class Rrr extends Instruction {
 			this.args = this.args.substring(0,1) + "," + this.args.substring(2,3);
 	}
 	
+	@Override
+	public String toString() {
+		return "Línea: " + this.lineNumber + " " + this.getClass().getSimpleName() + " " + showParameters();
+	}
+	
 }

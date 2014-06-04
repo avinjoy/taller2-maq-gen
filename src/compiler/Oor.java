@@ -36,4 +36,9 @@ public class Oor extends Instruction {
                 Byte orOperator = (byte)(regCtrl.getRegisterValue(regTwoNumber) | regCtrl.getRegisterValue(regOneNumber));
                 regCtrl.setRegisterValue(regDestinationNumber, orOperator);
 	}
+        
+    @Override
+	public String toString() {
+		return "Línea: " + this.lineNumber + " " + this.getClass().getSimpleName() + " " + showParameters();
+	}
 }

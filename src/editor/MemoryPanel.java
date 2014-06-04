@@ -238,7 +238,7 @@ public class MemoryPanel extends JPanel implements Console, Observer {
 			label_aux.setForeground(Color.BLACK);
 			arrow_aux.setForeground(Color.BLACK);
 			valor_aux.setForeground(Color.BLACK);		
-			valor_aux.setText(values.get(i).toString());
+			valor_aux.setText(Integer.toHexString(values.get(i) & 0xffff)); // Máscara para mostrar los shorts
 			
 			label_aux.repaint();
 			arrow_aux.repaint();

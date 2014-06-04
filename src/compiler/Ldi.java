@@ -42,4 +42,9 @@ public class Ldi extends Instruction {
 		regCtrl.setRegisterValue(regNumber, (byte)value);
 	}
 	
+	@Override
+	public String toString() {
+		return "Línea: " + this.lineNumber + " " + this.getClass().getSimpleName() + " " + showParameters();
+	}
+	
 }

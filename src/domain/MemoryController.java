@@ -55,4 +55,9 @@ public class MemoryController implements Observable {
         observer = o;
     }
 
+	public void cleanMemory() {
+		this.mem.cleanMemory();
+		
+	}
+    
 }

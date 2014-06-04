@@ -36,4 +36,9 @@ public class Xor extends Instruction {
                 Byte xorOperator = (byte)(regCtrl.getRegisterValue(regTwoNumber) ^ regCtrl.getRegisterValue(regOneNumber));
                 regCtrl.setRegisterValue(regDestinationNumber, xorOperator);
 	}
+         
+     @Override
+ 	public String toString() {
+ 		return "Línea: " + this.lineNumber + " " + this.getClass().getSimpleName() + " " + showParameters();
+ 	}
 }

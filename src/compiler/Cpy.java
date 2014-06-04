@@ -46,5 +46,10 @@ public class Cpy extends Instruction {
 		Integer regDestinationNumber = Integer.parseInt(this.parameters.get(1).getValue());
 		regCtrl.setRegisterValue(regDestinationNumber, regCtrl.getRegisterValue(regSourceNumber));
 	}
+	
+	@Override
+	public String toString() {
+		return "Línea: " + this.lineNumber + " " + this.getClass().getSimpleName() + " " + showParameters();
+	}
 
 }

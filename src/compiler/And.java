@@ -36,4 +36,9 @@ public class And extends Instruction {
                 Byte andOperator = (byte)(regCtrl.getRegisterValue(regTwoNumber) & regCtrl.getRegisterValue(regOneNumber));
                 regCtrl.setRegisterValue(regDestinationNumber, andOperator);
 	}
+        
+    @Override
+	public String toString() {
+		return "Línea: " + this.lineNumber + " " + this.getClass().getSimpleName() + " " + showParameters();
+	}
 }

@@ -32,7 +32,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -680,6 +679,14 @@ public class Editor implements ActionListener {
         buttonDebug.setIcon(new ImageIcon(getClass().getResource(
                 "/editor/res/debug.png")));
         buttonDebug.setActionCommand("cmd_debug");
+        
+        JButton buttonReset = new JButton();
+        buttonReset.setToolTipText("Restart");
+        buttonReset.setIcon(new ImageIcon(getClass().getResource(
+                "/editor/res/restart.png")));
+        buttonReset.setActionCommand("cmd_reset");
+        
+        
         textFieldLabel = new JLabel("Conversor Dec-Hexa");
         textFieldConvHexa = new JTextField();
         resultConvHexa = new JLabel();
@@ -721,6 +728,8 @@ public class Editor implements ActionListener {
         jToolBar.add(buttonTraducir);
         jToolBar.add(buttonExecute);
         jToolBar.add(buttonDebug);
+        jToolBar.add(buttonReset);
+        jToolBar.addSeparator();
         jToolBar.add(textFieldLabel);
         jToolBar.add(textFieldConvHexa);
         jToolBar.add(resultConvHexa);
@@ -1274,6 +1283,13 @@ public class Editor implements ActionListener {
                 enableError(false);
                 enableDebug(true);
                 currMachineState = actionPerformer.actionDebug();
+                registerPanel.loadRegisterValues(currMachineState.getRegControl().getRegisterState());
+                memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
+
+            } else if (ac.equals("cmd_reset") == true) {	// opción
+                enableError(false);
+                enableDebug(true);
+                currMachineState = actionPerformer.actionRestart();
                 registerPanel.loadRegisterValues(currMachineState.getRegControl().getRegisterState());
                 memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
 

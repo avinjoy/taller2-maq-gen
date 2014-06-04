@@ -35,10 +35,10 @@ public abstract class AbstractErrorParser implements ErrorParser {
         Document doc;
         try {
             doc = builder.build(f);
-            List listOfCommands = doc.getRootElement().getChildren("command");
+            List<Element> listOfCommands = doc.getRootElement().getChildren("command");
 
             for (int i = 0; i < listOfCommands.size(); i++) {
-                Element node = (Element) listOfCommands.get(i);
+                Element node = listOfCommands.get(i);
 
                 List<Element> listOfParameters = node.getChildren("parameter");
 

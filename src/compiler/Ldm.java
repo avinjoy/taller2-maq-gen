@@ -1,8 +1,8 @@
 package compiler;
 
 import compiler.Parameter.Type;
+
 import domain.MemoryController;
-import domain.Observable;
 import domain.Observer;
 import domain.RegisterController;
 
@@ -55,5 +55,10 @@ public class Ldm extends Instruction{
         Integer memAddr = Integer.parseInt(this.parameters.get(1).getValue(),16);
         regCtrl.setRegisterValue(regNumber, memCtrl.getValue(memAddr).byteValue());
     }
+    
+    @Override
+	public String toString() {
+		return "Línea: " + this.lineNumber + " " + this.getClass().getSimpleName() + " " + showParameters();
+	}
 
 }

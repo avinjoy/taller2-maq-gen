@@ -47,8 +47,9 @@ public class Memory {
 		this.mem.set(pos, value);
 	}
 	
-	private void cleanMemory(){
+	public void cleanMemory(){
 		Short bt = 0;
+		this.mem.clear();
 		for (int i = 0; i < 256; i++) {
 			this.mem.add(bt);
 		}		
@@ -68,4 +69,5 @@ public class Memory {
 	public Vector<Short> getMemoryState(){
 		return this.mem;
 	}
+
 }

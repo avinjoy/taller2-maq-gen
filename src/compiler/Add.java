@@ -35,4 +35,9 @@ public class Add extends Instruction {
 			this.args = this.args.substring(0,1) + "," + this.args.substring(1,2) + "," + this.args.substring(2,3);
 	}
 	
+	@Override
+	public String toString() {
+		return "Línea: " + this.lineNumber + " " + this.getClass().getSimpleName() + " " + showParameters();
+	}
+	
 }

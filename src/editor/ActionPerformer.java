@@ -564,6 +564,13 @@ public class ActionPerformer {
         return engine.getCurrentMachineState();
         
     }
+    
+    public MachineState actionRestart() {
+    
+    	ExecutionEngine engine = ExecutionEngine.getInstance();
+        engine.cleanMachine();
+        return engine.getCurrentMachineState();
+    }
 
     public Parser getParser() {
 

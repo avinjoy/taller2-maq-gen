@@ -50,4 +50,40 @@ public class Parameter {
 	public void setDataDirection(DataDir dataDirection) {
 		this.dataDirection = dataDirection;
 	}
+
+	@Override
+	public String toString() {
+		return getTypeOfParameter(this.parameterType) + this.number + this.value;
+	}
+
+	private String getTypeOfParameter(Type parameterType2) {
+		String ret="";
+		switch(parameterType2){
+			case ADRRESS: {
+				ret= "Address: ";
+				break;
+			}
+			case REGISTER: {
+				ret = "Register: ";
+				break;
+			}
+			case INTEGER: {
+				ret = "Integer: ";
+				break;
+			}
+			case FLOAT: {
+				ret = "Float: ";
+				break;
+			}
+			case BYTEINTEGER: {
+				ret = "ByteInt: ";
+				break;
+			}
+		default:
+			break;
+		}
+		return ret;
+	}
+	
+	
 }
