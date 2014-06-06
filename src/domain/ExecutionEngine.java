@@ -137,5 +137,6 @@ public class ExecutionEngine {
     	this.memControl.cleanMemory();
     	this.nextInstruction=0;
     	this.regControl=new RegisterController();
+    	this.programCounter=1;
     }
 }

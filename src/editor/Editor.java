@@ -1309,6 +1309,8 @@ public class Editor implements ActionListener {
                 currMachineState = actionPerformer.actionRestart();
                 registerPanel.loadRegisterValues(currMachineState.getRegControl().getRegisterState());
                 memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
+                valuePCLabel.setText(currMachineState.getProgramCounter().toString());
+                valuePCLabel.repaint();
 
             }
         }
