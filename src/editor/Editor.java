@@ -146,6 +146,10 @@ public class Editor implements ActionListener {
     JTextField textFieldConvHexa;
     JLabel resultConvHexa;
     JLabel textFieldLabel;
+    
+    //Program Counter
+    JLabel valuePCLabel;
+    JLabel pcLabel;
 
     /**
      * Punto de entrada del programa.
@@ -708,6 +712,12 @@ public class Editor implements ActionListener {
 
             }
         });
+        
+        
+        pcLabel = new JLabel("Program Counter: ");
+        valuePCLabel = new JLabel("1");
+
+        
         jToolBar.add(buttonNew); // se añaden los botones construidos a la barra
         // de herramientas
         jToolBar.add(buttonOpen);
@@ -733,6 +743,9 @@ public class Editor implements ActionListener {
         jToolBar.add(textFieldLabel);
         jToolBar.add(textFieldConvHexa);
         jToolBar.add(resultConvHexa);
+        jToolBar.addSeparator();
+        jToolBar.add(pcLabel);
+        jToolBar.add(valuePCLabel);
 
         /**
          * itera sobre todos los componentes de la barra de herramientas, se les
@@ -1279,12 +1292,16 @@ public class Editor implements ActionListener {
                 currMachineState = actionPerformer.actionExecute();
                 registerPanel.loadRegisterValues(currMachineState.getRegControl().getRegisterState());
                 memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
+                valuePCLabel.setText(currMachineState.getProgramCounter().toString());
+                valuePCLabel.repaint();
             } else if (ac.equals("cmd_debug") == true) {	// opción
                 enableError(false);
                 enableDebug(true);
                 currMachineState = actionPerformer.actionDebug();
                 registerPanel.loadRegisterValues(currMachineState.getRegControl().getRegisterState());
                 memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
+                valuePCLabel.setText(currMachineState.getProgramCounter().toString());
+                valuePCLabel.repaint();
 
             } else if (ac.equals("cmd_reset") == true) {	// opción
                 enableError(false);
