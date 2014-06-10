@@ -9,7 +9,7 @@ import compiler.exceptions.CompilationtException;
 import domain.MemoryController;
 import domain.RegisterController;
 
-public class Instruction {
+public abstract class Instruction {
 
 	public enum Language {ASSEMBLER,MACHINE};
 	protected List<Parameter> parameters; 
@@ -168,7 +168,7 @@ public class Instruction {
 		return asm;		
 	};
 
-	public void execute(RegisterController regCtrl, MemoryController memCtrl){};
+	public abstract void execute(RegisterController regCtrl, MemoryController memCtrl);
 	
 	public String showParameters(){
 		String params="";

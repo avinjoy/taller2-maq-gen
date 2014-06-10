@@ -44,7 +44,7 @@ public class Ldi extends Instruction {
 	
 	@Override
 	public String toString() {
-		return "Línea: " + this.lineNumber + " " + this.getClass().getSimpleName() + " " + showParameters();
+		return "LÃ­nea: " + this.lineNumber + " " + this.getClass().getSimpleName() + " " + showParameters();
 	}
 	
 }

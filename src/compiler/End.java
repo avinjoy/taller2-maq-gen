@@ -1,31 +1,40 @@
 package compiler;
 
+import domain.MemoryController;
+import domain.RegisterController;
+
 public class End extends Instruction {
 
-	final int CANT_PARAMETROS = 0;
-	final static String HEXA = "C";
-	final static String ASSEMBLER = "end";
-	
-	public End(int lineNumber){	
-		super(lineNumber);
-		this.qParameters = CANT_PARAMETROS;
-		this.hexaInstruction = HEXA;
-		this.asmInstruction = ASSEMBLER;
-		this.validate();		
-	}
-	
-	public String toHex() {
-		String hex = this.getMemoryAddress();
-		hex += " " + this.hexaInstruction + "000";		
-		return hex;
-	}
+    final int CANT_PARAMETROS = 0;
+    final static String HEXA = "C";
+    final static String ASSEMBLER = "end";
 
-	public String toAsm() {
-		return this.asmInstruction;
-	}
+    public End(int lineNumber) {
+        super(lineNumber);
+        this.qParameters = CANT_PARAMETROS;
+        this.hexaInstruction = HEXA;
+        this.asmInstruction = ASSEMBLER;
+        this.validate();
+    }
 
-	@Override
-	public String toString() {
-		return "Línea: " + this.lineNumber + " " + this.getClass().getSimpleName() + " " + showParameters();
-	}
+    public String toHex() {
+        String hex = this.getMemoryAddress();
+        hex += " " + this.hexaInstruction + "000";
+        return hex;
+    }
+
+    public String toAsm() {
+        return this.asmInstruction;
+    }
+
+    @Override
+    public String toString() {
+        return "LÃ­nea: " + this.lineNumber + " " + this.getClass().getSimpleName() + " " + showParameters();
+    }
+
+    @Override
+    public void execute(RegisterController regCtrl, MemoryController memCtrl) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

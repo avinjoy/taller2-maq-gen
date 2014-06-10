@@ -42,6 +42,11 @@ public class Parameter {
 			value = this.value;				
 		return value;		
 	}
+        
+        public Integer getValueInt(){
+            
+            return Integer.parseInt(this.getValue());
+        }
 
 	public DataDir getDataDirection() {
 		return dataDirection;

@@ -27,6 +27,7 @@ public class Conversor {
             byte result = 0;
             mantisa = Math.abs(mantisa);
             if (mantisa > 0) {
+                System.out.println("---------------------Mantisa mayor a 0-------------------------");
                 int expPos;
                 for (expPos = 31; expPos >= 0; expPos--) {
 
@@ -36,29 +37,27 @@ public class Conversor {
                     }
                 }
 
+                System.out.println("Exponente: " + expPos);
                 int frac = 0;
-                Double aux = (Double.parseDouble(floating[1])) / 10;
-                if (expPos <= 4) {
-                    int j;
-                    for (j = 4 - expPos; j > 0; j--) {
+                Double aux = Double.parseDouble("0." + floating[1]);
+                int j;
+                for (j = 4 - expPos; j > 0; j--) {
 
-                        aux = aux * 2;
-                        frac = (frac << 1);
-                        frac += aux.byteValue();
-                        aux -= aux.byteValue();
+                    aux = aux * 2;
+                    frac = (frac << 1);
+                    frac += aux.byteValue();
+                    aux -= aux.byteValue();
 
-                    }
-
-                    mantisa = mantisa << (4 - expPos);
-
-                    mantisa += frac;
-
-                } else {
-
-                    mantisa = (mantisa >> expPos - 4);
                 }
+                System.out.println("Frac: " + frac);
+                System.out.println("Mantisa Pre Corrimiento: " + mantisa);
+                mantisa = mantisa << (4 - expPos);
+
+                mantisa += frac;
+                System.out.println("Mantisa Final antes de And: " + mantisa);
 
                 mantisa = (mantisa & 0x0F);
+                System.out.println("Mantisa Final" + mantisa);
 
                 expPos += 4;
 
@@ -68,6 +67,7 @@ public class Conversor {
                 }
                 result = (byte) (expPos << 4);
                 result += mantisa;
+                System.out.println("Resultado para " + value + ": " + result);
             } else {
                 boolean end = false;
                 boolean firstMatch = false;
@@ -75,7 +75,7 @@ public class Conversor {
                 int sizeFrac = 0;
                 Double aux = Double.parseDouble("0." + floating[1]);
                 int expNeg = 0;
-                while (!end) {
+                while (!end && aux>0) {
                     aux = aux * 2;
 
                     if (firstMatch) {

@@ -1,6 +1,8 @@
 package compiler;
 
 import compiler.Parameter.Type;
+import domain.MemoryController;
+import domain.RegisterController;
 
 public class Rrr extends Instruction {
 
@@ -35,7 +37,34 @@ public class Rrr extends Instruction {
 	
 	@Override
 	public String toString() {
-		return "Línea: " + this.lineNumber + " " + this.getClass().getSimpleName() + " " + showParameters();
+		return "LÃ­nea: " + this.lineNumber + " " + this.getClass().getSimpleName() + " " + showParameters();
 	}
-	
+
+    
+    public void execute(RegisterController regCtrl, MemoryController memCtrl) {
+        
+        Integer regNumber = this.parameters.get(0).getValueInt();
+        Integer times = this.parameters.get(1).getValueInt();
+        
+        Integer regValue = regCtrl.getRegisterValue(regNumber).intValue();
+        regValue&=0xff;
+        Integer lastBit=0;
+        for (int i=times;i>0;i--){
+            
+            lastBit = regValue & 0x01;
+            regValue >>>= 1;
+            lastBit <<= 7;
+            regValue |= lastBit;
+        }
+        
+        System.out.println(regValue);
+        System.out.println(lastBit);
+        System.out.println(regValue.byteValue());
+                
+        regCtrl.setRegisterValue(regNumber, regValue.byteValue());
+        
+    } 
+
+        
 }
+

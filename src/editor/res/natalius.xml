@@ -6,7 +6,7 @@
             <message>Comando inválido</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]|1?[0-5]),</pattern>
+            <pattern>(0?[0-9]|1?[0-5]),</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
@@ -20,7 +20,7 @@
             <message>Comando inválido</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?),</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?),</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
@@ -34,7 +34,7 @@
             <message>Comando inválido</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?),</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?),</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
@@ -48,11 +48,11 @@
             <message>Comando inválido</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?),</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?),</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?)($| )</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?)($| )</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
     </command>
@@ -62,15 +62,15 @@
             <message>Comando inválido</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?),</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?),</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?),</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?),</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?)($| )</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?)($| )</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
     </command>
@@ -80,33 +80,33 @@
             <message>Comando inválido</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?),</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?),</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?),</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?),</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?)($| )</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?)($| )</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
     </command>
     <command>
         <parameter>
-            <pattern>oor($|  *)</pattern>
+            <pattern>oo($|  *)</pattern>
             <message>Comando inválido</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?),</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?),</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?),</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?),</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?)($| )</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?)($| )</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
     </command>
@@ -116,43 +116,43 @@
             <message>Comando inválido</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?),</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?),</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?),</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?),</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?)($| )</pattern>
-            <message>Solo hay disponibles 16 registros</message>
-        </parameter>
-    </command>
-    <command>
-        <parameter>
-            <pattern>xor($|  *)</pattern>
-            <message>Comando inválido</message>
-        </parameter>
-        <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?),</pattern>
-            <message>Solo hay disponibles 16 registros</message>
-        </parameter>
-        <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?),</pattern>
-            <message>Solo hay disponibles 16 registros</message>
-        </parameter>
-        <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?)($| )</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?)($| )</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
     </command>
     <command>
         <parameter>
-            <pattern>rrr($|  *)</pattern>
+            <pattern>xo($|  *)</pattern>
             <message>Comando inválido</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?),</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?),</pattern>
+            <message>Solo hay disponibles 16 registros</message>
+        </parameter>
+        <parameter>
+            <pattern>(0?[0-9]?|1?[0-5]?),</pattern>
+            <message>Solo hay disponibles 16 registros</message>
+        </parameter>
+        <parameter>
+            <pattern>(0?[0-9]?|1?[0-5]?)($| )</pattern>
+            <message>Solo hay disponibles 16 registros</message>
+        </parameter>
+    </command>
+    <command>
+        <parameter>
+            <pattern>rr($|  *)</pattern>
+            <message>Comando inválido</message>
+        </parameter>
+        <parameter>
+            <pattern>(0?[0-9]?|1?[0-5]?),</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
@@ -166,7 +166,7 @@
             <message>Comando inválido</message>
         </parameter>
         <parameter>
-            <pattern>r(0?[0-9]?|1?[0-5]?),</pattern>
+            <pattern>(0?[0-9]?|1?[0-5]?),</pattern>
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
