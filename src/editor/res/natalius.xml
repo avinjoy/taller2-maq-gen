@@ -10,7 +10,7 @@
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
-            <pattern>([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])($| )</pattern>
+            <pattern>([1-9a-fA-F]{1,2})($| )</pattern>
             <message>Solo hay disponibles 256 posiciones de memoria</message>
         </parameter>
     </command>
@@ -24,7 +24,7 @@
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
-            <pattern>([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])($| )</pattern>
+            <pattern>([1-9a-fA-F]{1,2})($| )</pattern>
             <message>Solo hay disponibles 256 posiciones de memoria</message>
         </parameter>
     </command>
@@ -38,7 +38,7 @@
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
-            <pattern>([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])($| )</pattern>
+            <pattern>([1-9a-fA-F]{1,2})($| )</pattern>
             <message>Solo hay disponibles 256 posiciones de memoria</message>
         </parameter>
     </command>
@@ -156,7 +156,7 @@
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
-            <pattern>([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])($| )</pattern>
+            <pattern>([1-9a-fA-F]{1,2})($| )</pattern>
             <message>Solo hay disponibles 256 posiciones de memoria</message>
         </parameter>
     </command>   
@@ -170,7 +170,7 @@
             <message>Solo hay disponibles 16 registros</message>
         </parameter>
         <parameter>
-            <pattern>([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])($| )</pattern>
+            <pattern>([1-9a-fA-F]{1,2})($| )</pattern>
             <message>Solo hay disponibles 256 posiciones de memoria</message>
         </parameter>
     </command>   

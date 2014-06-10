@@ -332,7 +332,7 @@ public class Editor implements ActionListener {
         Timer timer = new Timer(2, this);
         timer.setRepeats(true);
         timer.start();
-        errorParser = new MachineErrorParser(jTextArea);
+        errorParser = new NataliusErrorParser(jTextArea);
     }
 
     /**
