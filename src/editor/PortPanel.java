@@ -32,7 +32,7 @@ public class PortPanel  extends JPanel {
 		this.setLayout(new GridBagLayout());
 		this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		//this.setPreferredSize(new Dimension(340, this.getHeight()));
-		this.setPreferredSize(new Dimension(340, 120));
+		this.setPreferredSize(new Dimension(340, 80));
 
 		GridBagConstraints c = new GridBagConstraints();
 

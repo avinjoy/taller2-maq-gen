@@ -55,7 +55,10 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
+import javax.swing.text.LayeredHighlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.undo.UndoManager;
 
 import compiler.ParserAssembler;
@@ -88,6 +91,7 @@ public class Editor implements ActionListener {
     private JPanel statusBar; // instancia de JPanel (barra de estado)
 
     private int indextest = 0;
+    private boolean in_debug = false;
 
     private JSplitPane splitPaneMain;
     private JSplitPane splitPaneDebug;
@@ -185,7 +189,7 @@ public class Editor implements ActionListener {
 
         pantalla = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension minimumSize = new Dimension(100, 50);
-        Dimension minimumSize2 = new Dimension(200, 50);
+        Dimension minimumSize2 = new Dimension(300, 100);
 
         // construye un JFrame con título
         jFrame = new JFrame("Gerenic Sim - Sin Título");
@@ -250,7 +254,7 @@ public class Editor implements ActionListener {
         //Create a split pane with the two scroll panes in it.
         splitPaneDebug = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, memoryPanel, consolePanel);
         splitPaneDebug.setOneTouchExpandable(true);
-        splitPaneDebug.setDividerLocation(500);
+        splitPaneDebug.setDividerLocation(350);
         bottonPanel.add(errorPanel, BorderLayout.PAGE_START);
         bottonPanel.add(splitPaneDebug, BorderLayout.CENTER);
         bottonPanel.add(statusBar, BorderLayout.PAGE_END);
@@ -322,7 +326,7 @@ public class Editor implements ActionListener {
         c.add(bottonPanel, BorderLayout.PAGE_END);
 
         buildTimer();
-        enableDebug(false);
+        enableDebug(true);
         enableError(false);
 
     }
@@ -1144,7 +1148,8 @@ public class Editor implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        errorParser.checkError();
+    	if (!in_debug)
+    		errorParser.checkError();
     }
 
     /**
@@ -1276,13 +1281,19 @@ public class Editor implements ActionListener {
                  problemPanel.setDividerSize(10);*/
 
             } else if (ac.equals("cmd_translate") == true) {	// opción
-                // seleccionada:
-                // "Traducir"
-                //registerPanel.setValorAndMark("AAAABBBB", indextest);
-                //consolePanel.output("hola " + indextest);
-                //consolePanel.output("hola " + indextest);
-                //consolePanel.input();
-                //indextest++;
+            	/*
+                try {
+                	in_debug = true;
+                	Highlighter hilit = new DefaultHighlighter();
+                	jTextArea.setHighlighter(hilit);
+                	jTextArea.getHighlighter().removeAllHighlights();
+					jTextArea.getHighlighter().addHighlight(5, 10, new DefaultHighlighter.DefaultHighlightPainter(Color.PINK));
+					jTextArea.repaint();
+				} catch (BadLocationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				*/
                 enableTraslate();
             } else if (ac.equals("cmd_execute") == true) {	// opción
                 // seleccionada:
@@ -1302,7 +1313,7 @@ public class Editor implements ActionListener {
                 memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
                 valuePCLabel.setText(currMachineState.getProgramCounter().toString());
                 valuePCLabel.repaint();
-
+                
             } else if (ac.equals("cmd_reset") == true) {	// opción
                 enableError(false);
                 enableDebug(true);

@@ -30,8 +30,8 @@ public class RegisterPanel extends JPanel {
 
 		this.setLayout(new GridBagLayout());
 		this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		this.setPreferredSize(new Dimension(340, this.getHeight()));
-		//this.setPreferredSize(new Dimension(340, 380));
+		//this.setPreferredSize(new Dimension(340, this.getHeight()));
+		this.setPreferredSize(new Dimension(340, 280));
 
 		GridBagConstraints c = new GridBagConstraints();
 
@@ -131,10 +131,10 @@ public class RegisterPanel extends JPanel {
 			int fila) {
 
 		JLabel label = new JLabel(nombre);
-		label.setPreferredSize(new Dimension(25, 10));
+		label.setPreferredSize(new Dimension(25, 9));
 
 		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(3, 3, 3, 3);
+		c.insets = new Insets(1, 3, 1, 3);
 		c.gridx = 0; // aligned with button 2
 		c.gridy = fila; // third row
 		c.weighty = 0.0; // La fila 1 debe estirarse, le ponemos 1.0
@@ -152,7 +152,7 @@ public class RegisterPanel extends JPanel {
 		JLabel valor = new JLabel(value);
 
 		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(3, 3, 3, 3);
+		c.insets = new Insets(1, 3, 1, 3);
 		c.gridx = 2; // aligned with button 2
 		c.gridy = fila; // third row
 		c.weighty = 0.0; // La fila 1 debe estirarse, le ponemos 1.0
@@ -167,11 +167,11 @@ public class RegisterPanel extends JPanel {
 	private JLabel agregarArrowRegistros(JPanel contenedor, int fila) {
 
 		JLabel arrow = new JLabel("=>");
-		arrow.setPreferredSize(new Dimension(30, 10));
+		arrow.setPreferredSize(new Dimension(30, 9));
 		
 		//arrowReg.setForeground(Color.red);
 		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(3, 3, 3, 3);
+		c.insets = new Insets(1, 3, 1, 3);
 		c.gridx = 1;
 		c.gridy = fila;
 		c.weightx = 0.0;
@@ -242,9 +242,13 @@ public class RegisterPanel extends JPanel {
 			arrow_aux = arrowReg.get(i);
 			valor_aux = valorReg.get(i);
 
-			label_aux.setForeground(Color.BLACK);
-			arrow_aux.setForeground(Color.BLACK);
-			valor_aux.setForeground(Color.BLACK);		
+			Color color = Color.RED;
+			if (valor_aux.getText().equalsIgnoreCase(values.get(i).toString())) 
+				color = Color.BLACK;
+			
+			label_aux.setForeground(color);
+			arrow_aux.setForeground(color);
+			valor_aux.setForeground(color);		
 			valor_aux.setText(values.get(i).toString());
 			
 			label_aux.repaint();
