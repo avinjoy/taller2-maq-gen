@@ -30,9 +30,9 @@ public class And extends Instruction {
 	}	
         
         public void execute(RegisterController regCtrl, MemoryController memCtrl){				
-		Integer regOneNumber = Integer.parseInt(this.parameters.get(1).getValue());
-		Integer regTwoNumber = Integer.parseInt(this.parameters.get(2).getValue());
-                Integer regDestinationNumber = Integer.parseInt(this.parameters.get(0).getValue());
+		Integer regOneNumber = this.parameters.get(1).getValueInt();
+		Integer regTwoNumber = this.parameters.get(2).getValueInt();
+                Integer regDestinationNumber = this.parameters.get(0).getValueInt();
                 Byte andOperator = (byte)(regCtrl.getRegisterValue(regTwoNumber) & regCtrl.getRegisterValue(regOneNumber));
                 regCtrl.setRegisterValue(regDestinationNumber, andOperator);
 	}

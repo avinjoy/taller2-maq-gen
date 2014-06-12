@@ -34,7 +34,8 @@ public class End extends Instruction {
 
     @Override
     public void execute(RegisterController regCtrl, MemoryController memCtrl) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        
     }
 
 }

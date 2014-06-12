@@ -249,7 +249,7 @@ public class RegisterPanel extends JPanel {
 			label_aux.setForeground(color);
 			arrow_aux.setForeground(color);
 			valor_aux.setForeground(color);		
-			valor_aux.setText(values.get(i).toString());
+			valor_aux.setText(Integer.toHexString(0x0ff&values.get(i)));
 			
 			label_aux.repaint();
 			arrow_aux.repaint();

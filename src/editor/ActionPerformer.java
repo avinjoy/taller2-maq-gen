@@ -556,6 +556,7 @@ public class ActionPerformer {
         ExecutionEngine engine = ExecutionEngine.getInstance();
        
         if (parser.getExceptions().size() == 0) {
+            engine.setConsole(tpEditor.getConsole());
         	this.numberOfClicks++; //Empezamos el pc en uno y seguimos incrementando.
             engine.setParser(parser);
         	engine.loadProgram();
@@ -566,7 +567,7 @@ public class ActionPerformer {
     }
     
     public MachineState actionRestart() {
-    
+        numberOfClicks=0;
     	ExecutionEngine engine = ExecutionEngine.getInstance();
         engine.cleanMachine();
         return engine.getCurrentMachineState();

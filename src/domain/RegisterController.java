@@ -9,17 +9,17 @@ public class RegisterController {
 
 	public RegisterController() {
 		this.reg = new Vector<Register>();
-		for (int i = 1; i < 16; i++) {			
+		for (int i = 0; i < 16; i++) {			
 			this.reg.add(new Register(i));
 		}		
 	}
 	
 	public void setRegisterValue(Integer Pos, Byte value){
-		this.reg.elementAt(Pos-1).setValue(value);
+		this.reg.elementAt(Pos).setValue(value);
 	}
 	
 	public Byte getRegisterValue(Integer Pos){
-		return this.reg.elementAt(Pos-1).getValue();		
+		return this.reg.elementAt(Pos).getValue();		
 	}
 	
 	public void getRecordValues(){
@@ -36,4 +36,9 @@ public class RegisterController {
 		}
 		return values;
 	}
+        
+        public static RegisterController inst(){
+            
+            return new RegisterController();
+        }
 }

@@ -45,7 +45,6 @@ public class Add extends Instruction {
         Integer reg1 = this.parameters.get(1).getValueInt();
         Integer reg2 = this.parameters.get(2).getValueInt();
         Integer regDestino = this.parameters.get(0).getValueInt();
-        
         regCtrl.setRegisterValue(regDestino, ALU.ALU().addInteger(regCtrl.getRegisterValue(reg1), regCtrl.getRegisterValue(reg2)));
         
     }

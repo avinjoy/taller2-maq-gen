@@ -35,8 +35,7 @@ public class MemoryController implements Observable {
     public void setValue(Integer memAddr, Short value) {
 
         if (memAddr == 255 && mem.getValue(memAddr - 1) == 0) {
-
-            observer.output(Integer.toHexString(value));
+            observer.output(Integer.toHexString(0x0FF&value));
             this.mem.setValue(memAddr, (short) 1);
         }
 
@@ -59,5 +58,10 @@ public class MemoryController implements Observable {
 		this.mem.cleanMemory();
 		
 	}
+        
+        public static MemoryController inst(){
+            
+            return new MemoryController();
+        }
     
 }

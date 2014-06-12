@@ -42,8 +42,8 @@ public class Cpy extends Instruction {
 	}
 
 	public void execute(RegisterController regCtrl, MemoryController memCtrl){				
-		Integer regSourceNumber = Integer.parseInt(this.parameters.get(0).getValue());
-		Integer regDestinationNumber = Integer.parseInt(this.parameters.get(1).getValue());
+		Integer regSourceNumber = this.parameters.get(0).getValueInt();
+		Integer regDestinationNumber = this.parameters.get(1).getValueInt();
 		regCtrl.setRegisterValue(regDestinationNumber, regCtrl.getRegisterValue(regSourceNumber));
 	}
 	

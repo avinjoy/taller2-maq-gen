@@ -57,10 +57,6 @@ public class Rrr extends Instruction {
             regValue |= lastBit;
         }
         
-        System.out.println(regValue);
-        System.out.println(lastBit);
-        System.out.println(regValue.byteValue());
-                
         regCtrl.setRegisterValue(regNumber, regValue.byteValue());
         
     } 

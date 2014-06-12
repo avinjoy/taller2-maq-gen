@@ -1,10 +1,10 @@
 package domain;
 
-import java.util.Iterator;
-
+import compiler.End;
 import compiler.Instruction;
 import compiler.Parser;
 import compiler.ParserMachineCode;
+import java.util.Iterator;
 
 public class ExecutionEngine {
 
@@ -35,6 +35,12 @@ public class ExecutionEngine {
 	public void setCurrentInstruction(Short currentInstruction) {
 		this.currentInstruction = currentInstruction;
 	}
+        public void setNextInstruccionByAddr(Short addr){
+            
+            this.programCounter = (addr / 2);
+            
+        }
+        
 	public Integer getProgramCounter() {
 		return programCounter;
 	}
@@ -68,6 +74,7 @@ public class ExecutionEngine {
 	
 	public void nextInstruction(){
 		
+            
 	}
 	
 	public void executeProgram(){
@@ -75,7 +82,7 @@ public class ExecutionEngine {
 		this.programCounter = 1;
 		Parser programParser = new ParserMachineCode();
 		
-		while (this.programCounter<=this.totalProgramInsturctions){
+		while (this.programCounter<=this.totalProgramInsturctions && !(curInst instanceof End)){
 			String memAddr = "00";
 			String instr = Integer.toHexString(this.getMemControl().getValue((2*this.programCounter)-1)).toUpperCase();				
 			String instr2 = Integer.toHexString(this.getMemControl().getValue((2*this.programCounter))).toUpperCase();
@@ -93,7 +100,7 @@ public class ExecutionEngine {
 	
 	public void executeProgramOnDebugMode(int pc){
 		Instruction curInst = null;
-		this.programCounter = pc;
+//		this.programCounter = pc;
 		Parser programParser = new ParserMachineCode();
 		
 		if (this.programCounter<=this.totalProgramInsturctions){

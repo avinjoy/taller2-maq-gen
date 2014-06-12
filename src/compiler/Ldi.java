@@ -35,7 +35,7 @@ public class Ldi extends Instruction {
 	}
 	
 	public void execute(RegisterController regCtrl, MemoryController memCtrl){				
-		Integer regNumber = Integer.parseInt(this.parameters.get(0).getValue());		
+		Integer regNumber = this.parameters.get(0).getValueInt();		
 		Integer intValue = Integer.parseInt(this.parameters.get(1).getValue());
                 
 		short value = Short.valueOf(intValue.toString());

@@ -130,25 +130,30 @@ public class ConsolePanel extends JPanel implements Console, Observer {
         textArea.append(PROMPT);
         setTextAreaEditable(false);
         //((AbstractDocument)textArea.getDocument()).setDocumentFilter(new NonEditableLineDocumentFilter());
-        Integer value;
+        Integer value =0;
+        String valueHEXA = "";
+        boolean fin = false;
 
-        try {
-            value = Integer.parseInt(JOptionPane.showInputDialog(dialog, "Ingrese valor"));
-        } catch (NumberFormatException e) {
-
-            value = 0;
+        while (!fin) {
+            try {
+                valueHEXA = JOptionPane.showInputDialog(dialog, "Ingrese valor");
+                value = Integer.parseInt(valueHEXA, 16);
+                fin = true;
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(dialog, "Ingrese un valor hexadecimal correcto de tamaño dos");
+            }
         }
-        textArea.append("Valor ingresado (HEXADECIMAL): " + value + "\n");
+        textArea.append("Valor ingresado (HEXADECIMAL): " + valueHEXA + "\n");
 
-        return value.toString();
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return valueHEXA;
+
     }
 
     @Override
     public void output(String s) {
 
         JOptionPane.showMessageDialog(dialog, "Valor de salida: " + s, "Output", JOptionPane.INFORMATION_MESSAGE);
-        textArea.append("Valor de salida (HEXADECIMAL): " + s);
+        textArea.append("Valor de salida (HEXADECIMAL): " + s +"\n");
 
     }
 

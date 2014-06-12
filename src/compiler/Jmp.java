@@ -1,8 +1,10 @@
 package compiler;
 
 import compiler.Parameter.Type;
+import domain.ExecutionEngine;
 import domain.MemoryController;
 import domain.RegisterController;
+import java.util.Objects;
 
 public class Jmp extends Instruction {
 
@@ -22,7 +24,7 @@ public class Jmp extends Instruction {
     public void validateArgument(Integer iArgument, String arg) {
         if (iArgument == 1) {
             if (this.validateRegisterNumber(iArgument, arg)) {
-                this.parameters.add(new Parameter(iArgument, Type.REGISTER, arg));
+                this.parameters.add( new Parameter(iArgument, Type.REGISTER, arg));
             }
         } else if (this.validateMemoryAddress(iArgument, arg)) {
             this.parameters.add(new Parameter(iArgument, Type.ADRRESS, arg));
@@ -44,7 +46,17 @@ public class Jmp extends Instruction {
 
     @Override
     public void execute(RegisterController regCtrl, MemoryController memCtrl) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        Integer regNumber = this.parameters.get(0).getValueInt();
+        String value = this.parameters.get(1).getValue();
+        
+        Byte regValue1 = regCtrl.getRegisterValue(regNumber);
+        Byte regValue2 = regCtrl.getRegisterValue(0);
+
+        if (Objects.equals(regValue1, regValue2)){
+            
+            ExecutionEngine.getInstance().setNextInstruccionByAddr(Short.parseShort(value,16));
+        }
     }
 
 }
