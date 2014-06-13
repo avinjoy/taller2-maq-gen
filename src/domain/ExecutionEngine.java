@@ -103,7 +103,7 @@ public class ExecutionEngine {
 //		this.programCounter = pc;
 		Parser programParser = new ParserMachineCode();
 		
-		if (this.programCounter<=this.totalProgramInsturctions){
+		if (this.programCounter<=this.totalProgramInsturctions && !(curInst instanceof End)){
 			String memAddr = "00";
 			String instr = Integer.toHexString(this.getMemControl().getValue((2*this.programCounter)-1)).toUpperCase();				
 			String instr2 = Integer.toHexString(this.getMemControl().getValue((2*this.programCounter))).toUpperCase();
