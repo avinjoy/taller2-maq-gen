@@ -13,7 +13,7 @@ add 8,8,6
 add 8,8,4
 and 8,8,7
 ldi 0,00
-jmp 8,20
+jmp 8,22
 cpy 2,4
 xor 8,5,2
 add 8,8,6
@@ -29,11 +29,13 @@ ldm 2,fd
 ldi 0,00
 jmp 2,42
 ldi 0,01
-jmp 2,48
+jmp 2,4a
 jmp 0,34
+ldi 15,00
 stm 15,fe
 stm 3,ff
 end
+ldi 15,00
 stm 15,fe
 stm 4,ff
 end
