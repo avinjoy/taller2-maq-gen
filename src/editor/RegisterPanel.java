@@ -241,18 +241,19 @@ public class RegisterPanel extends JPanel {
 			label_aux = labelReg.get(i);
 			arrow_aux = arrowReg.get(i);
 			valor_aux = valorReg.get(i);
-
+			String actual_value = Integer.toHexString(0x0ff&values.get(i));
+			
 			Color color = Color.RED;
-			if (valor_aux.getText().equalsIgnoreCase(values.get(i).toString())) 
+			if (valor_aux.getText().equalsIgnoreCase(actual_value)) 
 				color = Color.BLACK;
 			
 			label_aux.setForeground(color);
 			arrow_aux.setForeground(color);
 			valor_aux.setForeground(color);		
-			valor_aux.setText(Integer.toHexString(0x0ff&values.get(i)));
+			valor_aux.setText(actual_value);
 			
 			label_aux.repaint();
-			arrow_aux.repaint();
+			arrow_aux.repaint();    
 			valor_aux.repaint();	
 		}
 	}

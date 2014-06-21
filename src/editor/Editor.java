@@ -326,9 +326,10 @@ public class Editor implements ActionListener {
         c.add(bottonPanel, BorderLayout.PAGE_END);
 
         buildTimer();
-        enableDebug(true);
-        enableError(false);
 
+        this.in_debug = false;
+        enableDebug();
+        enableError(false);
     }
 
     private void buildTimer() {
@@ -895,6 +896,24 @@ public class Editor implements ActionListener {
         columnLineCounter.add(Box.createRigidArea(new Dimension(10, 0)));
         columnLineCounter.add(Box.createHorizontalGlue());
     }
+    
+    private void buildHighlighterDebug(int programcounter) {
+        try {
+        	int linecounter = programcounter - 1;
+        	int startOffset = jTextArea.getLineStartOffset(linecounter);
+        	int endOffset = jTextArea.getLineEndOffset(linecounter);
+        	
+        	Highlighter hilit = new DefaultHighlighter();
+        	jTextArea.setHighlighter(hilit);
+        	jTextArea.getHighlighter().removeAllHighlights();
+			jTextArea.getHighlighter().addHighlight(startOffset, endOffset, new DefaultHighlighter.DefaultHighlightPainter(Color.ORANGE));
+			jTextArea.setCaretPosition(startOffset);
+			jTextArea.repaint();
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 
     /**
      * Hace visible el menú emergente.
@@ -943,23 +962,28 @@ public class Editor implements ActionListener {
             splitPaneMain.setDividerSize(0);
         }
     }
-
-    public void enableDebug(boolean enable) {
-        if (enable) {
-            consolePanel.clear();
-            memoryPanel.resetValor("BASURA");
-            registerPanel.resetValor("BASURA");
-            portPanel.resetValor("BASURA", "NN");
-
+ 
+    public void enableDebug() {
+        if (in_debug) {
             splitPaneDebug.setVisible(true);
             portPanel.setVisible(true);
             registerPanel.setVisible(true);
-        } else {
+        } 
+        else if (!in_debug) {
             splitPaneDebug.setVisible(false);
             registerPanel.setVisible(false);
             portPanel.setVisible(false);
         }
+
     }
+    
+    public void resetDebug() {
+		consolePanel.clear();
+        memoryPanel.resetValor("BASURA");
+        registerPanel.resetValor("BASURA");
+        portPanel.resetValor("BASURA", "NN");
+    }
+        
 
     public void enableError(boolean enable) {
         if (enable) {
@@ -1187,6 +1211,7 @@ public class Editor implements ActionListener {
             } else if (ac.equals("cmd_open") == true) { // opción seleccionada:
                 // "Abrir"
                 actionPerformer.actionOpen();
+                enableTraslate();
             } else if (ac.equals("cmd_save") == true) { // opción seleccionada:
                 // "Guardar"
                 actionPerformer.actionSave();
@@ -1281,48 +1306,51 @@ public class Editor implements ActionListener {
                  problemPanel.setDividerSize(10);*/
 
             } else if (ac.equals("cmd_translate") == true) {	// opción
-            	/*
-                try {
-                	in_debug = true;
-                	Highlighter hilit = new DefaultHighlighter();
-                	jTextArea.setHighlighter(hilit);
-                	jTextArea.getHighlighter().removeAllHighlights();
-					jTextArea.getHighlighter().addHighlight(5, 10, new DefaultHighlighter.DefaultHighlightPainter(Color.PINK));
-					jTextArea.repaint();
-				} catch (BadLocationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				*/
                 enableTraslate();
             } else if (ac.equals("cmd_execute") == true) {	// opción
-                // seleccionada:
-                // "Traducir"
+            	in_debug = true;
+            	resetDebug();
+                enableDebug();
                 enableError(false);
-                enableDebug(true);
+                
                 currMachineState = actionPerformer.actionExecute();
                 registerPanel.loadRegisterValues(currMachineState.getRegControl().getRegisterState());
                 memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
                 valuePCLabel.setText(currMachineState.getProgramCounter().toString());
                 valuePCLabel.repaint();
+                
+                in_debug = false;
             } else if (ac.equals("cmd_debug") == true) {	// opción
+            	if (!in_debug) {
+            		in_debug = true;
+            		resetDebug();
+            	}
+            	enableDebug();
                 enableError(false);
-                enableDebug(true);
+                
                 currMachineState = actionPerformer.actionDebug();
                 registerPanel.loadRegisterValues(currMachineState.getRegControl().getRegisterState());
                 memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
                 valuePCLabel.setText(currMachineState.getProgramCounter().toString());
                 valuePCLabel.repaint();
                 
+                buildHighlighterDebug(currMachineState.getProgramCounter());
+                
+                if (currMachineState.getProgramCounter() > currMachineState.getTotalProgramInsturctions()) {
+                	in_debug = false;
+                }
             } else if (ac.equals("cmd_reset") == true) {	// opción
+            	in_debug = true;
+            	resetDebug();
+                enableDebug();
                 enableError(false);
-                enableDebug(true);
+                
                 currMachineState = actionPerformer.actionRestart();
                 registerPanel.loadRegisterValues(currMachineState.getRegControl().getRegisterState());
                 memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
                 valuePCLabel.setText(currMachineState.getProgramCounter().toString());
                 valuePCLabel.repaint();
-
+                in_debug = false;
             }
         }
 

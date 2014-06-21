@@ -266,23 +266,24 @@ public class MemoryPanel extends JPanel implements Console, Observer {
 	}
 	
 	public void loadMemoryValues(Vector<Short> values) {
-		JLabel label_aux = null;
-		JLabel arrow_aux = null;
-		JLabel valor_aux = null;
+		//JLabel label_aux = null;
+		//JLabel arrow_aux = null;
+		JLabel label_valor = null;
 
 		for (int i = 0; i <= CANT_FILA; i++) {
 			for (int j = 0; j <= CANT_COL; j++) {
 				int position = i * (CANT_FILA + 1) + j;
-				valor_aux = valorMem.get(position);
-	
+				label_valor = valorMem.get(position);
+				String valor_act = Integer.toHexString(values.get(position) & 0xffff);
+				
 				Color color = Color.RED;
-				if (valor_aux.getText().equalsIgnoreCase(values.get(i).toString())) 
+				if (label_valor.getText().equalsIgnoreCase(valor_act)) 
 					color = Color.BLACK;
 				
-				valor_aux.setForeground(color);		
-				valor_aux.setText(Integer.toHexString(values.get(i) & 0xffff)); // Máscara para mostrar los shorts
+				label_valor.setForeground(color);		
+				label_valor.setText(valor_act); // Máscara para mostrar los shorts
 				
-				valor_aux.repaint();	
+				label_valor.repaint();	
 			}
 		}
 
