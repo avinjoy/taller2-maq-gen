@@ -48,9 +48,11 @@ public class Memory {
 	}
 	
 	public void cleanMemory(){
+		this.mem=null;
+		this.mem=new Vector<Short>();
 		Short bt = 0;
 		this.mem.clear();
-		for (int i = 0; i < 256; i++) {
+		for (int i = 0; i <= 256; i++) {
 			this.mem.add(bt);
 		}		
 	}
