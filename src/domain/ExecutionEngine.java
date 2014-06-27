@@ -22,7 +22,7 @@ public class ExecutionEngine {
 	}
 	
 	private Short currentInstruction;
-	private Integer programCounter;
+	private Integer programCounter =1;
 	private MemoryController memControl;
 	private RegisterController regControl;
 	private Parser parser;
@@ -84,8 +84,8 @@ public class ExecutionEngine {
 		
 		while (this.programCounter<=this.totalProgramInsturctions && !(curInst instanceof End)){
 			String memAddr = "00";
-			String instr = Integer.toHexString(this.getMemControl().getValue((2*this.programCounter)-1)).toUpperCase();				
-			String instr2 = Integer.toHexString(this.getMemControl().getValue((2*this.programCounter))).toUpperCase();
+			String instr = Integer.toHexString(this.getMemControl().getValue((2*this.programCounter)-2)).toUpperCase();				
+			String instr2 = Integer.toHexString(this.getMemControl().getValue((2*this.programCounter)-1)).toUpperCase();
 			if (instr2.length() == 1)
 				instr2 = "0"+instr2;
 			
@@ -93,6 +93,7 @@ public class ExecutionEngine {
 			curInst.execute(this.regControl, this.memControl);
 			this.programCounter++;
 	}
+        this.programCounter = 1;
 
 		this.regControl.getRecordValues();
 		this.memControl.showCurrentState();
@@ -105,8 +106,8 @@ public class ExecutionEngine {
 		
 		if (this.programCounter<=this.totalProgramInsturctions && !(curInst instanceof End)){
 			String memAddr = "00";
-			String instr = Integer.toHexString(this.getMemControl().getValue((2*this.programCounter)-1)).toUpperCase();				
-			String instr2 = Integer.toHexString(this.getMemControl().getValue((2*this.programCounter))).toUpperCase();
+			String instr = Integer.toHexString(this.getMemControl().getValue((2*this.programCounter)-2)).toUpperCase();				
+			String instr2 = Integer.toHexString(this.getMemControl().getValue((2*this.programCounter)-1)).toUpperCase();
 			if (instr2.length() == 1)
 				instr2 = "0"+instr2;
 			
@@ -114,6 +115,10 @@ public class ExecutionEngine {
 			curInst.execute(this.regControl, this.memControl);
 			this.programCounter++;
 		}
+        if (curInst instanceof End ){
+                    
+           this.programCounter =1;
+        }
 		
 		this.regControl.getRecordValues();
 		this.memControl.showCurrentState();
@@ -124,8 +129,8 @@ public class ExecutionEngine {
 		Iterator<Instruction> it = this.parser.getInstructions().iterator();
 		while (it.hasNext()){
 			Instruction curInst =((Instruction)it.next()); 
-			this.memControl.setValue((2*curInst.getLineNumber())-1, Short.valueOf(curInst.toHex().substring(3, 5),16));			
-			this.memControl.setValue(2*curInst.getLineNumber(), Short.valueOf(curInst.toHex().substring(5, 7),16));
+			this.memControl.setValue((2*curInst.getLineNumber())-2, Short.valueOf(curInst.toHex().substring(3, 5),16));			
+			this.memControl.setValue((2*curInst.getLineNumber())-1, Short.valueOf(curInst.toHex().substring(5, 7),16));
 			this.totalProgramInsturctions++;
 		}
 	}

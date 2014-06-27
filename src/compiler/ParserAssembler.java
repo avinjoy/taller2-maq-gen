@@ -20,8 +20,9 @@ public class ParserAssembler extends Parser {
 
 		Instruction instruction = null;
 		int indexSpace = instr.indexOf(" ")!=-1?instr.indexOf(" "):instr.length();
+                int indexComment = instr.indexOf("//")!=-1?instr.indexOf("//"):instr.length();
 		this.currentInstruction = instr.substring(0, indexSpace);
-		String args = instr.substring(indexSpace).trim();
+		String args = instr.substring(indexSpace,indexComment).trim();
 		
 		if (this.currentInstruction.compareTo(Ldm.ASSEMBLER) == 0){
 			instruction = new Ldm(lnNumber, args, Language.ASSEMBLER,console);

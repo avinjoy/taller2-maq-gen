@@ -48,7 +48,8 @@ public abstract class Instruction {
 
 	public void validate(){
 		if (this.qParameters > 0){
-			StringTokenizer token = new StringTokenizer(this.args, ",");
+                        
+			StringTokenizer token = new StringTokenizer(this.args.split("//")[0], ",");
 			this.valid = true;
 			Integer iArgument = 0;
 			String arg = "";

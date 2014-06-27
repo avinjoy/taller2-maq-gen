@@ -688,6 +688,7 @@ public class Editor implements ActionListener {
         buttonDebug.setIcon(new ImageIcon(getClass().getResource(
                 "/editor/res/debug.png")));
         buttonDebug.setActionCommand("cmd_debug");
+        buttonDebug.setMnemonic('d');
         
         JButton buttonReset = new JButton();
         buttonReset.setToolTipText("Restart");

@@ -106,7 +106,7 @@ public class TextLineNumber extends JPanel
 		this.nMode = Mode.DECIMAL;
 		setFont( component.getFont() );
 
-		setBorderGap( 5 );
+		setBorderGap( 30 );
 		setCurrentLineForeground( Color.RED );
 		setDigitAlignment( RIGHT );
 		setMinimumDisplayDigits( minimumDisplayDigits );
@@ -337,7 +337,7 @@ public class TextLineNumber extends JPanel
 		Element line = root.getElement( index );
 
 		if (line.getStartOffset() == rowStartOffset)
-			return String.valueOf(index + 1);
+			return String.valueOf(index + 1)+" "+"M: "+Integer.toHexString((index)*2);
 		else
 			return "";
 	}

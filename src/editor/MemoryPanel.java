@@ -35,7 +35,7 @@ public class MemoryPanel extends JPanel implements Console, Observer {
 
 		this.setLayout(new GridBagLayout());
 		this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		this.setPreferredSize(new Dimension(130, 400));//this.getHeight()));
+		this.setPreferredSize(new Dimension(130, 200));//this.getHeight()));
 
 		GridBagConstraints c = new GridBagConstraints();
 
