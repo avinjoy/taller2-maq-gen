@@ -967,7 +967,7 @@ public class Editor implements ActionListener {
     public void enableDebug() {
         if (in_debug) {
             splitPaneDebug.setVisible(true);
-            portPanel.setVisible(true);
+            portPanel.setVisible(false);
             registerPanel.setVisible(true);
         } 
         else if (!in_debug) {
