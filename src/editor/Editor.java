@@ -99,6 +99,7 @@ public class Editor implements ActionListener {
     private RegisterPanel registerPanel;
     private PortPanel portPanel;
     private MemoryPanel memoryPanel;
+    private AluPanel aluePanel;
     public ErrorPanel errorPanel;
 
     //private JSplitPane problemPanel;
@@ -239,8 +240,10 @@ public class Editor implements ActionListener {
         JPanel leftPanel = new JPanel(new BorderLayout());
         registerPanel = new RegisterPanel();
         portPanel = new PortPanel();
-        leftPanel.add(registerPanel, BorderLayout.CENTER);
-        leftPanel.add(portPanel, BorderLayout.SOUTH);
+        leftPanel.add(registerPanel, BorderLayout.NORTH);
+        leftPanel.add(portPanel, BorderLayout.CENTER);
+        aluePanel = new AluPanel();
+        leftPanel.add(aluePanel, BorderLayout.SOUTH);
         //leftPanel.add(portPanel, BorderLayout.PAGE_END);
 
         // añade los componentes del pie de la pantalla
@@ -969,17 +972,19 @@ public class Editor implements ActionListener {
             splitPaneDebug.setVisible(true);
             portPanel.setVisible(false);
             registerPanel.setVisible(true);
+            aluePanel.setVisible(true);
         } 
         else if (!in_debug) {
             splitPaneDebug.setVisible(false);
             registerPanel.setVisible(false);
             portPanel.setVisible(false);
+            aluePanel.setVisible(false);
         }
 
     }
     
     public void resetDebug() {
-		consolePanel.clear();
+        consolePanel.clear();
         memoryPanel.resetValor("BASURA");
         registerPanel.resetValor("BASURA");
         portPanel.resetValor("BASURA", "NN");
@@ -1317,11 +1322,15 @@ public class Editor implements ActionListener {
                 currMachineState = actionPerformer.actionExecute();
                 registerPanel.loadRegisterValues(currMachineState.getRegControl().getRegisterState());
                 memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
+                portPanel.setValorAndMark(Integer.toHexString(currMachineState.getMemControl().getPortValue(253)), currMachineState.getMemControl().getValue(252).toString(), 0);
+                portPanel.setValorAndMark(Integer.toHexString(currMachineState.getMemControl().getPortValue(255)), currMachineState.getMemControl().getValue(254).toString(), 1);
+                aluePanel.setValorAndMark(Integer.toHexString(currMachineState.getAlu().getCarry()),"3",0);
+                aluePanel.setValorAndMark(Integer.toHexString(currMachineState.getAlu().getOverflow()),"4",1);
                 valuePCLabel.setText(currMachineState.getProgramCounter().toString());
                 valuePCLabel.repaint();
                 
                 in_debug = false;
-            } else if (ac.equals("cmd_debug") == true) {	// opción
+            } else if (ac.equals("cmd_debug") == true) {// opción
             	if (!in_debug) {
             		in_debug = true;
             		resetDebug();

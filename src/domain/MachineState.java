@@ -61,6 +61,11 @@ public class MachineState {
 	public void setTotalProgramInsturctions(Integer totalProgramInsturctions) {
 		this.totalProgramInsturctions = totalProgramInsturctions;
 	}
+        
+        public ALU getAlu(){
+            
+            return ALU.ALU();
+        }
 	
 	
 

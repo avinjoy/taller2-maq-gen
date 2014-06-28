@@ -95,8 +95,8 @@ public class ExecutionEngine {
 	}
         this.programCounter = 1;
 
-		this.regControl.getRecordValues();
-		this.memControl.showCurrentState();
+//		this.regControl.getRecordValues();
+//		this.memControl.showCurrentState();
 		}
 	
 	public void executeProgramOnDebugMode(int pc){

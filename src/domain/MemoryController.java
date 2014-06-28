@@ -19,6 +19,11 @@ public class MemoryController implements Observable {
     public void setMem(Memory mem) {
         this.mem = mem;
     }
+    
+    public Short getPortValue(Integer memPos){
+        
+        return this.mem.getValue(memPos);
+    }
 
     public Short getValue(Integer memPos) {
 

@@ -28,6 +28,7 @@ public class Conversor {
             mantisa = Math.abs(mantisa);
             if (mantisa > 0) {
                 System.out.println("---------------------Mantisa mayor a 0-------------------------");
+                
                 int expPos;
                 for (expPos = 31; expPos >= 0; expPos--) {
 
@@ -69,13 +70,15 @@ public class Conversor {
                 result += mantisa;
                 System.out.println("Resultado para " + value + ": " + result);
             } else {
+                System.out.println(value);
                 boolean end = false;
                 boolean firstMatch = false;
                 int frac = 0;
                 int sizeFrac = 0;
                 Double aux = Double.parseDouble("0." + floating[1]);
                 int expNeg = 0;
-                while (!end && aux>0) {
+                System.out.println(aux);
+                while (!end) {
                     aux = aux * 2;
 
                     if (firstMatch) {
@@ -96,9 +99,11 @@ public class Conversor {
                     }
 
                     aux -= aux.byteValue();
+                System.out.println("aux "+aux);
+                System.out.println("frac "+frac);
 
                 }
-
+                System.out.println(frac);
                 expNeg = 4 - expNeg;
                 if (expNeg < 0 || expNeg > 7) {
 

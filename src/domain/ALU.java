@@ -6,17 +6,43 @@ package domain;
  */
 public class ALU {
 
-    boolean overflow = false;
+    private Integer overflow = 0;
+
+    private Integer carry = 0;
+    
+    private static ALU alu = new ALU();
+    
+    public Integer getOverflow() {
+        return overflow;
+    }
+
+    public Integer getCarry() {
+        return carry;
+    }
+    
+    public void setOverflow(Integer overflow) {
+        this.overflow = overflow;
+    }
+
+    public void setCarry(Integer carry) {
+        this.carry = carry;
+    }
 
     public Byte addInteger(Byte value1, Byte value2) {
 
-        overflow = false;
+        overflow = 0;
+        carry = 0;
 
         Integer result = value1 + value2;
 
-        if (result > Byte.MAX_VALUE) {
+        if (((value1 & 0x80) == (value2 & 0x80)) && (((value1 & 0x80) != (result & 0x80)) || ((value2 & 0x80) != (result & 0x80)))) {
+        
+            overflow = 1;
+        }
 
-            overflow = true;
+        if ((result & 0x100) == 0x100) {
+
+            carry = 1;
         }
 
         return result.byteValue();
@@ -115,6 +141,6 @@ public class ALU {
 
     public static ALU ALU() {
 
-        return new ALU();
+        return alu;
     }
 }
