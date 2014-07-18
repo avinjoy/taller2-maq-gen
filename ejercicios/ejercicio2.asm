@@ -28,6 +28,10 @@ ldi 8,00
 add 8,1,3
 rrr 10,7
 add 8,8,10
+ldi 0,00
+stm 0,fe
 stm 8,ff
+stm 0,fe
 stm 9,ff
+end
 

@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Highlighter;
 import javax.swing.text.JTextComponent;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -59,7 +60,14 @@ public abstract class AbstractErrorParser implements ErrorParser {
         Integer position = 0;
         Integer startErrorPosition = 0;
         Integer endErrorPosition = 0;
-        component.getHighlighter().removeAllHighlights();
+        for (Highlighter.Highlight highlight:component.getHighlighter().getHighlights()){
+            
+            if (highlight.getPainter() instanceof JaggedHighlighterPainter){
+            
+                component.getHighlighter().removeHighlight(highlight);
+            }
+            
+        }
         component.repaint();
 
         while (t.hasMoreElements()) {

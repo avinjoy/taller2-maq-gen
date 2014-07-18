@@ -41,7 +41,7 @@ public class MemoryController implements Observable {
 
         if (memAddr == 255 && mem.getValue(memAddr - 1) == 0) {
             observer.output(Integer.toHexString(0x0FF&value));
-            this.mem.setValue(memAddr, (short) 1);
+            this.mem.setValue(memAddr-1, (short) 1);
         }
 
         this.mem.setValue(memAddr, value);

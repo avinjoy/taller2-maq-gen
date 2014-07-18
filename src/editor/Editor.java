@@ -99,7 +99,7 @@ public class Editor implements ActionListener {
     private RegisterPanel registerPanel;
     private PortPanel portPanel;
     private MemoryPanel memoryPanel;
-    private AluPanel aluePanel;
+    private AluPanel aluPanel;
     public ErrorPanel errorPanel;
 
     //private JSplitPane problemPanel;
@@ -242,8 +242,8 @@ public class Editor implements ActionListener {
         portPanel = new PortPanel();
         leftPanel.add(registerPanel, BorderLayout.NORTH);
         leftPanel.add(portPanel, BorderLayout.CENTER);
-        aluePanel = new AluPanel();
-        leftPanel.add(aluePanel, BorderLayout.SOUTH);
+        aluPanel = new AluPanel();
+        leftPanel.add(aluPanel, BorderLayout.SOUTH);
         //leftPanel.add(portPanel, BorderLayout.PAGE_END);
 
         // añade los componentes del pie de la pantalla
@@ -970,15 +970,15 @@ public class Editor implements ActionListener {
     public void enableDebug() {
         if (in_debug) {
             splitPaneDebug.setVisible(true);
-            portPanel.setVisible(false);
+            portPanel.setVisible(true);
             registerPanel.setVisible(true);
-            aluePanel.setVisible(true);
+            aluPanel.setVisible(true);
         } 
         else if (!in_debug) {
             splitPaneDebug.setVisible(false);
             registerPanel.setVisible(false);
             portPanel.setVisible(false);
-            aluePanel.setVisible(false);
+            aluPanel.setVisible(false);
         }
 
     }
@@ -988,6 +988,7 @@ public class Editor implements ActionListener {
         memoryPanel.resetValor("BASURA");
         registerPanel.resetValor("BASURA");
         portPanel.resetValor("BASURA", "NN");
+        aluPanel.resetValor();
     }
         
 
@@ -1324,8 +1325,9 @@ public class Editor implements ActionListener {
                 memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
                 portPanel.setValorAndMark(Integer.toHexString(currMachineState.getMemControl().getPortValue(253)), currMachineState.getMemControl().getValue(252).toString(), 0);
                 portPanel.setValorAndMark(Integer.toHexString(currMachineState.getMemControl().getPortValue(255)), currMachineState.getMemControl().getValue(254).toString(), 1);
-                aluePanel.setValorAndMark(Integer.toHexString(currMachineState.getAlu().getCarry()),"3",0);
-                aluePanel.setValorAndMark(Integer.toHexString(currMachineState.getAlu().getOverflow()),"4",1);
+                aluPanel.setValorAndMark(Integer.toHexString(currMachineState.getAlu().getCarry()),"3",0);
+                aluPanel.setValorAndMark(Integer.toHexString(currMachineState.getAlu().getOverflow()),"4",1);
+                aluPanel.setValorAndMark(Integer.toHexString(currMachineState.getAlu().getPresicion()),"5",2);
                 valuePCLabel.setText(currMachineState.getProgramCounter().toString());
                 valuePCLabel.repaint();
                 
@@ -1341,6 +1343,11 @@ public class Editor implements ActionListener {
                 currMachineState = actionPerformer.actionDebug();
                 registerPanel.loadRegisterValues(currMachineState.getRegControl().getRegisterState());
                 memoryPanel.loadMemoryValues(currMachineState.getMemControl().getMemoryState());
+                  portPanel.setValorAndMark(Integer.toHexString(currMachineState.getMemControl().getPortValue(253)), currMachineState.getMemControl().getValue(252).toString(), 0);
+                portPanel.setValorAndMark(Integer.toHexString(currMachineState.getMemControl().getPortValue(255)), currMachineState.getMemControl().getValue(254).toString(), 1);
+                aluPanel.setValorAndMark(Integer.toHexString(currMachineState.getAlu().getCarry()),"3",0);
+                aluPanel.setValorAndMark(Integer.toHexString(currMachineState.getAlu().getOverflow()),"4",1);
+                aluPanel.setValorAndMark(Integer.toHexString(currMachineState.getAlu().getPresicion()),"5",1);
                 valuePCLabel.setText(currMachineState.getProgramCounter().toString());
                 valuePCLabel.repaint();
                 

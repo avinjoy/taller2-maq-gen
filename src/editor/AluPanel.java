@@ -13,275 +13,234 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
-public class AluPanel  extends JPanel {
+public class AluPanel extends JPanel {
 
-	private static final long serialVersionUID = 1L;
-	private static final int CANT_CELDAS = 1;
-	
-	JPanel panelAlu;
-	private ArrayList<JPanel> row;
-	private ArrayList<JLabel> labelAlu;
-	private ArrayList<JLabel> arrowAlu;
-	private ArrayList<JLabel> valueAlu;
+    private static final long serialVersionUID = 1L;
+    private static final int CANT_CELDAS = 2;
 
-	public AluPanel() {
-		super();
+    JPanel panelAlu;
+    private ArrayList<JPanel> row;
+    private ArrayList<JLabel> labelAlu;
+    private ArrayList<JLabel> arrowAlu;
+    private ArrayList<JLabel> valueAlu;
 
-		this.setLayout(new GridBagLayout());
-		this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		//this.setPreferredSize(new Dimension(340, this.getHeight()));
-		this.setPreferredSize(new Dimension(340, 80));
+    public AluPanel() {
+        super();
 
-		GridBagConstraints c = new GridBagConstraints();
+        this.setLayout(new GridBagLayout());
+        this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+        //this.setPreferredSize(new Dimension(340, this.getHeight()));
+        this.setPreferredSize(new Dimension(340, 80));
 
-		JLabel labelReg = new JLabel("ALU");
-		c.insets = new Insets(7, 5, 7, 5); // top padding
-		c.gridx = 0; // aligned with button 2
-		c.gridy = 0; // third row
-		c.weighty = 0.0; // La fila 1 debe estirarse, le ponemos 1.0
-		c.weightx = 1.0; // Restauramos el valor por defecto.
-		c.anchor = GridBagConstraints.NORTHWEST;
-		c.fill = GridBagConstraints.NONE;
-		this.add(labelReg, c);
+        GridBagConstraints c = new GridBagConstraints();
 
-		panelAlu = agregarPanelPuertos(this);
-		
-		JLabel labelAux = new JLabel("");
-		c.insets = new Insets(7, 5, 7, 5); // top padding
-		c.gridx = 0; // aligned with button 2
-		c.gridy = 2; // third row
-		c.weighty = 1.0; // La fila 1 debe estirarse, le ponemos 1.0
-		c.weightx = 1.0; // Restauramos el valor por defecto.
-		c.anchor = GridBagConstraints.NORTHWEST;
-		c.fill = GridBagConstraints.VERTICAL;
-		this.add(labelAux, c);
+        JLabel labelReg = new JLabel("ALU");
+        c.insets = new Insets(7, 5, 7, 5); // top padding
+        c.gridx = 0; // aligned with button 2
+        c.gridy = 0; // third row
+        c.weighty = 0.0; // La fila 1 debe estirarse, le ponemos 1.0
+        c.weightx = 1.0; // Restauramos el valor por defecto.
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.NONE;
+        this.add(labelReg, c);
 
-	}
+        panelAlu = agregarPanelPuertos(this);
 
-	private JPanel agregarPanelPuertos(JPanel contenedor) {
-		// CREA UN PANEL PARA LOS REGISTROS
-		JPanel panelPort = new JPanel(new GridBagLayout()) {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -4409720857557537617L;
+        JLabel labelAux = new JLabel("");
+        c.insets = new Insets(7, 5, 7, 5); // top padding
+        c.gridx = 0; // aligned with button 2
+        c.gridy = 2; // third row
+        c.weighty = 1.0; // La fila 1 debe estirarse, le ponemos 1.0
+        c.weightx = 1.0; // Restauramos el valor por defecto.
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.VERTICAL;
+        this.add(labelAux, c);
 
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				g.setColor(Color.WHITE);
-				g.fillRect(0, 0, getWidth(), getHeight());
-			}
-		};
-		panelPort.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+    }
 
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 1;
-		c.weighty = 0.0;
-		c.weightx = 1.0;
-		c.anchor = GridBagConstraints.WEST;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		contenedor.add(panelPort, c);
+    private JPanel agregarPanelPuertos(JPanel contenedor) {
+        // CREA UN PANEL PARA LOS REGISTROS
+        JPanel panelPort = new JPanel(new GridBagLayout()) {
+            /**
+             *
+             */
+            private static final long serialVersionUID = -4409720857557537617L;
 
-		//Crea los registros
-		row = new ArrayList<JPanel>();
-		labelAlu = new ArrayList<JLabel>();
-		arrowAlu = new ArrayList<JLabel>();
-		valueAlu = new ArrayList<JLabel>();
-		
-		GridBagConstraints c1 = new GridBagConstraints();
-		c1.gridx = 0;
-		c1.weighty = 0.0;
-		c1.weightx = 1.0;
-		c1.anchor = GridBagConstraints.WEST;
-		c1.fill = GridBagConstraints.HORIZONTAL;
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(Color.WHITE);
+                g.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
+        panelPort.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 
-		//ENTRADA
-		JPanel panelRow = new JPanel(new GridBagLayout());
-		panelRow.setBackground(this.getColorRow(0));
-		row.add(panelRow);
-		
-		c1.gridy = 0;
-		panelPort.add(panelRow, c1);
-		labelAlu.add(agregarLabelPuerto(panelRow, "CARRY", 0));
-		arrowAlu.add(agregarArrowPuerto(panelRow, 0));
-		valueAlu.add(agregarValorPuerto(panelRow, "", 0));
-		
-		//SALIDA
-		panelRow = new JPanel(new GridBagLayout());
-		panelRow.setBackground(this.getColorRow(0));
-		row.add(panelRow);
-		
-		c1.gridy = 1;
-		panelPort.add(panelRow, c1);
-		labelAlu.add(agregarLabelPuerto(panelRow, "OVERFLOW", 1));
-		arrowAlu.add(agregarArrowPuerto(panelRow, 1));
-		valueAlu.add(agregarValorPuerto(panelRow, "", 1));
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weighty = 0.0;
+        c.weightx = 1.0;
+        c.anchor = GridBagConstraints.WEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        contenedor.add(panelPort, c);
 
+        //Crea los registros
+        row = new ArrayList<JPanel>();
+        labelAlu = new ArrayList<JLabel>();
+        arrowAlu = new ArrayList<JLabel>();
+        valueAlu = new ArrayList<JLabel>();
 
-		return panelPort;
-	}
-	
-	private Color getColorRow(int index) {
-		Color color;
-		if (index % 2 == 0) {
-			color = new Color(240,240,240);
-		} else {
-			color = Color.WHITE;
-		}
-		
-		return color;
-	}
+        GridBagConstraints c1 = new GridBagConstraints();
+        c1.gridx = 0;
+        c1.weighty = 0.0;
+        c1.weightx = 1.0;
+        c1.anchor = GridBagConstraints.WEST;
+        c1.fill = GridBagConstraints.HORIZONTAL;
 
-	private JLabel agregarLabelPuerto(JPanel contenedor, String nombre,
-			int fila) {
+        //ENTRADA
+        JPanel panelRow = new JPanel(new GridBagLayout());
+        panelRow.setBackground(this.getColorRow(0));
+        row.add(panelRow);
 
-		JLabel label = new JLabel(nombre);
-		label.setPreferredSize(new Dimension(70, 10));
+        c1.gridy = 0;
+        panelPort.add(panelRow, c1);
+        labelAlu.add(agregarLabelPuerto(panelRow, "CARRY", 0));
+        arrowAlu.add(agregarArrowPuerto(panelRow, 0));
+        valueAlu.add(agregarValorPuerto(panelRow, "", 0));
 
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(3, 3, 3, 3);
-		c.gridx = 0; // aligned with button 2
-		c.gridy = fila; // third row
-		c.weighty = 0.0; // La fila 1 debe estirarse, le ponemos 1.0
-		c.weightx = 0.0; // Restauramos el valor por defecto.
-		c.anchor = GridBagConstraints.WEST;
-		c.fill = GridBagConstraints.NONE;
-		contenedor.add(label, c);
+        //SALIDA
+        panelRow = new JPanel(new GridBagLayout());
+        panelRow.setBackground(this.getColorRow(0));
+        row.add(panelRow);
 
-		return label;
-	}
+        c1.gridy = 1;
+        panelPort.add(panelRow, c1);
+        labelAlu.add(agregarLabelPuerto(panelRow, "OVERFLOW", 1));
+        arrowAlu.add(agregarArrowPuerto(panelRow, 1));
+        valueAlu.add(agregarValorPuerto(panelRow, "", 1));
+        c1.gridy = 2;
+        panelPort.add(panelRow, c1);
+        labelAlu.add(agregarLabelPuerto(panelRow, "PRESICION", 2));
+        arrowAlu.add(agregarArrowPuerto(panelRow, 2));
+        valueAlu.add(agregarValorPuerto(panelRow, "", 2));
 
-	private JLabel agregarValorPuerto(JPanel contenedor, String value,
-			int fila) {
+        return panelPort;
+    }
 
-		JLabel valor = new JLabel(value);
+    private Color getColorRow(int index) {
+        Color color;
+        if (index % 2 == 0) {
+            color = new Color(240, 240, 240);
+        } else {
+            color = Color.WHITE;
+        }
 
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(3, 3, 3, 3);
-		c.gridx = 4; // aligned with button 2
-		c.gridy = fila; // third row
-		c.weighty = 0.0; // La fila 1 debe estirarse, le ponemos 1.0
-		c.weightx = 1.0; // Restauramos el valor por defecto.
-		c.anchor = GridBagConstraints.WEST;
-		c.fill = GridBagConstraints.BOTH;
-		contenedor.add(valor, c);
+        return color;
+    }
 
-		return valor;
-	}
+    private JLabel agregarLabelPuerto(JPanel contenedor, String nombre,
+            int fila) {
 
-	private JLabel agregarArrowPuerto(JPanel contenedor, int fila) {
+        JLabel label = new JLabel(nombre);
+        label.setPreferredSize(new Dimension(70, 10));
 
-		JLabel arrow = new JLabel("=>");
-		arrow.setPreferredSize(new Dimension(30, 10));
-		
-		//arrowReg.setForeground(Color.red);
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(3, 3, 3, 3);
-		c.gridx = 1;
-		c.gridy = fila;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
-		c.anchor = GridBagConstraints.WEST;
-		c.fill = GridBagConstraints.NONE;
-		contenedor.add(arrow, c);
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(3, 3, 3, 3);
+        c.gridx = 0; // aligned with button 2
+        c.gridy = fila; // third row
+        c.weighty = 0.0; // La fila 1 debe estirarse, le ponemos 1.0
+        c.weightx = 0.0; // Restauramos el valor por defecto.
+        c.anchor = GridBagConstraints.WEST;
+        c.fill = GridBagConstraints.NONE;
+        contenedor.add(label, c);
 
-		return arrow;
-	}
+        return label;
+    }
 
-	private JLabel agregarValorFlag(JPanel contenedor, String value,
-			int fila) {
+    private JLabel agregarValorPuerto(JPanel contenedor, String value,
+            int fila) {
 
-		JLabel valor = new JLabel(value);
-		valor.setPreferredSize(new Dimension(30, 10));
-		
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(3, 3, 3, 3);
-		c.gridx = 2; // aligned with button 2
-		c.gridy = fila; // third row
-		c.weighty = 0.0; // La fila 1 debe estirarse, le ponemos 1.0
-		c.weightx = 0.0; // Restauramos el valor por defecto.
-		c.anchor = GridBagConstraints.WEST;
-		c.fill = GridBagConstraints.NONE;
-		contenedor.add(valor, c);
+        JLabel valor = new JLabel(value);
 
-		return valor;
-	}
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(3, 3, 3, 3);
+        c.gridx = 4; // aligned with button 2
+        c.gridy = fila; // third row
+        c.weighty = 0.0; // La fila 1 debe estirarse, le ponemos 1.0
+        c.weightx = 1.0; // Restauramos el valor por defecto.
+        c.anchor = GridBagConstraints.WEST;
+        c.fill = GridBagConstraints.BOTH;
+        contenedor.add(valor, c);
 
-	private JLabel agregarArrowFlag(JPanel contenedor, int fila) {
+        return valor;
+    }
 
-		JLabel arrow = new JLabel("=>");
-		arrow.setPreferredSize(new Dimension(30, 10));
-		
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(3, 3, 3, 3);
-		c.gridx = 3;
-		c.gridy = fila;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
-		c.anchor = GridBagConstraints.WEST;
-		c.fill = GridBagConstraints.NONE;
-		contenedor.add(arrow, c);
+    private JLabel agregarArrowPuerto(JPanel contenedor, int fila) {
 
-		return arrow;
-	}
-	
-	public void setValorAndMark(String valor_port, String valor_flag, int index) {
-		JLabel label_port_aux = null;
-		JLabel arrow_port_aux = null;
-		JLabel valor_port_aux = null;
+        JLabel arrow = new JLabel("=>");
+        arrow.setPreferredSize(new Dimension(30, 10));
 
-                for (int i = 0; i <= CANT_CELDAS; i++) {
-			label_port_aux = labelAlu.get(i);
-			arrow_port_aux = arrowAlu.get(i);
-			valor_port_aux = valueAlu.get(i);
-			
+        //arrowReg.setForeground(Color.red);
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(3, 3, 3, 3);
+        c.gridx = 1;
+        c.gridy = fila;
+        c.weightx = 0.0;
+        c.weighty = 0.0;
+        c.anchor = GridBagConstraints.WEST;
+        c.fill = GridBagConstraints.NONE;
+        contenedor.add(arrow, c);
 
-			if (i == index) {
-				label_port_aux.setForeground(Color.RED);
-				arrow_port_aux.setForeground(Color.RED);
-				valor_port_aux.setForeground(Color.RED);		
-				valor_port_aux.setText(valor_port);
-				
-			} else {
-				label_port_aux.setForeground(Color.BLACK);
-				arrow_port_aux.setForeground(Color.BLACK);
-				valor_port_aux.setForeground(Color.BLACK);	
-			}
-			
-			label_port_aux.repaint();
-			arrow_port_aux.repaint();
-			valor_port_aux.repaint();	
-		}
-	}
-	
-	public void resetValor(String valorinicialport, String valorinicialflag) {
-		JLabel label_port_aux = null;
-		JLabel arrow_port_aux = null;
-		JLabel valor_port_aux = null;
-		JLabel arrow_flag_aux = null;
-		JLabel valor_flag_aux = null;
-		
-		for (int i = 0; i <= CANT_CELDAS; i++) {
-			label_port_aux = labelAlu.get(i);
-			arrow_port_aux = arrowAlu.get(i);
-			valor_port_aux = valueAlu.get(i);
+        return arrow;
+    }
 
-			label_port_aux.setForeground(Color.BLACK);
-			arrow_port_aux.setForeground(Color.BLACK);
-			valor_port_aux.setForeground(Color.BLACK);		
-			valor_port_aux.setText(valorinicialport);
-			arrow_flag_aux.setForeground(Color.BLACK);
-			valor_flag_aux.setForeground(Color.BLACK);		
-			valor_flag_aux.setText(valorinicialflag);
-			
-			label_port_aux.repaint();
-			arrow_port_aux.repaint();
-			valor_port_aux.repaint();	
-			arrow_flag_aux.repaint();
-			valor_flag_aux.repaint();	
-		}
-	}
-	
+    public void setValorAndMark(String valor_port, String valor_flag, int index) {
+        JLabel label_port_aux = null;
+        JLabel arrow_port_aux = null;
+        JLabel valor_port_aux = null;
+
+        for (int i = 0; i <= CANT_CELDAS; i++) {
+            label_port_aux = labelAlu.get(i);
+            arrow_port_aux = arrowAlu.get(i);
+            valor_port_aux = valueAlu.get(i);
+
+            if (i == index) {
+                label_port_aux.setForeground(Color.RED);
+                arrow_port_aux.setForeground(Color.RED);
+                valor_port_aux.setForeground(Color.RED);
+                valor_port_aux.setText(valor_port);
+
+            } else {
+                label_port_aux.setForeground(Color.BLACK);
+                arrow_port_aux.setForeground(Color.BLACK);
+                valor_port_aux.setForeground(Color.BLACK);
+            }
+
+            label_port_aux.repaint();
+            arrow_port_aux.repaint();
+            valor_port_aux.repaint();
+        }
+    }
+
+    public void resetValor() {
+        JLabel label_port_aux = null;
+        JLabel arrow_port_aux = null;
+        JLabel valor_port_aux = null;
+
+        for (int i = 0; i <= CANT_CELDAS; i++) {
+            label_port_aux = labelAlu.get(i);
+            arrow_port_aux = arrowAlu.get(i);
+            valor_port_aux = valueAlu.get(i);
+
+            label_port_aux.setForeground(Color.BLACK);
+            arrow_port_aux.setForeground(Color.BLACK);
+            valor_port_aux.setForeground(Color.BLACK);
+            valor_port_aux.setText("0");
+
+            label_port_aux.repaint();
+            arrow_port_aux.repaint();
+            valor_port_aux.repaint();
+        }
+    }
+
 }

@@ -1,5 +1,7 @@
 package domain;
 
+import static java.lang.Math.pow;
+
 /**
  *
  * @author Oscar Bertran <oabertran@yahoo.com.ar>
@@ -9,9 +11,15 @@ public class ALU {
     private Integer overflow = 0;
 
     private Integer carry = 0;
-    
+
+    private Integer presicion = 0;
+
+    public Integer getPresicion() {
+        return presicion;
+    }
+
     private static ALU alu = new ALU();
-    
+
     public Integer getOverflow() {
         return overflow;
     }
@@ -19,7 +27,7 @@ public class ALU {
     public Integer getCarry() {
         return carry;
     }
-    
+
     public void setOverflow(Integer overflow) {
         this.overflow = overflow;
     }
@@ -36,7 +44,7 @@ public class ALU {
         Integer result = value1 + value2;
 
         if (((value1 & 0x80) == (value2 & 0x80)) && (((value1 & 0x80) != (result & 0x80)) || ((value2 & 0x80) != (result & 0x80)))) {
-        
+
             overflow = 1;
         }
 
@@ -49,6 +57,8 @@ public class ALU {
     }
 
     public Byte addFloat(Byte value1, Byte value2) {
+        presicion = 0;
+        overflow = 0;
         System.out.println("************** Suma de " + Integer.toHexString((byte) value1) + " + " + Integer.toHexString(0x0FF & value2) + " *******************");
         Byte sumando1 = value1;
         Byte sumando2 = value2;
@@ -72,6 +82,13 @@ public class ALU {
         byte signoFinal = 0;
         byte resultFinal = 0;
         mantisa2Int = mantisa2 | 0x10;
+        int suffix;
+        suffix = mantisa2Int & (int) (Math.pow(2, (exp1 - exp2)) - 1);
+        if (suffix > 0) {
+
+            presicion = 1;
+            System.out.println("Presicion Perdida 1: " + suffix);
+        }
         mantisa2Int = (mantisa2Int >>> (exp1 - exp2));
         mantisa1Int = mantisa1 | 0x10;
         System.out.println("--------------Numero 1-----------------");
@@ -119,11 +136,22 @@ public class ALU {
         System.out.println("--------------Resultado-----------------");
         System.out.println("Mantisa Resultado Pre correr: " + mantisaResult);
         if (expPos > 4) {
+            
+            suffix = mantisaResult & (int) (Math.pow(2, (expPos - 4)) - 1);
+            if (suffix > 0) {
 
+                presicion = 1;
+                System.out.println("Presicion perdida 2: " + suffix);
+            }
             mantisaResult = mantisaResult >>> (expPos - 4);
         } else {
 
             mantisaResult = mantisaResult << (4 - expPos);
+        }
+        
+        if (expFinal > 3 || expFinal<-4){
+            
+            overflow = 1;
         }
         System.out.println("Exponente Relativo: " + expPos);
         System.out.println("Exponente Final: " + expFinal);
